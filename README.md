@@ -1,17 +1,17 @@
 # UWE_EnterpriseSysDev
 ## Ingredients
-110g/4oz butter or margarine, softened at room temperature
-110g/4oz caster sugar
-2 free-range eggs, lightly beaten
-1 tsp vanilla extract
-110g/4oz self-raising flour
-1-2 tbsp milk
+110g/4oz butter or margarine, softened at room temperature  
+110g/4oz caster sugar  
+2 free-range eggs, lightly beaten  
+1 tsp vanilla extract  
+110g/4oz self-raising flour  
+1-2 tbsp milk  
 
 ## For the buttercream icing
-140g/5oz butter, softened
-280g/10oz icing sugar
-1-2 tbsp milk
-a few drops food colouring
+140g/5oz butter, softened  
+280g/10oz icing sugar  
+1-2 tbsp milk  
+a few drops food colouring  
 
 ## Method
 1. Preheat the oven to 180C/350F/Gas 4 and line a 12-hole muffin tin with paper cases.
