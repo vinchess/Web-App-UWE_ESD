@@ -430,7 +430,6 @@
     </div>
         </div>
     </body>
-    <footer>
-        <%@include file="/copyright.html" %>
-    </footer>
+    <%@include file="/lib/footer.html" %>
+
 </html>

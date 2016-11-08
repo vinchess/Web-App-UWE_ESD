@@ -9,9 +9,11 @@
 <html>
     <head>
         <title>Home</title>
+        <%@include file="/lib/banner.html" %>
         <%@include file="/lib/bootstrap.html" %>
     </head>
     <body>
+        
         <center>
                 <div class="container">
                     <div class="jumbotron">
@@ -20,7 +22,7 @@
                             For all your minor claim needs.<br>
                             To proceed please login.</h3>
                         <button class="btn btn-primary btn-lg" href="#signin" 
-                                data-toggle="modal" data-target=".bs-modal-sm">Sign In/Register</button>
+                                data-toggle="modal" data-target="#myModal">Sign In/Register</button>
                         <button class="btn btn-primary btn-lg" href="#admin"
                                 data-toggle="modal" data-target="#myAdmin">Admin</button>
                         <a href="admin/dashboard.jsp"><button class="btn btn-primary btn-lg" >Admin</button></a>
@@ -157,15 +159,22 @@
             <div class="control-group">
               <label class="control-label" for="Email">Email:</label>
               <div class="controls">
-                <input id="Email" name="Email" class="form-control" type="text" placeholder="JoeSixpack@sixpacksrus.com" class="input-large" required="">
+                <input id="Email" name="Email" class="form-control" type="text" placeholder="johndoe@example.com" class="input-large" required="">
               </div>
             </div>
             
             <!-- Text input-->
             <div class="control-group">
-              <label class="control-label" for="userid">Alias:</label>
+              <label class="control-label" for="userid">Name:</label>
               <div class="controls">
-                <input id="userid" name="userid" class="form-control" type="text" placeholder="JoeSixpack" class="input-large" required="">
+                <input id="userid" name="userid" class="form-control" type="text" placeholder="JohnDoe" class="input-large" required="">
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label class="control-label" for="dob">Date of Birth:</label>
+              <div class="controls">
+                <input id="dob" name="dob" class="form-control" type="date" class="input-large" required="">
               </div>
             </div>
             
@@ -219,7 +228,5 @@
   </div>
 </div>
     </body>
-    <footer>
-        <%@include file="/copyright.html" %>
-    </footer>
+    <%@include file="/lib/footer.html" %>
 </html>
