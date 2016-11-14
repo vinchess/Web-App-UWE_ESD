@@ -50,7 +50,7 @@
                         <p></p><br> Please contact <a mailto:href="JohnDoe@example.com">JohnDoe@example.com</a> for any other inquiries.</p>
                     </div>
                     <div class="tab-pane fade active in" id="signin">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" action="logins" method="POST">
                             <fieldset>
                                 <!-- Sign In Form -->
                                 <!-- Text input-->

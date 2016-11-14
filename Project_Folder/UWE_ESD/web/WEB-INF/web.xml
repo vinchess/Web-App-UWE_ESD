@@ -12,6 +12,22 @@
         <param-name>dbname</param-name>
         <param-value>xyz_assoc</param-value>
     </context-param>
+    <servlet>
+        <servlet-name>test1</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>loginservlet</servlet-name>
+        <servlet-class>package1.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>test1</servlet-name>
+        <url-pattern>/test2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginservlet</servlet-name>
+        <url-pattern>/logins</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
