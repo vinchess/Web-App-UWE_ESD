@@ -15,88 +15,63 @@
         <%@include file="/lib/banner.html" %>
         
     </head>
-    <body style="padding-top: 75px;">
+    <body>
         <div class="container">
             <div class="col-md-3 ">
-                <div class="panel-group" id="accordion" role="list" aria-multiselectable="true">
-  <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
-           aria-expanded="false" aria-controls="collapseOne">
-          Filter
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-      <div class="panel-body">
-          <form>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Activ
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Pending
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Inactive
-                </label>
-              </div>
-          </form>
-      </div>
-    </div>
-  </div>
                 <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" 
-           aria-expanded="false" aria-controls="collapseTwo">
-          Filter
-        </a>
-      </h4>
-    </div>
-    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="panel-body">
-          <form>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Activ
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Pending
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">
-                  Inactive
-                </label>
-              </div>
-          </form>
-      </div>
-    </div>
-  </div></div>
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
+                               accesskey=""aria-expanded="true" aria-controls="collapseOne">
+                                Filter
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <form action="#" method="POST"><!--need servlet to update the list-->
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="">
+                                        Active
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="">
+                                        Pending
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="">
+                                        Inactive
+                                    </label>
+                                </div>
+                                <input type="submit" class="btn btn-success btn-block" value="Update"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default btn-block" 
+                        aria-label="Left Align" onClick="location.href='../LogoutServlet'">
+                    <div class="col-md-1">
+                        <span class="glyphicon glyphicon-off"></span> 
+                    </div>
+                    <div class="col-md-2 ">
+                        LOG OUT
+                    </div>
+                </button>
             </div>
             <div class="col-md-9 ">
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
-                      <li role="presentation" class="active">
-                          <a href="#payments" aria-controls="home" role="tab" data-toggle="tab">Payments</a>
-                      </li>
-                      <li role="presentation">
-                          <a href="#claims" aria-controls="profile" role="tab" data-toggle="tab">Claims</a>
-                      </li>
+                        <li role="presentation" class="active">
+                            <a href="#payments" aria-controls="home" role="tab" data-toggle="tab">Users</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#claims" aria-controls="profile" role="tab" data-toggle="tab">Claims</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">

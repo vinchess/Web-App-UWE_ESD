@@ -13,7 +13,7 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
     </head>
-    <body style="padding-top: 75px;">
+    <body>
         <div class="container">
             <div class="col-md-3 text-center">
                     <span class="glyphicon glyphicon-user img-circle" aria-hidden="true" style="font-size: 6em;"></span>
@@ -48,7 +48,7 @@
                         </div>
                     </button>
                     <button type="button" class="btn btn-default btn-block" 
-                            data-toggle="modal" data-target="#claim" aria-label="Left Align">
+                            aria-label="Left Align" onClick="location.href='LogoutServlet'">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-off"></span> 
                         </div>

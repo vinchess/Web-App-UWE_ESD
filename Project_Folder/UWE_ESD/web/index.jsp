@@ -13,7 +13,7 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
     </head>
-    <body style="padding-top: 70px;">
+    <body>
         
         <center>
             <div class="container">
@@ -35,7 +35,7 @@
         <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" 
              aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
-                <div class="modal-content"><br>
+                <div class="modal-content">
                 <div class="bs-example bs-example-tabs">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
@@ -54,11 +54,11 @@
                             <fieldset>
                                 <!-- Sign In Form -->
                                 <!-- Text input-->
-                                <div class="control-group">
+                                <div class="control-group focus">
                                   <label class="control-label" for="userid">Username:</label>
                                   <div class="controls">
-                                    <input required="" id="userid" name="userid" type="text" class="form-control" 
-                                           placeholder="name@xyz.com" class="input-medium" required="">
+                                    <input required="" id="userid" name="userid" type="text" class="form-control focus" 
+                                           placeholder="name@xyz.com" class="input-medium" required>
                                   </div>
                                 </div>
 
@@ -84,7 +84,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="signin"></label>
                                     <div class="controls">
-                                        <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                        <button id="signin" name="signin" class="btn btn-success btn-block">Sign In</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -147,7 +147,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="confirmsignup"></label>
                                     <div class="controls">
-                                        <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
+                                        <button id="confirmsignup" name="confirmsignup" class="btn btn-success btn-block">Sign Up</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -168,11 +168,8 @@
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
-                    <br>
-                    <div class="bs-example bs-example-tabs">
-                        <ul id="myTab" class="nav nav-tabs">
-                            <li class="active"><a href="#admin" data-toggle="tab">Sign In</a></li>
-                        </ul>
+                    <div class="modal-header">
+                        Sign In
                     </div>
                     <div class="modal-body">
                         <div class="tab-pane fade active in" id="admin">
@@ -202,7 +199,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="signin"></label>
                                         <div class="controls">
-                                            <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                            <button id="signin" name="signin" class="btn btn-success btn-block">Sign In</button>
                                         </div>
                                     </div>
                                 </fieldset>
