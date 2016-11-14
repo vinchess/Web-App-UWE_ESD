@@ -9,10 +9,11 @@
 <html>
     <head>
         <title>Home</title>
-        <%@include file="/lib/banner.html" %>
+        
         <%@include file="/lib/bootstrap.html" %>
+        <%@include file="/lib/banner.html" %>
     </head>
-    <body>
+    <body style="padding-top: 70px;">
         
         <center>
             <div class="container">
@@ -165,65 +166,57 @@
 
         <div class="modal fade bs-modal-sm" id="myAdmin" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
-           <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <br>
-            <div class="bs-example bs-example-tabs">
-                <ul id="myTab" class="nav nav-tabs">
-                    <li class="active"><a href="#admin" data-toggle="tab">Sign In</a></li>
-                </ul>
-            </div>
-            <div class="modal-body">
-                <div class="tab-pane fade active in" id="admin">
-            <form class="form-horizontal">
-            <fieldset>
-            
-            <div class="control-group">
-              <label class="control-label" for="userid">Username:</label>
-              <div class="controls">
-                <input required="" id="userid" name="userid" type="text" class="form-control" 
-                       placeholder="name@xyz.com" class="input-medium" required="">
-              </div>
-            </div>
-
-           
-            <div class="control-group">
-              <label class="control-label" for="passwordinput">Password:</label>
-              <div class="controls">
-                <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
-              </div>
-            </div>
-
-            
-            <div class="control-group">
-                    <div class="controls">
-                        <label>
-                            <input type="checkbox" aria-label="Remember me">
-                            Remember me
-                        </label>
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <br>
+                    <div class="bs-example bs-example-tabs">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li class="active"><a href="#admin" data-toggle="tab">Sign In</a></li>
+                        </ul>
                     </div>
+                    <div class="modal-body">
+                        <div class="tab-pane fade active in" id="admin">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="control-group">
+                                        <label class="control-label" for="userid">Username:</label>
+                                        <div class="controls">
+                                            <input required="" id="userid" name="userid" type="text" class="form-control" 
+                                                 placeholder="name@xyz.com" class="input-medium" required="">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="passwordinput">Password:</label>
+                                        <div class="controls">
+                                            <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label>
+                                                <input type="checkbox" aria-label="Remember me">
+                                                Remember me
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="signin"></label>
+                                        <div class="controls">
+                                            <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </center>
+                    </div>
+                </div>
             </div>
-
-            
-            <div class="control-group">
-              <label class="control-label" for="signin"></label>
-              <div class="controls">
-                <button id="signin" name="signin" class="btn btn-success">Sign In</button>
-              </div>
-            </div>
-            </fieldset>
-            </form>
         </div>
-            </div>
-            <div class="modal-footer">
-              <center>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </center>
-            </div>
-        </div>
-  </div>
-  </div>
-
     </body>
     <%@include file="/lib/footer.html" %>
 </html>
