@@ -28,6 +28,10 @@
         <servlet-name>PaymentServlet</servlet-name>
         <servlet-class>servlets.PaymentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <servlet-class>servlets.AdminLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>PaymentServlet</servlet-name>
         <url-pattern>/PaymentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <url-pattern>/AdminLoginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
