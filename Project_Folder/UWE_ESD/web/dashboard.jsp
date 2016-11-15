@@ -152,6 +152,7 @@
                                 <div class="form-group">
                                     <label for="couponCode">Amount</label>
                                     <input type="text" 
+                                           id="couponCode"
                                            class="form-control"
                                            name="payAmount"
                                            placeholder="0.00"

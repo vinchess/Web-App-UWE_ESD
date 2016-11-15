@@ -5,12 +5,16 @@
  */
 package servlets;
 
+import database.JDBC;
+import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,16 +35,20 @@ public class PaymentServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PaymentServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PaymentServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            HttpSession session = request.getSession();
+            String amounts = request.getParameter("couponCode");
+            
+            JDBC jdbc = (JDBC) getServletContext().getAttribute("dbConn");
+            
+            String sql = "SELECT * FROM members WHERE id =";
+            
+            ResultSet rs = jdbc.read(sql);
+            
+            //here suppose to compare with the database to make sure have this user but i need the user to key in the id to allow the me compare with the user right?
+            //but i dunno how to compare it sia..lololol
+            
+            
+            
         }
     }
 
