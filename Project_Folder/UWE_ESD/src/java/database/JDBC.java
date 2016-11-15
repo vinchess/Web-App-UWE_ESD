@@ -1,132 +1,15 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package database;
-import java.sql.*;
-import java.util.*;
+
 /**
  *
  * @author Vincent
  */
-public class JDBC{
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-    static final String DB_URL = "jdbc:mysql://localhost:3306/";
-
-    //static final String USER = "root";
-    static final String PASS = "";
-
-    public Connection conn = null;
-    public Statement stmt = null;
-    public String USER = "root";
-    public String database = "xyz_assoc";
-    
-
-    public JDBC(){}
-    public JDBC(String USER, String database){
-        this.USER = USER;
-        this.database = database;
-    }
-    public void create(String sql){
-        try{
-            Class.forName(JDBC_DRIVER);
-
-            conn = DriverManager.getConnection(DB_URL + database, USER, PASS);
-            stmt = conn.createStatement();
-
-            int update = stmt.executeUpdate(sql);
-
-        }catch(SQLException se){
-            System.out.println("SQL Connection Error...");
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            try{
-                 if(stmt!=null)
-                    conn.close();
-            }catch(SQLException se){}// do nothing
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                System.out.println("Failed to close connection...");
-            }//end finally try
-        }
-    }
-    public ResultSet read(String sql){
-        ResultSet rs = null;
-        try{
-            Class.forName(JDBC_DRIVER);
-
-            conn = DriverManager.getConnection(DB_URL + database, USER, PASS);
-            stmt = conn.createStatement();
-
-            rs = stmt.executeQuery(sql);
-        }catch(SQLException se){
-            se.printStackTrace();
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            try{
-                if(stmt!=null)
-                    conn.close();
-            }catch(SQLException se){}// do nothing
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        return rs;
-    }
-    public void update(String sql){
-        try{
-            Class.forName(JDBC_DRIVER);
-
-            conn = DriverManager.getConnection(DB_URL + database, USER, PASS);
-            stmt = conn.createStatement();
-
-            int update = stmt.executeUpdate(sql);
-
-        }catch(SQLException se){
-            System.out.println("SQL Connection Error...");
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            try{
-                 if(stmt!=null)
-                    conn.close();
-            }catch(SQLException se){}// do nothing
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                System.out.println("Failed to close connection...");
-            }//end finally try
-        }
-    }
-    public void delete(String sql){
-        try{
-            Class.forName(JDBC_DRIVER);
-
-            conn = DriverManager.getConnection(DB_URL + database, USER, PASS);
-            stmt = conn.createStatement();
-
-            int update = stmt.executeUpdate(sql);
-
-        }catch(SQLException se){
-            System.out.println("SQL Connection Error...");
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            try{
-                 if(stmt!=null)
-                    conn.close();
-            }catch(SQLException se){}// do nothing
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                System.out.println("Failed to close connection...");
-            }//end finally try
-        }
-    }
+public class JDBC
+{
     
 }
