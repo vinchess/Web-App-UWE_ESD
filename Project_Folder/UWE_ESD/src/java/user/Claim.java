@@ -1,7 +1,5 @@
 package user;
 
-import package1.User;
-
 /**
  *
  * @author Jayson
