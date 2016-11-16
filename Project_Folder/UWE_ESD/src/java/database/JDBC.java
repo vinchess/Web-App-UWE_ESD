@@ -6,23 +6,32 @@ import java.util.*;
  * @author Vincent
  */
 public class JDBC{
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
     static final String DB_URL = "jdbc:mysql://localhost:3306/";
 
-    //static final String USER = "root";
+    static final String USER = "root";
     static final String PASS = "";
+    final String database = "xyz_assoc";
 
     public Connection conn = null;
     public Statement stmt = null;
-    public String USER = "root";
-    public String database = "xyz_assoc";
     
 
     public JDBC(){}
-    public JDBC(String USER, String database){
-        this.USER = USER;
-        this.database = database;
+    public Connection getConnection(){
+        try{
+            Class.forName(JDBC_DRIVER);
+
+            conn = DriverManager.getConnection(DB_URL + database, USER, PASS);
+            
+        }catch(SQLException se){
+            System.out.println("SQL Connection Error...");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return conn;
     }
+    /*
     public void create(String sql){
         try{
             Class.forName(JDBC_DRIVER);
@@ -128,5 +137,5 @@ public class JDBC{
             }//end finally try
         }
     }
-    
+    */
 }

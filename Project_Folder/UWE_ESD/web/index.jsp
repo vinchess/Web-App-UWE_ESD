@@ -22,11 +22,10 @@
                     <h3>Welcome to your personal claims portal.<br>
                         For all your minor claim needs.<br>
                         To proceed please login.</h3>
-                    <button class="btn btn-primary btn-lg" href="#signin" 
+                    <button class="btn btn-primary " href="#signin" 
                             data-toggle="modal" data-target="#myModal">Sign In/Register</button>
-                    <button class="btn btn-primary btn-lg" href="#admin"
+                    <button class="btn btn-primary " href="#admin"
                             data-toggle="modal" data-target="#myAdmin">Admin</button>
-                    <a href="admin/dashboard.jsp"><button class="btn btn-primary btn-lg" >Admin</button></a>
                 </div>
             </div>
         </center>

@@ -42,7 +42,7 @@ public class PaymentServlet extends HttpServlet {
             
             String sql = "SELECT * FROM members WHERE id =";
             
-            ResultSet rs = jdbc.read(sql);
+            //ResultSet rs = jdbc.read(sql);
             
             //here suppose to compare with the database to make sure have this user but i need the user to key in the id to allow the me compare with the user right?
             //but i dunno how to compare it sia..lololol

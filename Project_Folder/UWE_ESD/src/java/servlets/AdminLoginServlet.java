@@ -5,7 +5,7 @@
  */
 package servlets;
 
-import database.JDBC;
+import database.AdminLoginDAO;
 import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,37 +41,22 @@ public class AdminLoginServlet extends HttpServlet
             String username = request.getParameter("userid");
             String password = request.getParameter("passwordinput");
             
-            JDBC jdbc = (JDBC) getServletContext().getAttribute("dbConn");
-            
-            /////////////////////////////////////////////
-            String sql = "SELECT * FROM users WHERE id='" + username + "';";
-            
-            ResultSet rs = jdbc.read(sql);
-            try{
-                rs.next();
-            }catch(SQLException se){}
-            
+            AdminLoginDAO login = new AdminLoginDAO();
             out.println(username);
             out.println(password);
-            if(rs!=null){
-                String queryPW = null;
-                try{
-                    queryPW = rs.getString("password");
-                    if(queryPW.equals(password)){
-                        RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
-                        rd.forward(request, response);
-                    }
-                }catch(SQLException se){
-                    session.invalidate();
-            
-                    response.sendRedirect("/UWE_ESD");
-                }     
+            if(login.authenticate(username, password)){
+                out.println(username);
+                out.println(password);
+                RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
+                rd.forward(request, response);
             }else{
+                out.println(username);
+            out.println(password);
                 session.invalidate();
+                response.sendRedirect("/UWE_ESD");
             }
             
-            out.println(username);
-            out.println(password);
+            
             
         }
     }
