@@ -18,6 +18,7 @@
             <div class="col-md-3 text-center">
                     <span class="glyphicon glyphicon-user img-circle" aria-hidden="true" style="font-size: 6em;"></span>
                     <h2><%= session.getAttribute("username1") %></h2>
+                    <h2><</h2>
                     <h3>Balance</h3>
                     <h3><%//get user balance here%>0.00</h3>
                     <button type="button" class="btn btn-default btn-block" 
