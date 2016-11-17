@@ -1,11 +1,14 @@
 package database;
 import java.sql.*;
+import java.util.*;
 import user.User;
+import user.Payments;
 /**
  *
  * @author Vincent
  */
 public class PaymentDAO extends JDBC{
+    //updates Payment table with new payment made
     public boolean updatePayment(User user, double payment){
         boolean result = false;
         
@@ -34,10 +37,49 @@ public class PaymentDAO extends JDBC{
             System.out.println("SQL error occurred. " + se.getMessage());
         }
         return result;
-    }
-    
+    }//end updatePayment
+    public List getAllRecords(){
+        List list = new ArrayList();
+        conn = getConnection();
+        String sql = "SELECT * FROM payments;";
+        
+        try{
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new Payments(rs.getString("mem_id"),rs.getString("type_of_payment"),rs.getString("amount"),rs.getString("date")));
+            }
+            rs.close();
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("SQL error occurred. " + se.getMessage());
+        }
+        return list;
+    }//end getAllRecords
+    public List getRecordsById(User user){
+        List list = new ArrayList();
+        conn = getConnection();
+        String sql = "SELECT * FROM payments WHERE mem_id='"+ user.getID() +"';";
+        
+        try{
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new Payments(rs.getString("mem_id"),rs.getString("type_of_payment"),rs.getString("amount"),rs.getString("date")));
+            }
+            rs.close();
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("SQL error occurred. " + se.getMessage());
+        }
+        return list;
+    }//end getRecordsById
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
-    }
-}
+    }//end checkResult 
+}//end PaymentDAO

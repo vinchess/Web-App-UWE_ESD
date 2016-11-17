@@ -6,7 +6,9 @@
 package servlets;
 
 import database.AdminLoginDAO;
+import database.PaymentDAO;
 import java.sql.*;
+import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -41,11 +43,10 @@ public class AdminLoginServlet extends HttpServlet{
             String password = request.getParameter("passwordinput");
             
             AdminLoginDAO login = new AdminLoginDAO();
-            out.println(username);
-            out.println(password);
             if(login.authenticate(username, password)){
-                out.println(username);
-                out.println(password);
+                PaymentDAO payments = new PaymentDAO();
+                List list = payments.getAllRecords();
+                session.setAttribute("paymentlist", list);
                 RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
                 rd.forward(request, response);
             }else{

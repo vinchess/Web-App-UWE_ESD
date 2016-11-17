@@ -12,6 +12,8 @@
         <title>Dashboard</title>
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
+        <%@ page import="java.util.*" %>
+        <%@ page import="user.Payments" %>
     </head>
     <body>
         <div class="container">
@@ -20,7 +22,7 @@
                     <h2><%= session.getAttribute("username1") %></h2>
                     <h2><</h2>
                     <h3>Balance</h3>
-                    <h3><%//get user balance here%>0.00</h3>
+                    <h3><%= session.getAttribute("username1") %>0.00</h3>
                     <button type="button" class="btn btn-default btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -59,7 +61,7 @@
                     </button>
             </div>
             <div class="col-md-9 ">
-                <h1 style="color:green"><%//get account status here%>ACTIVE</h1>/
+                <h1 style="color:green"><% out.println("hahahaha"); %>ACTIVE</h1>/
                 <h1 style="color:yellow"><%//get account status here%>PENDING</h1>/
                 <h1 style="color:red"><%//get account status here%>INACTIVE</h1>
                 <div>
@@ -73,10 +75,32 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
-                            No Records Found
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Payment Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                                <%
+                                    List list = (ArrayList)session.getAttribute("paymentlist");
+                                    if(list.isEmpty())
+                                        out.println("No Records Found");
+                                    else{
+                                        
+                                        for(int i=0;i<list.size();i++){
+                                            Payments payment = (Payments)list.get(i);
+                                            out.println("<tr>");
+                                            out.println("</tr>");
+                                        }
+                                    }
+                                %>
+                            </table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
                             No Records Found
+                            <%//get records%>
                         </div>
                     </div>
                 </div>

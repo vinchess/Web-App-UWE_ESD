@@ -18,6 +18,7 @@ public class User {
       private String address;
       private int DOB;
       private int DOR;
+      private double balance;
       
 	
 	
@@ -79,7 +80,6 @@ public class User {
       public void setID(String newID) {
          ID = newID;
 			}
-
 				
       public boolean isUserValid() {
          return userValid;
@@ -87,5 +87,13 @@ public class User {
 
       public void setUserValid(boolean newUserValid) {
          userValid = newUserValid;
-	}	
+	}
+      
+      public double getBalance(){
+          return balance;
+      }
+      
+      public void setBalance(double balance){
+          this.balance = balance;
+      }
 }

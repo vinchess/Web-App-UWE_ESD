@@ -13,7 +13,8 @@
         <title>Admin Dashboard</title>
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
-        
+        <%@ page import="java.util.*" %>
+        <%@ page import="user.Payments" %>
     </head>
     <body>
         <div class="container">
@@ -54,7 +55,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-default btn-block" 
-                        aria-label="Left Align" onClick="location.href='../LogoutServlet'">
+                        aria-label="Left Align" onClick="location.href='./LogoutServlet'">
                     <div class="col-md-1">
                         <span class="glyphicon glyphicon-off"></span> 
                     </div>
@@ -75,10 +76,53 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
-                            No Records Found
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Payment Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                                <%
+                                    List list = (ArrayList)session.getAttribute("paymentlist");
+                                    if(list.isEmpty()){
+                                        out.println("<tr>");
+                                        out.println("<td>No Records Found</td>");
+                                        out.println("</tr>");
+                                    }else{
+                                        for(int i=0;i<list.size();i++){
+                                            Payments payment = (Payments)list.get(i);
+                                            out.println("<tr>");
+                                            out.println("<td>" + (i+1) + "</td>");
+                                            out.println("<td>" + payment.getId() + "</td>");
+                                            out.println("<td>" + payment.getType() + "</td>");
+                                            out.println("<td>" + payment.getAmount() + "</td>");
+                                            out.println("<td>" + payment.getDate() + "</td>");
+                                            out.println("</tr>");
+                                        }
+                                    }
+                                %>
+                            </table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
-                            No Records Found
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Rationale</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                                <%
+                                    
+                                        out.println("<tr>");
+                                        out.println("<td rowspan=\"6\">No Records Found</td>");
+                                        out.println("</tr>");
+                                    
+                                %>
+                            </table>
                         </div>
                     </div>
                 </div>

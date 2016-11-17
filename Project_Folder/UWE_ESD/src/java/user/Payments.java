@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package user;
 
 /**
@@ -11,11 +6,16 @@ package user;
  */
 public class Payments {
     private String id;
-    public String amount;
+    private String type;
+    private String amount;
+    private String date;
     
-    public Payments(){
-        id = null;
-        amount = null;
+    public Payments(){}
+    public Payments(String id,String type,String amount,String date){
+        this.id = id;
+        this.type = type;
+        this.amount = amount;
+        this.date = date;
     }
 
     public String getAmount() {
@@ -34,4 +34,19 @@ public class Payments {
         this.id = id;
     }
     
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
