@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(20*60); //cookie age is (number) * 60 seconds
             response.addCookie(cookie); //send cookie to client
             
-            User userInput = new User();
+            User userInput = new User();//!!Consider store the user object into session. Probably easier to retrieve stuff!!//
             userInput.setID(userid);
             userInput.setPassword(passwordinput);
             LoginDao loginDao = new LoginDao();
