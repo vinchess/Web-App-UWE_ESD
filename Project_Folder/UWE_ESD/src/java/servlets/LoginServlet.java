@@ -54,6 +54,7 @@ public class LoginServlet extends HttpServlet {
             String loginDaoReturn = loginDao.authenticateUser(userInput);
             
             if(loginDaoReturn.equals("SUCCESS")){
+                session.setAttribute("user", userInput);
                 session.setAttribute("username1", userid); //set session wide attributes
                 session.setAttribute("password1", passwordinput);
             
@@ -62,6 +63,7 @@ public class LoginServlet extends HttpServlet {
             }  
             
             //temp code for test without DB only
+            session.setAttribute("user", userInput);
             session.setAttribute("username1", userid); //set session wide attributes
             session.setAttribute("password1", passwordinput);
             

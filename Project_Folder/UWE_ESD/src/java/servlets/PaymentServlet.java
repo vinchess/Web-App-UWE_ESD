@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
-import database.JDBC;
-import java.sql.*;
+import database.PaymentDAO;
+import user.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -33,23 +28,21 @@ public class PaymentServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            HttpSession session = request.getSession();
-            String amounts = request.getParameter("couponCode");
-            
-            JDBC jdbc = (JDBC) getServletContext().getAttribute("dbConn");
-            
-            String sql = "SELECT * FROM members WHERE id =";
-            
-            //ResultSet rs = jdbc.read(sql);
-            
-            //here suppose to compare with the database to make sure have this user but i need the user to key in the id to allow the me compare with the user right?
-            //but i dunno how to compare it sia..lololol
-            
-            
-            
-        }
+        
+            response.setContentType("text/html;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                HttpSession session = request.getSession();
+                User user = (User)session.getAttribute("user");
+                
+                double amount = Double.parseDouble(request.getParameter("payAmount"));
+                
+                PaymentDAO payment = new PaymentDAO();
+                
+                payment.updatePayment(user, amount);
+                
+                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
+                rd.forward(request, response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,7 +56,8 @@ public class PaymentServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         processRequest(request, response);
     }
 
@@ -77,7 +71,8 @@ public class PaymentServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         processRequest(request, response);
     }
 
@@ -87,8 +82,10 @@ public class PaymentServlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Short description";
     }// </editor-fold>
+
 
 }

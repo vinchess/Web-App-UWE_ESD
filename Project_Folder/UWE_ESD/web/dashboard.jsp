@@ -101,7 +101,8 @@
                     </div>                    
                 </div>
                 <div class="panel-body">
-                    <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
+                    <form role="form" id="payment-form" 
+                          action="PaymentServlet" method="POST" >
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
@@ -164,7 +165,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="subscribe btn btn-success btn-lg btn-block" type="button">
+                                <button class="subscribe btn btn-success btn-lg btn-block" type="submit">
                                     Pay
                                 </button>
                             </div>

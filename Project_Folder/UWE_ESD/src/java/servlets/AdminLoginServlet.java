@@ -20,8 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Vincent
  */
-public class AdminLoginServlet extends HttpServlet
-{
+public class AdminLoginServlet extends HttpServlet{
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,10 +53,7 @@ public class AdminLoginServlet extends HttpServlet
             out.println(password);
                 session.invalidate();
                 response.sendRedirect("/UWE_ESD");
-            }
-            
-            
-            
+            } 
         }
     }
 
