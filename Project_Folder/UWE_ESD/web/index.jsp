@@ -17,6 +17,15 @@
         
         <center>
             <div class="container">
+                <%
+                    String error = (String)session.getAttribute("error");
+                    if(error!=null){
+                        out.println("<div class=\"alert alert-danger\" role=\"alert\">");
+                        out.println(error);
+                        out.println("</div>");
+                    }
+                    session.setAttribute("error", null);
+                %>
                 <div class="jumbotron">
                     <h1>XYZ Drivers Associations</h1>
                     <h3>Welcome to your personal claims portal.<br>
@@ -29,7 +38,7 @@
                 </div>
             </div>
         </center>
-
+        
         <!-- Modal -->
         <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" 
              aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -69,7 +78,7 @@
                                            class="form-control" type="password" placeholder="********" class="input-medium">
                                   </div>
                                 </div>
-
+                                <br>
                                 <!-- Multiple Checkboxes (inline) -->
                                 <div class="control-group">
                                     <div class="controls">
@@ -92,8 +101,6 @@
                     <div class="tab-pane fade" id="signup">
                         <form class="form-horizontal">
                             <fieldset>
-                                <!-- Sign Up Form -->
-                                <!-- Text input-->
                                 <div class="control-group">
                                     <label class="control-label" for="Email">Email:</label>
                                     <div class="controls">
@@ -105,7 +112,14 @@
                                   <label class="control-label" for="userid">Name:</label>
                                   <div class="controls">
                                     <input id="userid" name="userid" class="form-control" type="text" 
-                                           placeholder="JohnDoe" class="input-large" required="">
+                                           placeholder="JohnDoe" required>
+                                  </div>
+                                </div>
+                                <div class="control-group">
+                                  <label class="control-label" for="userid">Address:</label>
+                                  <div class="controls">
+                                      <textarea id="address" name="address" class="form-control" rows="2" 
+                                              placeholder="Address Here" required></textarea>
                                   </div>
                                 </div>
                                 <div class="control-group">
@@ -130,18 +144,6 @@
                                                type="password" placeholder="********" class="input-large" required="">
                                     </div>
                                 </div>
-                                <br>
-                                <div class="control-group">
-                                    <label class="control-label" for="humancheck">Humanity Check:</label>
-                                    <div class="controls">
-                                        <label>
-                                            <input type="radio" name="humancheck" id="humancheck-0" value="robot" 
-                                                   checked="checked">I'm a Robot</label>
-                                        <label style="float:right">
-                                            <input type="radio" name="humancheck" id="humancheck-1" value="human">I'm Human</label>
-                                    </div>
-                                </div>
-
                                 <!-- Button -->
                                 <div class="control-group">
                                     <label class="control-label" for="confirmsignup"></label>

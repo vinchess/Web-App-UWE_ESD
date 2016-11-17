@@ -50,9 +50,8 @@ public class AdminLoginServlet extends HttpServlet{
                 RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
                 rd.forward(request, response);
             }else{
-                out.println(username);
-            out.println(password);
-                session.invalidate();
+                String error = "It appears that the username and password is wrong. Try again.";
+                session.setAttribute("error", error);
                 response.sendRedirect("/UWE_ESD");
             } 
         }

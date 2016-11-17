@@ -18,11 +18,10 @@
     <body>
         <div class="container">
             <div class="col-md-3 text-center">
-                    <span class="glyphicon glyphicon-user img-circle" aria-hidden="true" style="font-size: 6em;"></span>
+                <img src="assets/user_icon.png">
                     <h2><%= session.getAttribute("username1") %></h2>
-                    <h2><</h2>
                     <h3>Balance</h3>
-                    <h3><%= session.getAttribute("username1") %>0.00</h3>
+                    <h3>0.00</h3>
                     <button type="button" class="btn btn-default btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -83,19 +82,6 @@
                                     <th>Amount</th>
                                     <th>Date</th>
                                 </tr>
-                                <%
-                                    List list = (ArrayList)session.getAttribute("paymentlist");
-                                    if(list.isEmpty())
-                                        out.println("No Records Found");
-                                    else{
-                                        
-                                        for(int i=0;i<list.size();i++){
-                                            Payments payment = (Payments)list.get(i);
-                                            out.println("<tr>");
-                                            out.println("</tr>");
-                                        }
-                                    }
-                                %>
                             </table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
