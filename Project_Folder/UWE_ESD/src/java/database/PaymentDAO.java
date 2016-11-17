@@ -9,7 +9,10 @@ public class PaymentDAO extends JDBC{
     public boolean updatePayment(User user, double payment){
         boolean result = false;
         //this line
-        String sql = "UPDATE * FROM users where id='"+ user.getID() +"';";
+        String sql = /*"UPDATE members SET balance=balance+"+ payment +
+                            " WHERE id='"+ user.getID() + "';\n" +*/
+                     "INSERT INTO payments(mem_id,type_of_payment,amount,date) " +
+                            "VALUES('" + user.getID() + "','PAYMENT'," + payment + ",now());";
         
         conn = getConnection();
         
@@ -17,8 +20,7 @@ public class PaymentDAO extends JDBC{
             stmt = conn.createStatement();
 
             int updateResult = stmt.executeUpdate(sql);
-            System.out.println(updateResult);
-            //if ()
+            if (updateResult==1) result = true;
             conn.close();
         }catch(SQLException se){
             System.out.println("SQL error occurred.");
