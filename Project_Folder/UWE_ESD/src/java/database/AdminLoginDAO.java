@@ -7,7 +7,7 @@ import java.sql.*;
 public class AdminLoginDAO extends JDBC{
     public boolean authenticate(String username,String password){
         boolean result = false;
-        String sql = "SELECT * FROM users where id='"+ username +"';";
+        String sql = "SELECT * FROM users where id='"+ username +"' AND status='ADMIN';";
         
         conn = getConnection();
         

@@ -21,8 +21,8 @@
         <div class="container">
             <div class="col-md-3 text-center">
                 <img src="assets/user_icon.png" height="150px">
-                    <h2><%= session.getAttribute("username1") %></h2>
-                    <h3>Balance 0.00</h3>
+                    <h2><%=((User)session.getAttribute("user")).getFirstName()%></h2>
+                    <h3>Balance &#163;<%=String.format("%.2f",((User)session.getAttribute("user")).getBalance())%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -42,7 +42,7 @@
                         </div>
                     </button>
                     <button type="button" class="btn btn-success btn-block" 
-                            data-toggle="modal" data-target="#claim" aria-label="Left Align">
+                            data-toggle="modal" data-target="#edit" aria-label="Left Align">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-cog"></span> 
                         </div>
@@ -70,9 +70,16 @@
                     </button>
             </div>
             <div class="col-md-9 ">
-                <h1 style="color:green"><% //out.println("hahahaha"); %><span class="label label-success">ACTIVE</span></h1>/
-                <h1 style="color:yellow"><%//get account status here%>PENDING</h1>/
-                <h1 style="color:red"><%//get account status here%>INACTIVE</h1>
+                <%
+                    String status =((User)session.getAttribute("user")).isUserValid();
+                    if(status.equals("APPLIED"))
+                        out.println("<h1><span class=\"label label-warning\">APPLIED</span></h1>");
+                    else if(status.equals("APPROVED"))
+                        out.println("<h1><span class=\"label label-success\">APPROVED</span></h1>");
+                    else if(status.equals("SUSPENDED"))
+                        out.println("<h1><span class=\"label label-danger\">SUSPENDED</span></h1>");
+                %>
+                <br>
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
                       <li role="presentation" class="active">
@@ -289,6 +296,84 @@
                                 <div class="col-xs-12">
                                     <button class="subscribe btn btn-success btn-lg btn-block" type="button">
                                         Request</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-modal-sm" id="edit" tabindex="-1" role="dialog" 
+               aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Edit Profile
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="" method="POST">
+                            <div class="control-group">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Name">Name:</label>
+                                        <% 
+                                            String name = ((User)session.getAttribute("user")).getFirstName()+
+                                                            ((User)session.getAttribute("user")).getLastName();
+                                            out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
+                                                    + "type=\"text\" value=" + name + " required>");
+                                        %>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="control-group">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Address">Address:</label>
+                                        <% 
+                                            String address = ((User)session.getAttribute("user")).getAddress();
+                                            out.println("<textarea id=\"address\" name=\"address\" "
+                                                    + "class=\"form-control\" rows=\"3\" "
+                                                    + "required>" + address + "</textarea>");
+                                        %>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="control-group">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="dob">Date of Birth:</label>
+                                        <% 
+                                            String dob = ((User)session.getAttribute("user")).getDOB();
+                                            out.println("<input id=\"dob\" name=\"dob\" class=\"form-control\""+
+                                                    "type=\"date\" value=\"" + dob + "\" required>");
+                                        %>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="control-group">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="password">Password:</label>
+                                        <input id="password" name="password" class="form-control" type="password" 
+                                               placeholder="********" class="input-large" required>
+                                        <em>1-8 Characters</em>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="control-group">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
+                                        <input id="reenterpassword" class="form-control" name="reenterpassword" 
+                                               type="password" placeholder="********" required>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <!-- Button -->
+                            <div class="control-group">
+                                <label class="control-label" for="confirmsignup"></label>
+                                <div class="controls">
+                                    <button id="confirmsignup" name="confirmsignup" class="btn btn-success btn-block">Confirm</button>
                                 </div>
                             </div>
                         </form>

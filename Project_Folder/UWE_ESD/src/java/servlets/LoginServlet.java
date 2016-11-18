@@ -1,11 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
+import user.User;
+import database.MemberDAO;
 import database.LoginDao;
+import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.User;
 
 /**
  *
@@ -53,8 +50,14 @@ public class LoginServlet extends HttpServlet {
             LoginDao loginDao = new LoginDao();
             String loginDaoReturn = loginDao.authenticateUser(userInput);
             
+            //adding this to give functionality to user dashboard page
+            MemberDAO member = new MemberDAO();
+            User user = (User)member.getSingleById(userid);
+            //List user = member.getRecordsById(userid);
+            //that is all
+            
             if(loginDaoReturn.equals("SUCCESS")){
-                session.setAttribute("user", userInput);
+                session.setAttribute("user", user);
                 session.setAttribute("username1", userid); //set session wide attributes
                 session.setAttribute("password1", passwordinput);
             
@@ -63,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             }  
             
             //temp code for test without DB only
-            session.setAttribute("user", userInput);
+            session.setAttribute("user", user);
             session.setAttribute("username1", userid); //set session wide attributes
             session.setAttribute("password1", passwordinput);
             

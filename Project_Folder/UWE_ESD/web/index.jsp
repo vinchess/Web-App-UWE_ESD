@@ -106,15 +106,8 @@
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="signup">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" action="" method="POST">
                                     <fieldset>
-                                        <div class="control-group">
-                                            <label class="control-label" for="Email">Email:</label>
-                                            <div class="controls">
-                                                <input id="Email" name="Email" class="form-control" type="text" 
-                                                       placeholder="johndoe@example.com" class="input-large" required="">
-                                            </div>
-                                        </div>
                                         <div class="control-group">
                                           <label class="control-label" for="userid">Name:</label>
                                           <div class="controls">
