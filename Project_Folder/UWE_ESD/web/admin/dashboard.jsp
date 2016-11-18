@@ -14,7 +14,8 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
         <%@ page import="java.util.*" %>
-        <%@ page import="user.Payments" %>
+        <%@ page import="user.User" %>
+        <%@ page import="database.MemberDAO" %>
     </head>
     <body>
         <div class="container">
@@ -34,19 +35,19 @@
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" value="">
-                                        Active
+                                        APPLIED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" value="">
-                                        Pending
+                                        APPROVED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" value="">
-                                        Inactive
+                                        SUSPENDED
                                     </label>
                                 </div>
                                 <input type="submit" class="btn btn-success btn-block" value="Update"/>
@@ -76,34 +77,44 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
-                            <table class="table">
-                                <tr>
-                                    <th>#</th>
-                                    <th>ID</th>
-                                    <th>Payment Type</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                </tr>
+                            <div id="list">
                                 <%
-                                    List list = (ArrayList)session.getAttribute("paymentlist");
+                                    out.println("<table class=\"table\" >");
+                                    out.println("<tr>");
+                                    out.println("<th>#</th>");
+                                    out.println("<th>ID</th>");
+                                    out.println("<th>Name</th>");
+                                    out.println("<th>Address</th>");
+                                    out.println("<th>DOB</th>");
+                                    out.println("<th>DOR</th>");
+                                    out.println("<th>Status</th>");
+                                    out.println("<th>Balance</th>");
+                                    out.println("</tr>");
+                                    MemberDAO member = new MemberDAO();
+                                    List list = member.getAllRecords();
+
                                     if(list.isEmpty()){
                                         out.println("<tr>");
                                         out.println("<td>No Records Found</td>");
                                         out.println("</tr>");
                                     }else{
                                         for(int i=0;i<list.size();i++){
-                                            Payments payment = (Payments)list.get(i);
+                                            User user = (User)list.get(i);
                                             out.println("<tr>");
                                             out.println("<td>" + (i+1) + "</td>");
-                                            out.println("<td>" + payment.getId() + "</td>");
-                                            out.println("<td>" + payment.getType() + "</td>");
-                                            out.println("<td>" + payment.getAmount() + "</td>");
-                                            out.println("<td>" + payment.getDate() + "</td>");
+                                            out.println("<td>" + user.getID() + "</td>");
+                                            out.println("<td>" + user.getFirstName() + " " + user.getLastName() + "</td>");
+                                            out.println("<td>" + user.getAddress() + "</td>");
+                                            out.println("<td>" + user.getDOB() + "</td>");
+                                            out.println("<td>" + user.getDOR() + "</td>");
+                                            out.println("<td>" + user.isUserValid()+ "</td>");
+                                            out.println("<td>&#163;" + user.getBalance() + "</td>");
                                             out.println("</tr>");
                                         }
                                     }
+                                    out.println("</table>");
                                 %>
-                            </table>
+                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
                             <table class="table">

@@ -44,9 +44,6 @@ public class AdminLoginServlet extends HttpServlet{
             
             AdminLoginDAO login = new AdminLoginDAO();
             if(login.authenticate(username, password)){
-                PaymentDAO payments = new PaymentDAO();
-                List list = payments.getAllRecords();
-                session.setAttribute("paymentlist", list);
                 RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
                 rd.forward(request, response);
             }else{

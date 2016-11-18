@@ -12,7 +12,7 @@ public class MemberDAO extends JDBC{
     public List getAllRecords(){
         List list = new ArrayList();
         conn = getConnection();
-        String sql = "SELECT * FROM users;";
+        String sql = "SELECT * FROM members;";
         
         try{
             stmt = conn.createStatement();
@@ -20,11 +20,14 @@ public class MemberDAO extends JDBC{
             ResultSet rs = stmt.executeQuery(sql);
             
             while(rs.next()){
-                /*list.add(new User(
-                        rs.getString("mem_id"),
-                        rs.getString("type_of_payment"),
-                        rs.getString("amount"),
-                        rs.getString("date")));*/
+                list.add(new User(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("status"),
+                        rs.getString("address"),
+                        rs.getString("dob"),
+                        rs.getString("dor"),
+                        Double.parseDouble(rs.getString("balance"))));
             }
             rs.close();
             conn.close();

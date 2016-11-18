@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package user;
 
 /**
@@ -11,16 +6,28 @@ package user;
  */
 public class User {
     private String ID;
-      private String password;
-      private String firstName;
-      private String lastName;
-      public boolean userValid;
-      private String address;
-      private int DOB;
-      private int DOR;
-      private double balance;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String userValid;
+    private String address;
+    private String DOB;
+    private String DOR;
+    private double balance;
       
-	
+    public User(){}
+    public User(String ID,String name,String userValid,
+                    String address,String DOB,String DOR,double balance){
+        this.ID =  ID;
+        String[] split = name.split(" ");
+        this.firstName = split[0];
+        this.lastName = split[1];
+        this.userValid = userValid;
+        this.address = address;
+        this.DOB = DOB;
+        this.DOR = DOR;
+        this.balance = balance;
+    }
 	
       public String getAddress(){
           return address;
@@ -30,19 +37,19 @@ public class User {
           address = newAddress;
       }
       
-      public int getDOB(){
+      public String getDOB(){
           return DOB;
       }
       
-      public void setDOB(int newDOB){
+      public void setDOB(String newDOB){
           DOB = newDOB;
       }
       
-      public int getDOR(){
+      public String getDOR(){
           return DOR;
       }
       
-      public void setDOR(int newDOR){
+      public void setDOR(String newDOR){
           DOR = newDOR;
       }
       
@@ -54,7 +61,6 @@ public class User {
          firstName = newFirstName;
 	}
 
-	
       public String getLastName() {
          return lastName;
 			}
@@ -63,7 +69,6 @@ public class User {
          lastName = newLastName;
 			}
 			
-
       public String getPassword() {
          return password;
 	}
@@ -71,7 +76,6 @@ public class User {
       public void setPassword(String newPassword) {
          password = newPassword;
 	}
-	
 			
       public String getID() {
          return ID;
@@ -81,11 +85,11 @@ public class User {
          ID = newID;
 			}
 				
-      public boolean isUserValid() {
+      public String isUserValid() {
          return userValid;
 	}
 
-      public void setUserValid(boolean newUserValid) {
+      public void setUserValid(String newUserValid) {
          userValid = newUserValid;
 	}
       

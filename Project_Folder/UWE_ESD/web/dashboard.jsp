@@ -13,16 +13,17 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
         <%@ page import="java.util.*" %>
+        <%@ page import="database.PaymentDAO" %>
         <%@ page import="user.Payments" %>
+        <%@ page import="user.User" %>
     </head>
     <body>
         <div class="container">
             <div class="col-md-3 text-center">
-                <img src="assets/user_icon.png">
+                <img src="assets/user_icon.png" height="150px">
                     <h2><%= session.getAttribute("username1") %></h2>
-                    <h3>Balance</h3>
-                    <h3>0.00</h3>
-                    <button type="button" class="btn btn-default btn-block" 
+                    <h3>Balance 0.00</h3>
+                    <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-gbp"></span>
@@ -31,7 +32,7 @@
                             PAY
                         </div>
                     </button>
-                    <button type="button" class="btn btn-default btn-block" 
+                    <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#claim" aria-label="Left Align">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-pencil"></span> 
@@ -40,13 +41,22 @@
                             CLAIM
                         </div>
                     </button>
-                    <button type="button" class="btn btn-default btn-block" 
+                    <button type="button" class="btn btn-success btn-block" 
                             data-toggle="modal" data-target="#claim" aria-label="Left Align">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-cog"></span> 
                         </div>
                         <div class="col-md-2 ">
                             EDIT ACCOUNT
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-block" 
+                            data-toggle="modal" data-target="#claim" aria-label="Left Align">
+                        <div class="col-md-1">
+                            <span class="glyphicon glyphicon-remove"></span> 
+                        </div>
+                        <div class="col-md-2 ">
+                            DELETE ACCOUNT
                         </div>
                     </button>
                     <button type="button" class="btn btn-default btn-block" 
@@ -60,7 +70,7 @@
                     </button>
             </div>
             <div class="col-md-9 ">
-                <h1 style="color:green"><% out.println("hahahaha"); %>ACTIVE</h1>/
+                <h1 style="color:green"><% //out.println("hahahaha"); %><span class="label label-success">ACTIVE</span></h1>/
                 <h1 style="color:yellow"><%//get account status here%>PENDING</h1>/
                 <h1 style="color:red"><%//get account status here%>INACTIVE</h1>
                 <div>
@@ -74,19 +84,64 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
+                            <%
+                                    User user = (User)session.getAttribute("user");
+                                    out.println("<table class=\"table\" >");
+                                    out.println("<tr>");
+                                    out.println("<th>#</th>");
+                                    out.println("<th>ID</th>");
+                                    out.println("<th>Payment Type</th>");
+                                    out.println("<th>Amount</th>");
+                                    out.println("<th>Date</th>");
+                                    out.println("</tr>");
+                                    PaymentDAO payments = new PaymentDAO();
+                                    List list = payments.getRecordsById(user);
+
+                                    if(list.isEmpty()){
+                                        out.println("<tr>");
+                                        out.println("<td>No Records Found</td>");
+                                        out.println("</tr>");
+                                    }else{
+                                        for(int i=0;i<list.size();i++){
+                                            Payments payment = (Payments)list.get(i);
+                                            out.println("<tr>");
+                                            out.println("<td>" + (i+1) + "</td>");
+                                            out.println("<td>" + payment.getId() + "</td>");
+                                            out.println("<td>" + payment.getType() + "</td>");
+                                            out.println("<td>" + payment.getAmount() + "</td>");
+                                            out.println("<td>" + payment.getDate() + "</td>");
+                                            out.println("</tr>");
+                                        }
+                                    }
+                                    out.println("<tr>");
+                                    out.println("<td colspan=\"5\" align=\"right\">");
+                                    out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
+                                    out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
+                                    out.println("</button>");
+                                    out.println("</tr>");
+                                    out.println("</table>");
+                                %>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="claims">
                             <table class="table">
                                 <tr>
                                     <th>#</th>
-                                    <th>ID</th>
-                                    <th>Payment Type</th>
-                                    <th>Amount</th>
                                     <th>Date</th>
+                                    <th>Rationale</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">No Record Found</td>
+                                </tr>
+                                <%%>
+                                <tr>
+                                    <td colspan="5" align="right">
+                                        <button><span class="glyphicon glyphicon-refresh"></span></button>
+                                        <button onclick="jQuery('#aaa').load(' #aaa');">Reload</button>
+                                    </td>
                                 </tr>
                             </table>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="claims">
-                            No Records Found
-                            <%//get records%>
                         </div>
                     </div>
                 </div>
@@ -100,94 +155,95 @@
                     <div class="modal-header">
                         Payment Details
                     </div>
-                <div class="modal-body">
-                <div class="panel panel-default credit-card-box">
-                <div class="panel-heading display-table" >
-                    <div class="row display-tr" >
-                        
-                        <div class="display-td" >                            
-                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-                        </div>
-                    </div>                    
-                </div>
-                <div class="panel-body">
-                    <form role="form" id="payment-form" 
-                          action="PaymentServlet" method="POST" >
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <label for="cardNumber">CARD NUMBER</label>
-                                    <div class="input-group">
-                                        <input 
-                                            type="tel"
-                                            class="form-control"
-                                            name="cardNumber"
-                                            placeholder="Valid Card Number"
-                                            autocomplete="cc-number"
-                                            required autofocus 
-                                        />
-                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                    <div class="modal-body">
+                        <div class="panel panel-default credit-card-box">
+                            <div class="panel-heading display-table" >
+                                <div class="row display-tr" >
+                                    <div class="display-td" >                            
+                                        <img class="img-responsive pull-right" 
+                                             src="http://i76.imgup.net/accepted_c22e0.png">
                                     </div>
-                                </div>                            
+                                </div>                    
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-7 col-md-7">
-                                <div class="form-group">
-                                    <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control" 
-                                        name="cardExpiry"
-                                        placeholder="MM / YY"
-                                        autocomplete="cc-exp"
-                                        required 
-                                    />
+                        <div class="panel-body">
+                            <form role="form" id="payment-form" 
+                                  action="PaymentServlet" method="POST" >
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="cardNumber">CARD NUMBER</label>
+                                            <div class="input-group">
+                                                <input 
+                                                    type="tel"
+                                                    class="form-control"
+                                                    name="cardNumber"
+                                                    placeholder="Valid Card Number"
+                                                    autocomplete="cc-number"
+                                                    required autofocus 
+                                                />
+                                                <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                            </div>
+                                        </div>                            
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-5 col-md-5 pull-right">
-                                <div class="form-group">
-                                    <label for="cardCVC">CV CODE</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control"
-                                        name="cardCVC"
-                                        placeholder="CVC"
-                                        autocomplete="cc-csc"
-                                        required
-                                    />
+                                <div class="row">
+                                    <div class="col-xs-7 col-md-7">
+                                        <div class="form-group">
+                                            <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                            <input 
+                                                type="tel" 
+                                                class="form-control" 
+                                                name="cardExpiry"
+                                                placeholder="MM / YY"
+                                                autocomplete="cc-exp"
+                                                required 
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5 col-md-5 pull-right">
+                                        <div class="form-group">
+                                            <label for="cardCVC">CV CODE</label>
+                                            <input 
+                                                type="tel" 
+                                                class="form-control"
+                                                name="cardCVC"
+                                                placeholder="CVC"
+                                                autocomplete="cc-csc"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <label for="couponCode">Amount</label>
-                                    <input type="text" 
-                                           id="couponCode"
-                                           class="form-control"
-                                           name="payAmount"
-                                           placeholder="0.00"
-                                           required
-                                    />
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label for="couponCode">Amount</label>
+                                            <input type="tel" 
+                                                   id="couponCode"
+                                                   class="form-control"
+                                                   name="payAmount"
+                                                   placeholder="0.00"
+                                                   autocomplete="amount"
+                                                   required
+                                            />
+                                        </div>
+                                    </div>                        
                                 </div>
-                            </div>                        
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <button class="subscribe btn btn-success btn-lg btn-block" type="submit">
+                                            Pay
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row" style="display:none;">
+                                    <div class="col-xs-12">
+                                        <p class="payment-errors"></p>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <button class="subscribe btn btn-success btn-lg btn-block" type="submit">
-                                    Pay
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row" style="display:none;">
-                            <div class="col-xs-12">
-                                <p class="payment-errors"></p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div> 
+                    </div> 
                     </div>
                 </div>
             </div>
@@ -205,18 +261,30 @@
                         
                         <form>
                             <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <label for="amount">Amount</label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           name="claimAmount"
-                                           placeholder="0.00"
-                                           required
-                                    />
-                                </div>
-                            </div>                        
-                        </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="amount">Reason</label>
+                                        <textarea class="form-control" 
+                                               name="rationale"
+                                               rows="4"
+                                               placeholder="I would like to make claim for..."
+                                               required></textarea>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               name="claimAmount"
+                                               placeholder="0.00"
+                                               required
+                                        />
+                                    </div>
+                                </div>                        
+                            </div>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <button class="subscribe btn btn-success btn-lg btn-block" type="button">
