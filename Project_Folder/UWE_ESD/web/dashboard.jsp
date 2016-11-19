@@ -303,28 +303,38 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade bs-modal-sm" id="edit" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="edit" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         Edit Profile
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" action="" method="POST">
-                            <div class="control-group">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for="Name">Name:</label>
-                                        <% 
-                                            String name = ((User)session.getAttribute("user")).getFirstName()+
-                                                            ((User)session.getAttribute("user")).getLastName();
-                                            out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
-                                                    + "type=\"text\" value=" + name + " required>");
-                                        %>
+                            <fieldset class="form-inline">
+                                <div class="control-group">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="Name">First Name:</label>
+                                            <% 
+                                                String firstname = ((User)session.getAttribute("user")).getFirstName();
+                                                out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
+                                                        + "type=\"text\" value=" + firstname + " required>");
+                                            %>
+                                        
+                                            <label class="control-label" for="Name">Last Name:</label>
+                                            <% 
+                                                String lastname = ((User)session.getAttribute("user")).getLastName();
+                                                out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
+                                                        + "type=\"text\" value=" + lastname + " required>");
+                                            %>
+                                        </div>
                                     </div>
-                                </div>                        
-                            </div>
+                                </div>
+                                        </fieldset>
+                                        <fieldset>
+                            
                             <div class="control-group">
                                 <div class="col-xs-12">
                                     <div class="form-group">
@@ -369,6 +379,7 @@
                                     </div>
                                 </div>                        
                             </div>
+                                    </fieldset>
                             <!-- Button -->
                             <div class="control-group">
                                 <label class="control-label" for="confirmsignup"></label>

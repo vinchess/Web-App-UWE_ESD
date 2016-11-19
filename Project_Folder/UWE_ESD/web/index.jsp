@@ -45,9 +45,9 @@
             </div>
         
         <!-- Modal -->
-        <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
              aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="bs-example bs-example-tabs">
                         <ul id="myTab" class="nav nav-tabs">
@@ -106,17 +106,24 @@
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="signup">
-                                <form class="form-horizontal" action="" method="POST">
-                                    <fieldset>
+                                <form action="" method="POST">
+                                    <fieldset class="form-inline">
                                         <div class="control-group">
-                                          <label class="control-label" for="userid">Name:</label>
-                                          <div class="controls">
-                                            <input id="userid" name="userid" class="form-control" type="text" 
-                                                   placeholder="JohnDoe" required>
-                                          </div>
+                                            <div class="controls">
+                                          <label class="control-label" for="firstname">First Name:</label>
+                                            <input id="firstname" name="firstname" class="form-control" type="text" 
+                                                   placeholder="John" required>
+                                         
+                                          <label class="control-label" for="lastname">Last Name:</label>
+                                          
+                                            <input id="lastname" name="lastname" class="form-control" type="text" 
+                                                   placeholder="Doe" required>
+                                            </div>
                                         </div>
+                                        </fieldset>
+                                        <fieldset>
                                         <div class="control-group">
-                                          <label class="control-label" for="userid">Address:</label>
+                                          <label class="control-label" for="address">Address:</label>
                                           <div class="controls">
                                               <textarea id="address" name="address" class="form-control" rows="3" 
                                                       placeholder="Address Here" required></textarea>
@@ -165,7 +172,7 @@
             </div>
         </div>
 
-        <div class="modal fade bs-modal-sm" id="myAdmin" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="myAdmin" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
