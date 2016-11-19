@@ -44,35 +44,31 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(20*60); //cookie age is (number) * 60 seconds
             response.addCookie(cookie); //send cookie to client
             
-            User userInput = new User();//!!Consider store the user object into session. Probably easier to retrieve stuff!!//
-            userInput.setID(userid);
-            userInput.setPassword(passwordinput);
-            LoginDao loginDao = new LoginDao();
-            String loginDaoReturn = loginDao.authenticateUser(userInput);
+            User userInput = new User(); //new user object
+            userInput.setID(userid);    //set user ID 
+            userInput.setPassword(passwordinput);   //set user password
             
-            //adding this to give functionality to user dashboard page
+            LoginDao loginDao = new LoginDao(); //new login DAO 
+            String loginDaoReturn = loginDao.authenticateUser(userInput);  //authenticate user
+
             MemberDAO member = new MemberDAO();
             User user = (User)member.getSingleById(userid);
-            //List user = member.getRecordsById(userid);
-            //that is all
+
             
             if(loginDaoReturn.equals("SUCCESS")){
-                session.setAttribute("user", user);
-                session.setAttribute("username1", userid); //set session wide attributes
-                session.setAttribute("password1", passwordinput);
+                session.setAttribute("user", user); //set User object as session wide attribute
             
                 RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
             }  
             
-            //temp code for test without DB only
-            session.setAttribute("user", user);
-            session.setAttribute("username1", userid); //set session wide attributes
-            session.setAttribute("password1", passwordinput);
-            
-            RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
-            rd.forward(request, response);
-            //end of temp code - TO BE DELETED
+            else 
+            {
+                session.setAttribute("loginErrorMessage", "Wrong username or password combination");
+                response.sendRedirect("/UWE_ESD");
+//                RequestDispatcher rd = request.getRequestDispatcher("UWE_ESD");
+//                rd.forward(request, response);
+            }
         }
     }
 

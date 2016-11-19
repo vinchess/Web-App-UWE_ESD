@@ -36,6 +36,7 @@
                         <h3>Welcome to your personal claims portal.<br>
                             For all your minor claim needs.<br>
                             To proceed please login.</h3>
+                        <h3><%= session.getAttribute("loginErrorMessage") %></h3>
                         <button class="btn btn-primary " href="#signin" 
                                 data-toggle="modal" data-target="#myModal">Sign In/Register</button>
                         <button class="btn btn-primary " href="#admin"
