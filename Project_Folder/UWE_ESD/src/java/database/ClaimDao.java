@@ -17,11 +17,10 @@ import java.util.Date;
  * @author Jayson
  */
 public class ClaimDao extends JDBC {
-   
-        public boolean claim_status(String dor,String status,double balance){
+   Connection conn=null;
+   Statement stmt=null;
+        public void claim_status(String dor,String status,double balance){
             boolean result=false;
-            Connection conn=null;
-            Statement stmt=null;
             DateFormat df= new SimpleDateFormat("yyy-mm-dd");
             String current_date= df.format(new Date());
             String sql;
@@ -48,11 +47,11 @@ public class ClaimDao extends JDBC {
                                 int register=registerdate.getYear()*12+registerdate.getMonth();
                                     if((current-register)<6){
                                         System.out.println("Not capable to perform claim");
-                                        return false;
+                                        
                                    
                                     }
                                     else 
-                                       return true;
+                                      System.out.println("Valid to perform claim"); 
                     
             }catch(SQLException ex){
              }
@@ -60,39 +59,40 @@ public class ClaimDao extends JDBC {
               System.out.println("invalid date");
             } 
         }               
-public static approve_payment(String status, double balance,int max_claim){
-    boolean approval=true;
+public void approve_payment(String status, double balance,int max_claim){
     Claim claim = new Claim();
                try{
-                
+                conn=getConnection();
+                stmt=conn.createStatement();
                 String sql="UPDATE Members"+"SET status = SUBMITTED";
                 stmt.executeUpdate(sql);
                 sql="SELECT status,balance FROM Members";
                 ResultSet rs=stmt.executeQuery(sql);
                     while(rs.next()){
-                        claimString status=rs1.getString("status");
-                        Double balance=rs1.getDouble("balance");
+                        String status_check=rs.getString("status");
+                        Double remaining_balance=rs.getDouble("balance");
                     }
                     rs.close();
-                    conn.close();
+                    
                             if(status.contains("APPROVED")){
-                                double remain_balance =balance-input_amount;
+                                double remain_balance =balance;
                                 sql= "INSERT INTO Members VALUES(?,?,?,?,?,?,?)";
                                 PreparedStatement pstmt = conn.prepareStatement(sql);
                                 pstmt.setDouble(7,remain_balance);
                                 pstmt.executeUpdate();
-                                return true;
+                                
                             }
                              claim.setMax_claim(+1);
                             if(claim.getMax_claim()==2){
                                 System.out.println("Claim unsuccessful");
-                                return false;       
+                                      
                             }
                         else
-                           return false;       
+                           System.out.println("rejected");
+                           
+                    conn.close();
                     }catch(Exception ex){
             } 
-               return approval;
                
 }
 }
