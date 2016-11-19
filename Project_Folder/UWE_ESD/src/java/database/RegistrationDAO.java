@@ -9,10 +9,7 @@ import java.sql.*;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import javax.swing.JOptionPane;
 import user.Registration;
-import java.awt.Component;
-
 
 /**
  *
@@ -22,9 +19,9 @@ public class RegistrationDAO extends JDBC
 {
     public void RegisterUser(String id, String NAME)
     {
-        Component frame = null;
+        String result = "false";
         conn = getConnection();
-        String sql = "SELECT * FROM members where ID'"+ id +"' AND name='"+ NAME +"';";
+        String sql = "SELECT * FROM members where id'"+ id +"' AND name='"+ NAME +"';";
         try
         {
             stmt = conn.createStatement();
@@ -34,21 +31,22 @@ public class RegistrationDAO extends JDBC
             {
                 if(rs.getString("ID").equals(id) && rs.getString("name").equals(NAME))
                 {
-                     JOptionPane.showMessageDialog(frame, "User already exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    result = "false";
                 }
                 else
                 {
-                    status.getStatus() = "APPLIED";
-                    JOptionPane.showMessageDialog(frame, "You have successfully registered as a Provisional Member, please process to payment to become an official member. The password for you account is you Date Of Birth in 'DDMMYY' format ", "Congratulations", JOptionPane.PLAIN_MESSAGE);
+                    Registration registration = new Registration();
+                    registration.setStatus("APPLIED");
                     DateFormat df = new SimpleDateFormat("ddMMyy");
                     Date date = new Date();
-                    password = df.format(date);
+                    registration.setPassword(df.format(date));
                     System.out.print("\nInserting records into table...");
                     stmt = conn.createStatement();
-                    String SQL = "INSERT INTO members " + "VALUES ("+ ID +", "+ name +", "+ address +", "+ DOB +", "+ DOR +", "+ status +", "+ balance +")";
+                    String SQL = "INSERT INTO members " + "VALUES ("+ registration.getID() +", "+ registration.getName()+", "+ registration.getAddress() +", "+ registration.getDOB() +", "+ registration.getDOR() +", "+ registration.getStatus() +", "+ registration.getBalance() +")";
                     stmt.executeUpdate(SQL);
-                    SQL = "INSERT INTO members " + "VALUES ("+ ID +", "+ name +", "+ password +", "+ status +")";
-                    stmt.executeUpdate(SQL);          
+                    SQL = "INSERT INTO users " + "VALUES ("+ registration.getID() +", "+ registration.getName() +", "+ registration.getPassword() +", "+ registration.getStatus() +")";
+                    stmt.executeUpdate(SQL);
+                    result = "true";
                 }
             }
             rs.close();

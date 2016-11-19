@@ -35,8 +35,10 @@ public class RegistrationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) 
+        {
             HttpSession session = request.getSession();
+          
             String firstName = request.getParameter("firstname");
             String lastName = request.getParameter("lastname");
             String address = request.getParameter("address");
@@ -45,9 +47,19 @@ public class RegistrationServlet extends HttpServlet {
             String initials = firstName.substring(0, 3);
             String id = "" +initials + "-"+lastName;
             String NAME = "" +firstName + " "+lastName;
-            RegistrationDAO register = new RegistrationDAO();
-            register.RegisterUser(id, NAME);
             
+            RegistrationDAO register = new RegistrationDAO();
+            String registerResult;
+            registerResult = register.RegisterUser(id, NAME);
+            
+            if(registerResult.equals("true"))
+            {
+                session.setAttribute("Congratulations", "You have successfully registered as a Provisional Member, please process to payment to become an official member. The password for you account is you Date Of Birth in 'DDMMYY' format");
+            }
+            else if(registerResult.equals("false"))
+            {
+                session.setAttribute("Error", "User already exist");
+            }
         }
     }
 

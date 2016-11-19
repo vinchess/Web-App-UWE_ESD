@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class Registration 
 {
-    private String ID;
+    private String id;
     private String password;
     private String firstName;
     private String lastName;
@@ -23,9 +23,9 @@ public class Registration
     private String initials;
     private String name;
     private String status;
-    private String DOB;
-    private String DOR;
-    
+    private String dob;
+    private String dor;
+    private int balance = 0;
     public String getName()
     {
         return name;
@@ -39,13 +39,13 @@ public class Registration
 
     public String getID()
     {
-        return ID;
+        return id;
     }
 
     public void setID(String newID) 
     {
         newID = "" +initials + "-"+lastName; 
-        this.ID = newID;
+        this.id = newID;
     }
       
     public String getInitials()
@@ -71,17 +71,17 @@ public class Registration
       
     public String getDOB()
     {
-        return DOB;
+        return dob;
     }
       
     public void setDOB(String newDOB)
     {
-        this.DOB = newDOB;
+        this.dob = newDOB;
     }
       
     public String getDOR()
     {
-        return DOR;
+        return dor;
     }
       
     public void setDOR(String newDOR)
@@ -89,7 +89,7 @@ public class Registration
         DateFormat df = new SimpleDateFormat("ddMMyy");
         Date date = new Date();
         newDOR = df.format(date);
-        this.DOR = newDOR;
+        this.dor = newDOR;
     }
       
     public String getPassword() 
@@ -99,7 +99,7 @@ public class Registration
 
     public void setPassword(String newPassword) 
     {
-        newPassword = DOB;
+        newPassword = dob;
         this.password = newPassword;
     }
 	
@@ -111,5 +111,15 @@ public class Registration
     public void setStatus(String newStatus) 
     {
         this.status = newStatus;
+    }
+    
+    public int getBalance()
+    {
+        return balance;
+    }
+    
+    public void setBalance(int newBalance)
+    {
+        this.balance = newBalance;
     }
 }
