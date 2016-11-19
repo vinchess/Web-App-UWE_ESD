@@ -35,9 +35,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession(); 
-            String userid = request.getParameter("userid");
+
+            HttpSession session = request.getSession(); //create session
+            String userid = request.getParameter("userid"); //get user input
             String passwordinput = request.getParameter("passwordinput");
             
             Cookie cookie = new Cookie("userid",userid); //add cookie
@@ -45,8 +45,8 @@ public class LoginServlet extends HttpServlet {
             response.addCookie(cookie); //send cookie to client
             
             User userInput = new User(); //new user object
-            userInput.setID(userid);    //set user ID 
-            userInput.setPassword(passwordinput);   //set user password
+            userInput.setID(userid);    //set user ID to User object
+            userInput.setPassword(passwordinput);   //set user password to User object
             
             LoginDao loginDao = new LoginDao(); //new login DAO 
             String loginDaoReturn = loginDao.authenticateUser(userInput);  //authenticate user
@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
             User user = (User)member.getSingleById(userid);
 
             
-            if(loginDaoReturn.equals("SUCCESS")){
+            if(loginDaoReturn.equals("SUCCESS")){ //if password and username matches
                 session.setAttribute("user", user); //set User object as session wide attribute
             
                 RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
@@ -64,10 +64,8 @@ public class LoginServlet extends HttpServlet {
             
             else 
             {
-                session.setAttribute("loginErrorMessage", "Wrong username or password combination");
-                response.sendRedirect("/UWE_ESD");
-//                RequestDispatcher rd = request.getRequestDispatcher("UWE_ESD");
-//                rd.forward(request, response);
+                session.setAttribute("loginErrorMessage", "Wrong username or password combination"); //set error message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD"); //redirect back to main page
             }
         }
     }

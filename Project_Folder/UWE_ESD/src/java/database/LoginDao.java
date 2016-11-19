@@ -5,35 +5,47 @@
  */
 package database;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import user.User;
 
 /**
  *
  * @author Richard
  */
-public class LoginDao {
-    public String authenticateUser(User userInput)
+public class LoginDao extends JDBC{
+    public String authenticateUser (User userInput)
     {
+        String result = "false";
+        
         String username = userInput.getID();
         String passwordinput = userInput.getPassword();
         
-        //create connection with JDBC
-        //call JDBC
-        //JDBC return true or false on connection
+        String sql = "SELECT * FROM users;";
+               
+        conn = getConnection();
         
-        //resultSet = statement.getQeury("select userid, password from users");
+        try
+        {
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                String usernameDB = rs.getString("id");
+                String passwordDB = rs.getString("password");
+                if (username.equals(usernameDB) && passwordinput.equals(passwordDB)){
+                    result = "SUCCESS";
+                }
+            }
+            rs.close();
+            conn.close();
+            
+        }catch(SQLException se)
+            {
+                System.out.println("SQL error occurred.");
+            }
         
-        //loop resultSet
-//        while(resultSet.next())
-//        {
-//            String usernameDB = resultSet.getString("userid");
-//            String passwordDB = resultSet.getString("password");
-//            
-//            if (username.equals(usernameDB) && passwordinput.equals(passwordDB)){
-//                return "SUCCESS";
-//            }
-//            
-//        }
-return "false";
+        return result;
     }
 }
