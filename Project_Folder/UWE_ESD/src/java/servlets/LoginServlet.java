@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
             
             else 
             {
-                session.setAttribute("loginErrorMessage", "Wrong username or password combination"); //set error message to be sent to index.jsp
+                session.setAttribute("error", "It appears that the username and password is wrong. Try again."); //set error message to be sent to index.jsp
                 response.sendRedirect("/UWE_ESD"); //redirect back to main page
             }
         }
