@@ -4,6 +4,8 @@
     Author     : Vincent
 --%>
 
+<%@page import="user.Claim"%>
+<%@page import="database.ClaimDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -130,25 +132,45 @@
                                 %>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
-                            <table class="table">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Date</th>
-                                    <th>Rationale</th>
-                                    <th>Status</th>
-                                    <th>Amount</th>
-                                </tr>
-                                <tr>
-                                    <td colspan="5">No Record Found</td>
-                                </tr>
-                                <%%>
-                                <tr>
-                                    <td colspan="5" align="right">
-                                        <button><span class="glyphicon glyphicon-refresh"></span></button>
-                                        <button onclick="jQuery('#aaa').load(' #aaa');">Reload</button>
-                                    </td>
-                                </tr>
-                            </table>
+                            <%
+                                    //User user = (User)session.getAttribute("user");
+                                    out.println("<table class=\"table\" >");
+                                    out.println("<tr>");
+                                    out.println("<th>#</th>");
+                                    out.println("<th>ID</th>");
+                                    out.println("<th>Date</th>");
+                                    out.println("<th>Rational</th>");
+                                    out.println("<th>Status</th>");
+                                    out.println("<th>Amount</th>");
+                                    out.println("</tr>");
+                                    ClaimDao claims = new ClaimDao();
+                                    List claimList = claims.getClaimsById(user);
+
+                                    if(claimList.isEmpty()){
+                                        out.println("<tr>");
+                                        out.println("<td>No Records Found</td>");
+                                        out.println("</tr>");
+                                    }else{
+                                        for(int i=0;i<claimList.size();i++){
+                                            Claim claim = (Claim)claimList.get(i);
+                                            out.println("<tr>");
+                                            out.println("<td>" + (i+1) + "</td>");
+                                            out.println("<td>" + claim.getMem_id()+ "</td>");
+                                            out.println("<td>" + claim.getDate()+ "</td>");
+                                            out.println("<td>" + claim.getRationale() + "</td>");
+                                            out.println("<td>" + claim.getStatus() + "</td>");
+                                            out.println("<td>" + claim.getAmount() + "</td>");
+                                            out.println("</tr>");
+                                        }
+                                    }
+                                    out.println("<tr>");
+                                    out.println("<td colspan=\"5\" align=\"right\">");
+                                    out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
+                                    out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
+                                    out.println("</button>");
+                                    out.println("</tr>");
+                                    out.println("</table>");
+                                %>
                         </div>
                     </div>
                 </div>
