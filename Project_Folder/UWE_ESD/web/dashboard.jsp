@@ -13,12 +13,36 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
         <%@ page import="java.util.*" %>
+        <%@ page import="java.sql.*" %>
         <%@ page import="database.PaymentDAO" %>
         <%@ page import="user.Payments" %>
         <%@ page import="user.User" %>
     </head>
     <body>
         <div class="container">
+            <%
+                String error = (String)session.getAttribute("error");
+                if(error!=null){
+                    out.println("<div class=\"alert alert-danger\" role=\"alert\">");
+                    out.println(error);
+                    out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                     out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("</button>");
+                    out.println("</div>");
+                }
+                session.setAttribute("error", null);
+
+                String success = (String)session.getAttribute("success");
+                if(success!=null){
+                    out.println("<div class=\"alert alert-success\" role=\"alert\">");
+                    out.println(success);
+                    out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                     out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("</button>");
+                    out.println("</div>");
+                }
+                session.setAttribute("success", null);
+            %>
             <div class="col-md-3 text-center">
                 <img src="assets/user_icon.png" height="150px">
                     <h2><%=((User)session.getAttribute("user")).getFirstName()%></h2>
@@ -102,24 +126,30 @@
                                     out.println("<th>Date</th>");
                                     out.println("</tr>");
                                     PaymentDAO payments = new PaymentDAO();
-                                    List list = payments.getRecordsById(user);
-
-                                    if(list.isEmpty()){
-                                        out.println("<tr>");
-                                        out.println("<td>No Records Found</td>");
-                                        out.println("</tr>");
-                                    }else{
-                                        for(int i=0;i<list.size();i++){
-                                            Payments payment = (Payments)list.get(i);
+                                    try{
+                                        List list = payments.getRecordsById(user);
+                                        if(list.isEmpty()){
                                             out.println("<tr>");
-                                            out.println("<td>" + (i+1) + "</td>");
-                                            out.println("<td>" + payment.getId() + "</td>");
-                                            out.println("<td>" + payment.getType() + "</td>");
-                                            out.println("<td>" + payment.getAmount() + "</td>");
-                                            out.println("<td>" + payment.getDate() + "</td>");
+                                            out.println("<td>No Records Found</td>");
                                             out.println("</tr>");
+                                        }else{
+                                            for(int i=0;i<list.size();i++){
+                                                Payments payment = (Payments)list.get(i);
+                                                out.println("<tr>");
+                                                out.println("<td>" + (i+1) + "</td>");
+                                                out.println("<td>" + payment.getId() + "</td>");
+                                                out.println("<td>" + payment.getType() + "</td>");
+                                                out.println("<td>" + payment.getAmount() + "</td>");
+                                                out.println("<td>" + payment.getDate() + "</td>");
+                                                out.println("</tr>");
+                                            }
                                         }
+                                    }catch(SQLException se){
+                                        out.println("<tr>");
+                                        out.println("<td>Database connection error.</td>");
+                                        out.println("</tr>");
                                     }
+                                    
                                     out.println("<tr>");
                                     out.println("<td colspan=\"5\" align=\"right\">");
                                     out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
