@@ -23,28 +23,42 @@ import user.User;
  * @author Jayson
  */
 public class ClaimServlet extends HttpServlet{
-
-  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            //get session
             HttpSession session = request.getSession();
-            DateFormat df= new SimpleDateFormat("yyy-mm-dd");
-            String current_date= df.format(new Date());
-            User user = (User)session.getAttribute("user");
+            
+            //get Params from JSP
+            String claimRational = request.getParameter("rationale");
             double claim_amount = Double.parseDouble(request.getParameter("claimAmount"));
-            ClaimDao claim = new ClaimDao();
-            claim.claim_status(dor,status,balance);
-            if(claim.claim_check(status)){
-                RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
+            
+            //get user ID
+            User user = (User)session.getAttribute("user");
+            String userid = user.getID();
+            
+            //add claim to DB
+            ClaimDao claimDao = new ClaimDao();
+            boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
+            
+            //if claim added successfully
+            if (addClaimReturn)
+            {
+                session.setAttribute("success", "Claim added successfully"); //set success message
+                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
-            }else{
-                String error = "It appears that the username and password is wrong. Try again.";
-                session.setAttribute("error", error);
-                response.sendRedirect("/UWE_ESD");
-            } 
+            }
+            
+            //else 
+            else 
+            {
+                session.setAttribute("error", "Error adding claim"); //set error message 
+                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                rd.forward(request, response);
+            }
         }
     }
 

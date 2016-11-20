@@ -11,7 +11,9 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.sql.*;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 /**
  *
  * @author Jayson
@@ -19,46 +21,58 @@ import java.util.Date;
 public class ClaimDao extends JDBC {
    Connection conn=null;
    Statement stmt=null;
-        public void claim_status(String dor,String status,double balance){
-            boolean result=false;
-            DateFormat df= new SimpleDateFormat("yyy-mm-dd");
-            String current_date= df.format(new Date());
-            String sql;
-            Claim claim= new Claim();
+   
+   boolean result= false;
+   int totalRows = 0;
+   String sql;
+   Claim tempClaim = new Claim();
+   
+   
+    public void getAllClaims(){
+        
+        sql = "SELECT * FROM Members";
+        List list = new ArrayList();
+
+        try{
+            conn=getConnection();
+            stmt=conn.createStatement();
+            ResultSet rs=stmt.executeQuery(sql);
             
-            try{
-                conn=getConnection();
-                stmt=conn.createStatement();
-                sql="SELECT dor,status,balance FROM Members";
-                ResultSet rs=stmt.executeQuery(sql);
-                    while(rs.next()){
-                 
-                        claim=new Claim(
-                        rs.getString("dor"),
-                        rs.getString("status"),
-                        Double.parseDouble(rs.getString("balance")));          
-                     }
-                    rs.close();
-                    conn.close();
-                    String rd=claim.getDor();
-                    Date currentdate=df.parse(current_date);
-                    Date registerdate=df.parse(rd);
-                    int current=currentdate.getYear()*12+currentdate.getMonth();
-                                int register=registerdate.getYear()*12+registerdate.getMonth();
-                                    if((current-register)<6){
-                                        System.out.println("Not capable to perform claim");
-                                        
-                                   
-                                    }
-                                    else 
-                                      System.out.println("Valid to perform claim"); 
-                    
-            }catch(SQLException ex){
-             }
-            catch(Exception ex){
-              System.out.println("invalid date");
-            } 
-        }               
+            //loop through the result set to get data 
+            while(rs.next()){
+                list.add(new Claim(rs.getString("mem_id"),rs.getString("date"),rs.getString("rationale"),rs.getString("status"),rs.getString("amount")));
+            }
+            rs.close();
+            conn.close();
+
+        }catch(SQLException ex){
+            System.out.println("SQL error occurred. " + ex.getMessage());
+        }
+    }   
+    
+    
+    public boolean add_claim(String userid, Double claimAmount, String claimRational){
+        try{
+            //get connection
+            conn=getConnection();
+            stmt=conn.createStatement();
+
+            //insert into the fields
+            sql = "INSERT INTO Claims(mem_id,date,rationale,status,amount) VALUES('" + userid + "',now(),'" + claimRational + "','SUBMITTED'," + claimAmount + ");";
+
+            //execute the insert
+            stmt.executeUpdate(sql);
+            
+            //return true when insert is successful
+            return true;
+            
+        }catch(SQLException ex){
+            System.out.println("SQL error occurred. " + ex.getMessage());
+        }
+        //else return false if unsuccessfull
+        return false;
+    }
+    
 public void approve_payment(String status, double balance,int max_claim){
     Claim claim = new Claim();
                try{

@@ -266,7 +266,7 @@
                     <div class="modal-body">
                         <p class="text-justify">By submitting this request, you agree to our terms and conditions under the clause "Claims".</p>
                         
-                        <form>
+                        <form action="ClaimS" method="POST">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
@@ -294,7 +294,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <button class="subscribe btn btn-success btn-lg btn-block" type="button">
+                                    <button class="subscribe btn btn-success btn-lg btn-block" type="submit">
                                         Request</button>
                                 </div>
                             </div>
