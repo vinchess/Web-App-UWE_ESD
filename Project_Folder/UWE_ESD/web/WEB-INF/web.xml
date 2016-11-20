@@ -35,6 +35,8 @@
     <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
         <servlet-class>servlets.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ClaimServlet</servlet-name>
         <servlet-class>servlets.ClaimServlet</servlet-class>
     </servlet>
@@ -61,6 +63,8 @@
     <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
         <url-pattern>/RegistrationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ClaimServlet</servlet-name>
         <url-pattern>/ClaimS</url-pattern>
     </servlet-mapping>
