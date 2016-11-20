@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
 import java.sql.*;
@@ -15,44 +10,51 @@ import user.Registration;
  *
  * @author N
  */
-public class RegistrationDAO extends JDBC
-{
-    public void RegisterUser(String id, String NAME)
-    {
+public class RegistrationDAO extends JDBC{
+    
+    public boolean checkExist(String id) throws SQLException{
+        boolean result = false;
+        conn = getConnection();
+        String sql = "SELECT * FROM users where id='"+ id +"';";
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while(rs.next()){
+            if(rs.getString("id").equals(id)){
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    public String RegisterUser(Registration newUser) throws SQLException{
         String result = "false";
         conn = getConnection();
-        String sql = "SELECT * FROM members where id'"+ id +"' AND name='"+ NAME +"';";
-        try
-        {
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            
-            while(rs.next())
-            {
-                if(rs.getString("ID").equals(id) && rs.getString("name").equals(NAME))
-                {
-                    result = "false";
-                }
-                else
-                {
-                    Registration registration = new Registration();
-                    registration.setStatus("APPLIED");
-                    DateFormat df = new SimpleDateFormat("ddMMyy");
-                    Date date = new Date();
-                    registration.setPassword(df.format(date));
-                    System.out.print("\nInserting records into table...");
-                    stmt = conn.createStatement();
-                    String SQL = "INSERT INTO members " + "VALUES ("+ registration.getID() +", "+ registration.getName()+", "+ registration.getAddress() +", "+ registration.getDOB() +", "+ registration.getDOR() +", "+ registration.getStatus() +", "+ registration.getBalance() +")";
-                    stmt.executeUpdate(SQL);
-                    SQL = "INSERT INTO users " + "VALUES ("+ registration.getID() +", "+ registration.getName() +", "+ registration.getPassword() +", "+ registration.getStatus() +")";
-                    stmt.executeUpdate(SQL);
-                    result = "true";
-                }
-            }
-            rs.close();
+        
+        stmt = conn.createStatement();
+        
+        conn.setAutoCommit(false);
+
+        stmt.addBatch("INSERT INTO users VALUES('" + newUser.getID() + "','" + 
+                newUser.getPassword() + "','APPLIED');");
+        stmt.addBatch("INSERT INTO members VALUES('" + newUser.getID() + "','" + 
+                newUser.getName()+ "','" + newUser.getAddress() + "','" + newUser.getDOB() + "',now(),'APPLIED','0.00');");
+
+        int[] updateResult = stmt.executeBatch();
+
+        if(checkResult(updateResult)){
+            conn.commit();
+            result = "User successfully registered. Proceed to login.";
+        }else{
             conn.close();
-        }catch(SQLException se){
-            System.out.println("SQL error occurred.");
+            throw new SQLException("Commit Failed");
         }
-    }       
+            
+        conn.close();
+
+        return result;
+    }
+    private boolean checkResult(int[] updateResults){
+        for(int i : updateResults) if(i!=1) return false;
+        return true;
+    }//end checkResult 
 }

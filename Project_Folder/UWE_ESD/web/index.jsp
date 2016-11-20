@@ -28,6 +28,17 @@
                         out.println("</div>");
                     }
                     session.setAttribute("error", null);
+                    
+                    String success = (String)session.getAttribute("success");
+                    if(success!=null){
+                        out.println("<div class=\"alert alert-success\" role=\"alert\">");
+                        out.println(success);
+                        out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                         out.println("<span aria-hidden=\"true\">&times;</span>");
+                        out.println("</button>");
+                        out.println("</div>");
+                    }
+                    session.setAttribute("success", null);
                 %>
                 
                 <center>
@@ -106,7 +117,7 @@
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="signup">
-                                <form action="" method="POST">
+                                <form action="RegistrationServlet" method="POST">
                                     <fieldset class="form-inline">
                                         <div class="control-group">
                                             <div class="controls">
@@ -155,7 +166,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="confirmsignup"></label>
                                             <div class="controls">
-                                                <button id="confirmsignup" name="confirmsignup" class="btn btn-success btn-block">Sign Up</button>
+                                                <button id="confirmsignup" name="confirmsignup" class="btn btn-success btn-block" type="submit">Sign Up</button>
                                             </div>
                                         </div>
                                     </fieldset>
