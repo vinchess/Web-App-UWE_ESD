@@ -33,6 +33,8 @@
         <servlet-class>servlets.AdminLoginServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>servlets.RegistrationServlet</servlet-class>
         <servlet-name>ClaimServlet</servlet-name>
         <servlet-class>servlets.ClaimServlet</servlet-class>
     </servlet>
@@ -57,6 +59,8 @@
         <url-pattern>/AdminLoginServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/RegistrationServlet</url-pattern>
         <servlet-name>ClaimServlet</servlet-name>
         <url-pattern>/ClaimS</url-pattern>
     </servlet-mapping>

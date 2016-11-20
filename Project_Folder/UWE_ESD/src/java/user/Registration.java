@@ -19,22 +19,26 @@ public class Registration
     private String password;
     private String firstName;
     private String lastName;
-    private String address;
-    private String initials;
     private String name;
-    private String status;
+    private String address;
     private String dob;
     private String dor;
-    private int balance = 0;
-    public String getName()
-    {
-        return name;
+    private String status;
+    private double balance = 0;
+    
+    public Registration(){}
+    public Registration(String password,String firstName,String lastName,String address,String dob){
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = generateID(firstName.toLowerCase(),lastName.toLowerCase());
+        this.address = address;
+        this.dob = dob;
     }
     
-    public void setName(String newName)
-    {
-        newName = "" +firstName + " "+lastName;
-        this.name = newName;
+    private String generateID(String firstName, String lastName){
+        String generatedID = firstName.substring(0, 2) + "-" + lastName;
+        return generatedID;
     }
 
     public String getID()
@@ -44,21 +48,13 @@ public class Registration
 
     public void setID(String newID) 
     {
-        newID = "" +initials + "-"+lastName; 
         this.id = newID;
     }
-      
-    public String getInitials()
-    {
-        return initials;
+    
+    public String getName(){
+        return (this.firstName+ " " +this.lastName);
     }
-     
-    public void setInitials(String newInitials) 
-    {
-        newInitials = firstName.substring(0, 3);
-        initials = newInitials;
-    }
-      
+    
     public String getAddress()
     {
         return address;
@@ -78,7 +74,7 @@ public class Registration
     {
         this.dob = newDOB;
     }
-      
+    
     public String getDOR()
     {
         return dor;
@@ -86,9 +82,6 @@ public class Registration
       
     public void setDOR(String newDOR)
     {
-        DateFormat df = new SimpleDateFormat("ddMMyy");
-        Date date = new Date();
-        newDOR = df.format(date);
         this.dor = newDOR;
     }
       
@@ -99,7 +92,6 @@ public class Registration
 
     public void setPassword(String newPassword) 
     {
-        newPassword = dob;
         this.password = newPassword;
     }
 	
@@ -113,12 +105,12 @@ public class Registration
         this.status = newStatus;
     }
     
-    public int getBalance()
+    public double getBalance()
     {
         return balance;
     }
     
-    public void setBalance(int newBalance)
+    public void setBalance(double newBalance)
     {
         this.balance = newBalance;
     }

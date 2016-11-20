@@ -38,27 +38,38 @@ public class RegistrationServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) 
         {
             HttpSession session = request.getSession();
-          
+            
+            String password = request.getParameter("password");
             String firstName = request.getParameter("firstname");
             String lastName = request.getParameter("lastname");
             String address = request.getParameter("address");
-            String DOB = request.getParameter("dateofbirth");
-            String DOR = request.getParameter("dateofregister");
-            String initials = firstName.substring(0, 3);
-            String id = "" +initials + "-"+lastName;
-            String NAME = "" +firstName + " "+lastName;
+            String dob = request.getParameter("dob");
+            
+            Registration newUser = new Registration(password,firstName,lastName,address,dob);
+            //session.setAttribute("newUser", newUser);
             
             RegistrationDAO register = new RegistrationDAO();
-            String registerResult;
-            registerResult = register.RegisterUser(id, NAME);
-            
-            if(registerResult.equals("true"))
-            {
-                session.setAttribute("Congratulations", "You have successfully registered as a Provisional Member, please process to payment to become an official member. The password for you account is you Date Of Birth in 'DDMMYY' format");
-            }
-            else if(registerResult.equals("false"))
-            {
-                session.setAttribute("Error", "User already exist");
+            try{
+                if(register.checkExist(newUser.getID())){
+                    String error = "It seems user already exist. Contact our helpdesk for assistance.";
+                    session.setAttribute("error", error);
+                    response.sendRedirect("/UWE_ESD");
+                }else{
+                    try{
+                        String registerResult;
+                        registerResult = register.RegisterUser(newUser);
+                        session.setAttribute("success", registerResult);
+                        response.sendRedirect("/UWE_ESD");
+                    }catch (SQLException se){
+                        String error = "There seem to be a problem registering your details. Try again later.";
+                        session.setAttribute("error", error);
+                        response.sendRedirect("/UWE_ESD");
+                    } 
+                }
+            }catch(SQLException se){
+                String error = "Error establishing connection with database. Try again later.";
+                session.setAttribute("error", error);
+                response.sendRedirect("/UWE_ESD");
             }
         }
     }
