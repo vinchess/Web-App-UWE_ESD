@@ -58,24 +58,21 @@ public class PaymentDAO extends JDBC{
         }
         return list;
     }//end getAllRecords
-    public List getRecordsById(User user){
+    public List getRecordsById(User user)throws SQLException{
         List list = new ArrayList();
         conn = getConnection();
         String sql = "SELECT * FROM payments WHERE mem_id='"+ user.getID() +"';";
         
-        try{
-            stmt = conn.createStatement();
+        stmt = conn.createStatement();
 
-            ResultSet rs = stmt.executeQuery(sql);
-            
-            while(rs.next()){
-                list.add(new Payments(rs.getString("mem_id"),rs.getString("type_of_payment"),rs.getString("amount"),rs.getString("date")));
-            }
-            rs.close();
-            conn.close();
-        }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()){
+            list.add(new Payments(rs.getString("mem_id"),rs.getString("type_of_payment"),rs.getString("amount"),rs.getString("date")));
         }
+        rs.close();
+        conn.close();
+
         return list;
     }//end getRecordsById
     private boolean checkResult(int[] updateResults){
