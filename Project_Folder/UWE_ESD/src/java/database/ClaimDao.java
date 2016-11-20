@@ -73,42 +73,43 @@ public class ClaimDao extends JDBC {
         return false;
     }
     
-public void approve_payment(String status, double balance,int max_claim){
-    Claim claim = new Claim();
-               try{
-                conn=getConnection();
-                stmt=conn.createStatement();
-                String sql="UPDATE Members"+"SET status = SUBMITTED";
-                stmt.executeUpdate(sql);
-                sql="SELECT status,balance FROM Members";
-                ResultSet rs=stmt.executeQuery(sql);
-                    while(rs.next()){
-                        String status_check=rs.getString("status");
-                        Double remaining_balance=rs.getDouble("balance");
-                    }
-                    rs.close();
-                    
-                            if(status.contains("APPROVED")){
-                                double remain_balance =balance;
-                                sql= "INSERT INTO Members VALUES(?,?,?,?,?,?,?)";
-                                PreparedStatement pstmt = conn.prepareStatement(sql);
-                                pstmt.setDouble(7,remain_balance);
-                                pstmt.executeUpdate();
-                                
-                            }
-                             claim.setMax_claim(+1);
-                            if(claim.getMax_claim()==2){
-                                System.out.println("Claim unsuccessful");
-                                      
-                            }
-                        else
-                           System.out.println("rejected");
-                           
-                    conn.close();
-                    }catch(Exception ex){
-            } 
-               
-}
+//public void approve_payment(String status, double balance,int max_claim){
+//    Claim claim = new Claim();
+//               try{
+//                Connection conn=null;
+//                Statement stmt=null;
+//                conn=getConnection();
+//                stmt=conn.createStatement();
+//                String sql="UPDATE Members"+"SET status = SUBMITTED";
+//                stmt.executeUpdate(sql);
+//                sql="SELECT status,balance FROM Members";
+//                ResultSet rs=stmt.executeQuery(sql);
+//                    while(rs.next()){
+//                      String status_check=rs.getString("status");
+//                      Double actual_balance=rs.getDouble("balance");
+//                    
+//                            if(status_check.contains("APPROVED")){
+//                                remaining_balance =actual_balance-amount;
+//                                sql= "INSERT INTO Members VALUES(?,?,?,?,?,?,?)";
+//                                PreparedStatement pstmt = conn.prepareStatement(sql);
+//                                pstmt.setDouble(7,remaining_balance);
+//                                pstmt.executeUpdate();
+//                                
+//                            }
+//                             claim.setMax_claim(+1);
+//                            if(claim.getMax_claim()==2){
+//                                System.out.println("Claim unsuccessful");
+//                                      
+//                            }
+//                        else
+//                           System.out.println("rejected");
+//                    }
+//                    
+//                    conn.close();
+//                    }catch(Exception ex){
+//            } 
+//           
+//    }
 }
 
                        
