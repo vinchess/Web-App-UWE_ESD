@@ -17,9 +17,9 @@ import java.util.Date;
  * @author Jayson
  */
 public class ClaimDao extends JDBC {
-   Connection conn=null;
-   Statement stmt=null;
         public void claim_status(String dor,String status,double balance){
+            Connection conn=null;
+            Statement stmt=null;
             boolean result=false;
             DateFormat df= new SimpleDateFormat("yyy-mm-dd");
             String current_date= df.format(new Date());
@@ -59,9 +59,12 @@ public class ClaimDao extends JDBC {
               System.out.println("invalid date");
             } 
         }               
-public void approve_payment(String status, double balance,int max_claim){
-    Claim claim = new Claim();
+public void approve_payment(double amount){
+  Claim claim= new Claim();
+  Double remaining_balance;
                try{
+                Connection conn=null;
+                Statement stmt=null;
                 conn=getConnection();
                 stmt=conn.createStatement();
                 String sql="UPDATE Members"+"SET status = SUBMITTED";
@@ -69,16 +72,14 @@ public void approve_payment(String status, double balance,int max_claim){
                 sql="SELECT status,balance FROM Members";
                 ResultSet rs=stmt.executeQuery(sql);
                     while(rs.next()){
-                        String status_check=rs.getString("status");
-                        Double remaining_balance=rs.getDouble("balance");
-                    }
-                    rs.close();
+                      String status_check=rs.getString("status");
+                      Double actual_balance=rs.getDouble("balance");
                     
-                            if(status.contains("APPROVED")){
-                                double remain_balance =balance;
+                            if(status_check.contains("APPROVED")){
+                                remaining_balance =actual_balance-amount;
                                 sql= "INSERT INTO Members VALUES(?,?,?,?,?,?,?)";
                                 PreparedStatement pstmt = conn.prepareStatement(sql);
-                                pstmt.setDouble(7,remain_balance);
+                                pstmt.setDouble(7,remaining_balance);
                                 pstmt.executeUpdate();
                                 
                             }
@@ -89,12 +90,13 @@ public void approve_payment(String status, double balance,int max_claim){
                             }
                         else
                            System.out.println("rejected");
-                           
+                    }
+                    
                     conn.close();
                     }catch(Exception ex){
             } 
-               
-}
+           
+    }
 }
 
                        
