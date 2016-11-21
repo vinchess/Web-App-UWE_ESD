@@ -33,15 +33,21 @@ public class PaymentServlet extends HttpServlet {
             try (PrintWriter out = response.getWriter()) {
                 HttpSession session = request.getSession();
                 User user = (User)session.getAttribute("user");
-                
                 double amount = Double.parseDouble(request.getParameter("payAmount"));
                 
                 PaymentDAO payment = new PaymentDAO();
                 
-                payment.updatePayment(user, amount);
+                boolean paymentReturn = payment.updatePayment(user, amount);
                 
-                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
-                rd.forward(request, response);
+                if (paymentReturn){
+                    session.setAttribute("success", "Payment made successfully."); //set success message
+                    RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                    rd.forward(request, response);
+                }else{
+                    session.setAttribute("error", "Failed to make payment. Contact our helpdesk for assistance."); //set error message 
+                    RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                    rd.forward(request, response);
+                }
             }
     }
 

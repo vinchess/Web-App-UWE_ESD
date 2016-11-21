@@ -6,7 +6,7 @@
 package servlets;
 
 
-import database.ClaimDao;
+import database.ClaimDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -40,7 +40,7 @@ public class ClaimServlet extends HttpServlet{
             String userid = user.getID();
             
             //add claim to DB
-            ClaimDao claimDao = new ClaimDao();
+            ClaimDAO claimDao = new ClaimDAO();
             boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
             
             //if claim added successfully

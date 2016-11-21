@@ -61,7 +61,11 @@ public class LoginServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
             }  
+            else if(loginDaoReturn.equals("ADMIN")){ //if password and username matches
             
+                session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD"); //redirect back to main page
+            } 
             else 
             {
                 session.setAttribute("error", "It appears that the username and password is wrong. Try again."); //set error message to be sent to index.jsp

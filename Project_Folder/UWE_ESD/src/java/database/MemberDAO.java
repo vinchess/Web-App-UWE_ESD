@@ -8,7 +8,7 @@ import user.User;
  *
  * @author Vincent
  */
-public class MemberDAO extends JDBC{
+public class MemberDAO<E> extends JDBC{
     public List getAllRecords(){
         List list = new ArrayList();
         conn = getConnection();
@@ -116,4 +116,23 @@ public class MemberDAO extends JDBC{
         }
         return list;
     }//end getRecordsByStatus
+    public String getColumn(String id,String column){
+        conn = getConnection();
+        String sql = "SELECT " + column + " FROM members WHERE id='" + id + "';";
+        String result = "";
+        try{
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            while(rs.next()){
+                result = rs.getString(column);
+            }
+            rs.close();
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("SQL error occurred. " + se.getMessage());
+        }
+        return result;
+    }
 }

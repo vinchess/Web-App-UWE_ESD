@@ -35,7 +35,10 @@ public class LoginDao extends JDBC{
                 String usernameDB = rs.getString("id");
                 String passwordDB = rs.getString("password");
                 if (username.equals(usernameDB) && passwordinput.equals(passwordDB)){
-                    result = "SUCCESS";
+                    if(rs.getString("status").equals("ADMIN"))
+                        result = "ADMIN";
+                    else
+                        result = "SUCCESS";
                 }
             }
             rs.close();

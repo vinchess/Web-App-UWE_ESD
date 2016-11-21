@@ -14,8 +14,11 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
         <%@ page import="java.util.*" %>
+        <%@ page import="java.sql.*" %>
         <%@ page import="user.User" %>
+        <%@ page import="user.Claim" %>
         <%@ page import="database.MemberDAO" %>
+        <%@ page import="database.ClaimDAO" %>
     </head>
     <body>
         <div class="container">
@@ -69,15 +72,24 @@
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#payments" aria-controls="home" role="tab" data-toggle="tab">Users</a>
+                            <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
                         </li>
                         <li role="presentation">
-                            <a href="#claims" aria-controls="profile" role="tab" data-toggle="tab">Claims</a>
+                            <a href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#claims" aria-controls="claims" role="tab" data-toggle="tab">Claims</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="payments">
-                            <div id="list">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="panel-body">
+                                Total Members
+                                Total Claims
+                            <button class="btn btn-primary btn-lg">Charge Membership</button>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="users">
                                 <%
                                     out.println("<table class=\"table\" >");
                                     out.println("<tr>");
@@ -114,26 +126,46 @@
                                     }
                                     out.println("</table>");
                                 %>
-                            </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
-                            <table class="table">
-                                <tr>
-                                    <th>#</th>
-                                    <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Rationale</th>
-                                    <th>Status</th>
-                                    <th>Amount</th>
-                                </tr>
-                                <%
-                                    
+                            <%
+                                    out.println("<table class=\"table\" >");
+                                    out.println("<tr>");
+                                    out.println("<th>#</th>");
+                                    out.println("<th>ID</th>");
+                                    out.println("<th>Date</th>");
+                                    out.println("<th>Rationale</th>");
+                                    out.println("<th>Status</th>");
+                                    out.println("<th>Amount</th>");
+                                    out.println("</tr>");
+                                    ClaimDAO claimdao = new ClaimDAO();
+                                    try{
+                                        List claimlist = claimdao.getAllClaims();
+                                        if(list.isEmpty()){
+                                            out.println("<tr>");
+                                            out.println("<td>No Records Found</td>");
+                                            out.println("</tr>");
+                                        }else{
+                                            for(int i=0;i<claimlist.size();i++){
+                                                Claim claim = (Claim)claimlist.get(i);
+                                                out.println("<tr>");
+                                                out.println("<td>" + (i+1) + "</td>");
+                                                out.println("<td>" + claim.getMem_id() + "</td>");
+                                                out.println("<td>" + claim.getDate() + "</td>");
+                                                out.println("<td>" + claim.getRationale() + "</td>");
+                                                out.println("<td>" + claim.getStatus() + "</td>");
+                                                out.println("<td>" + claim.getAmount() + "</td>");
+                                                out.println("</tr>");
+                                            }
+                                        }
+                                    }catch(SQLException se){
                                         out.println("<tr>");
-                                        out.println("<td rowspan=\"6\">No Records Found</td>");
+                                        out.println("<td>Database connection error.</td>");
                                         out.println("</tr>");
+                                    }
                                     
+                                    out.println("</table>");
                                 %>
-                            </table>
                         </div>
                     </div>
                 </div>

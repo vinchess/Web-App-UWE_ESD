@@ -27,6 +27,7 @@ public class PaymentDAO extends JDBC{
             
             if(checkResult(updateResult)){
                 conn.commit();
+                result = true;
             }else{
                 conn.close();
                 throw new SQLException("Commit Failed");
