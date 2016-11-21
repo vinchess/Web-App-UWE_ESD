@@ -22,6 +22,29 @@
     </head>
     <body>
         <div class="container">
+            <%
+                    String error = (String)session.getAttribute("error");
+                    if(error!=null){
+                        out.println("<div class=\"alert alert-danger\" role=\"alert\">");
+                        out.println(error);
+                        out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                         out.println("<span aria-hidden=\"true\">&times;</span>");
+                        out.println("</button>");
+                        out.println("</div>");
+                    }
+                    session.setAttribute("error", null);
+                    
+                    String success = (String)session.getAttribute("success");
+                    if(success!=null){
+                        out.println("<div class=\"alert alert-success\" role=\"alert\">");
+                        out.println(success);
+                        out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                         out.println("<span aria-hidden=\"true\">&times;</span>");
+                        out.println("</button>");
+                        out.println("</div>");
+                    }
+                    session.setAttribute("success", null);
+                %>
             <div class="col-md-3 ">
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
@@ -37,7 +60,7 @@
                             <form action="#" method="POST"><!--need servlet to update the list-->
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="">
+                                        <input type="checkbox" value="APPLIED">
                                         APPLIED
                                     </label>
                                 </div>
@@ -116,12 +139,15 @@
                                                     Claim amount = (Claim)userClaims.get(i);
                                                     totalClaims+=amount.getAmount();
                                                 }
+                                                session.setAttribute("amount", (totalClaims/userClaims.size()));
                                             }catch(SQLException se){
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
                                         %>
-                                        <button class="btn btn-primary btn-block">Charge Membership</button>
+                                        <form action="charge-members" method="POST">
+                                            <button class="btn btn-primary btn-block">Charge Membership</button>
+                                        </form>
                                     </div>
                                 </div>
                                 </center>

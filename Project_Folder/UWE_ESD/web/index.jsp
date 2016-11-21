@@ -176,7 +176,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="tab-pane fade active in" id="admin">
-                            <form class="form-horizontal" action="AdminLoginServlet" method="POST">
+                            <form class="form-horizontal" action="admin-dashboard" method="POST">
                                 <fieldset>
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for="userid">Username:</label>

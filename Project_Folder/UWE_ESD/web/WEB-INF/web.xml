@@ -40,6 +40,10 @@
         <servlet-name>ClaimServlet</servlet-name>
         <servlet-class>servlets.ClaimServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChargeMembershipServlet</servlet-name>
+        <servlet-class>servlets.ChargeMembershipServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -58,7 +62,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminLoginServlet</servlet-name>
-        <url-pattern>/AdminLoginServlet</url-pattern>
+        <url-pattern>/admin-dashboard</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
@@ -67,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>ClaimServlet</servlet-name>
         <url-pattern>/ClaimS</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChargeMembershipServlet</servlet-name>
+        <url-pattern>/charge-members</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

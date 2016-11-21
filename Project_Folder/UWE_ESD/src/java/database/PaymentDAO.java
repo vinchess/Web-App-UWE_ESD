@@ -76,8 +76,30 @@ public class PaymentDAO extends JDBC{
 
         return list;
     }//end getRecordsById
+    public void chargePayment(List list,double amount)throws SQLException{
+        conn = getConnection();
+        
+        stmt = conn.createStatement();
+        conn.setAutoCommit(false);
+        
+        for(int i = 0; i < list.size(); i++){
+            User user = (User)list.get(i);
+            stmt.addBatch("UPDATE members SET balance=balance-"+ amount +
+                            " WHERE id='"+ user.getID() + "';");
+        }
+            
+        int[] updateResult = stmt.executeBatch();
+            
+        if(checkResult(updateResult)){
+            conn.commit();
+        }else{
+            conn.close();
+            throw new SQLException("Commit Failed");
+        }
+    }
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
     }//end checkResult 
+    
 }//end PaymentDAO
