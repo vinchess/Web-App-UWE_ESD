@@ -83,10 +83,48 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
-                            <div class="panel-body">
-                                Total Members
-                                Total Claims
-                            <button class="btn btn-primary btn-lg">Charge Membership</button>
+                            <div class="col-md-6">
+                                <center>
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Total Members</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        
+                                        <%
+                                            MemberDAO mem = new MemberDAO();
+                                            List memlist = mem.getAllRecords();
+                                            out.println("<h1 style=\"font-size:70px;\">"+memlist.size()+"</h1>");
+                                        %>
+                                    </div>
+                                </div>
+                                </center>
+                            </div>
+                            <div class="col-md-6">
+                                <center>
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Total Claims</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <%
+                                            ClaimDAO claimTotal = new ClaimDAO();
+                                            double totalClaims = 0;
+                                            try{
+                                                List userClaims = claimTotal.getAllClaims();
+                                                for(int i=0;i<userClaims.size();i++){
+                                                    Claim amount = (Claim)userClaims.get(i);
+                                                    totalClaims+=amount.getAmount();
+                                                }
+                                            }catch(SQLException se){
+                                                out.println("value/database problem");
+                                            }
+                                            out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
+                                        %>
+                                        <button class="btn btn-primary btn-block">Charge Membership</button>
+                                    </div>
+                                </div>
+                                </center>
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="users">
