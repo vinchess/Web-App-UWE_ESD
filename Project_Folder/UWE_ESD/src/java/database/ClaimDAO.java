@@ -24,7 +24,12 @@ public class ClaimDAO extends JDBC {
         //loop through the result set to get data 
         while(rs.next()){
             //get all data fields in Claims table
-            list.add(new Claim(rs.getString("mem_id"),rs.getString("date"),rs.getString("rationale"),rs.getString("status"),rs.getString("amount")));
+            list.add(new Claim(
+                    rs.getString("mem_id"),
+                    rs.getString("date"),
+                    rs.getString("rationale"),
+                    rs.getString("status"),
+                    Double.parseDouble(rs.getString("amount"))));
         }
         rs.close();
         conn.close();
@@ -44,7 +49,12 @@ public class ClaimDAO extends JDBC {
         //loop through the result set to get data 
         while(rs.next()){
             //get all data fields in Claims table
-            list.add(new Claim(rs.getString("mem_id"),rs.getString("date"),rs.getString("rationale"),rs.getString("status"),rs.getString("amount")));
+            list.add(new Claim(
+                    rs.getString("mem_id"),
+                    rs.getString("date"),
+                    rs.getString("rationale"),
+                    rs.getString("status"),
+                    Double.parseDouble(rs.getString("amount"))));
         }
         rs.close();
         conn.close();
