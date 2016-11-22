@@ -13,12 +13,17 @@
         <title>Admin Dashboard</title>
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
+        
         <%@ page import="java.util.*" %>
         <%@ page import="java.sql.*" %>
         <%@ page import="user.User" %>
         <%@ page import="user.Claim" %>
         <%@ page import="database.MemberDAO" %>
         <%@ page import="database.ClaimDAO" %>
+        <%! MemberDAO member;%>
+        <%! ClaimDAO claim;%>
+        <% member = new MemberDAO();%>
+        <% claim = new ClaimDAO();%>
     </head>
     <body>
         <div class="container">
@@ -60,28 +65,30 @@
                             <form action="#" method="POST"><!--need servlet to update the list-->
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="APPLIED">
+                                        <input type="checkbox" name="applied" value="">
                                         APPLIED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="">
+                                        <input type="checkbox" name="approved" value="">
                                         APPROVED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="">
+                                        <input type="checkbox" name="suspended" value="">
                                         SUSPENDED
                                     </label>
                                 </div>
-                                <input type="submit" class="btn btn-success btn-block" value="Update"/>
+                                <input type="submit" class="btn btn-success btn-block" data-toggle="modal" 
+                                       data-target="#dimmer" value="Update"/>
                             </form>
                         </div>
                     </div>
                 </div>
                 <button type="button" class="btn btn-default btn-block" 
+                        data-toggle="modal" data-target="#dimmer"
                         aria-label="Left Align" onClick="location.href='./LogoutServlet'">
                     <div class="col-md-1">
                         <span class="glyphicon glyphicon-off"></span> 
@@ -115,8 +122,7 @@
                                     <div class="panel-body">
                                         
                                         <%
-                                            MemberDAO mem = new MemberDAO();
-                                            List memlist = mem.getAllRecords();
+                                            List memlist = member.getAllRecords();
                                             out.println("<h1 style=\"font-size:70px;\">"+memlist.size()+"</h1>");
                                         %>
                                     </div>
@@ -131,19 +137,21 @@
                                     </div>
                                     <div class="panel-body">
                                         <%
-                                            ClaimDAO claimTotal = new ClaimDAO();
                                             double totalClaims = 0;
+                                            int size = 0;
                                             try{
-                                                List userClaims = claimTotal.getAllClaims();
+                                                List userClaims = claim.getAllClaims();
                                                 for(int i=0;i<userClaims.size();i++){
                                                     Claim amount = (Claim)userClaims.get(i);
                                                     totalClaims+=amount.getAmount();
                                                 }
-                                                session.setAttribute("amount", (totalClaims/userClaims.size()));
+                                                size = userClaims.size();
+                                                session.setAttribute("amount", (totalClaims/size));
                                             }catch(SQLException se){
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
+                                            out.println("<h3>Fee : &#163;"+String.format("%.2f", totalClaims/size)+"</h3>");
                                         %>
                                         <form action="charge-members" method="POST">
                                             <button class="btn btn-primary btn-block">Charge Membership</button>
@@ -165,6 +173,7 @@
                                     out.println("<th>DOR</th>");
                                     out.println("<th>Status</th>");
                                     out.println("<th>Balance</th>");
+                                    out.println("<th></th>");
                                     out.println("</tr>");
                                     MemberDAO member = new MemberDAO();
                                     List list = member.getAllRecords();
@@ -176,7 +185,13 @@
                                     }else{
                                         for(int i=0;i<list.size();i++){
                                             User user = (User)list.get(i);
-                                            out.println("<tr>");
+                                            if(user.isUserValid().equals("APPLIED")){
+                                                out.println("<tr class=\"warning\">");
+                                            }else if(user.isUserValid().equals("APPROVED")){
+                                                out.println("<tr class=\"success\">");
+                                            }else{
+                                                out.println("<tr class=\"danger\">");
+                                            }
                                             out.println("<td>" + (i+1) + "</td>");
                                             out.println("<td>" + user.getID() + "</td>");
                                             out.println("<td>" + user.getFirstName() + " " + user.getLastName() + "</td>");
@@ -185,6 +200,13 @@
                                             out.println("<td>" + user.getDOR() + "</td>");
                                             out.println("<td>" + user.isUserValid()+ "</td>");
                                             out.println("<td>&#163;" + user.getBalance() + "</td>");
+                                            out.println("<td>");
+                                            if(user.isUserValid().equals("APPROVED")){
+                                                out.println("<button class=\"btn btn-default btn-sm\">SUSPEND</button>");
+                                            }else{
+                                                out.println("<button class=\"btn btn-default btn-sm\">APPROVE</button>");
+                                            }
+                                            out.println("</td>");
                                             out.println("</tr>");
                                         }
                                     }
@@ -201,10 +223,10 @@
                                     out.println("<th>Rationale</th>");
                                     out.println("<th>Status</th>");
                                     out.println("<th>Amount</th>");
+                                    out.println("<th></th>");
                                     out.println("</tr>");
-                                    ClaimDAO claimdao = new ClaimDAO();
                                     try{
-                                        List claimlist = claimdao.getAllClaims();
+                                        List claimlist = claim.getAllClaims();
                                         if(list.isEmpty()){
                                             out.println("<tr>");
                                             out.println("<td>No Records Found</td>");
@@ -219,6 +241,19 @@
                                                 out.println("<td>" + claim.getRationale() + "</td>");
                                                 out.println("<td>" + claim.getStatus() + "</td>");
                                                 out.println("<td>" + claim.getAmount() + "</td>");
+                                                out.println("<td>");
+                                                if(claim.getStatus().equals("SUBMITTED")){
+                                                    out.println("<div class=\"pull-right\">");
+                                                    out.println("<button class=\"btn btn-success btn-sm btn-circle\">");
+                                                    out.println("<span class=\"glyphicon glyphicon-ok\"></span>");
+                                                    out.println("</button>");
+                                                    out.println("<button class=\"btn btn-danger btn-sm btn-circle\">");
+                                                    out.println("<span class=\"glyphicon glyphicon-remove\"></span>");
+                                                    out.println("</button>");
+                                                    out.println("</div>");
+                                                }
+                                                out.println("<td>");
+                                                out.println("</td>");
                                                 out.println("</tr>");
                                             }
                                         }
@@ -233,6 +268,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!--Dimmer-->
+        <div class="modal fade" id="dimmer" tabindex="-1" role="dialog" 
+               aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
             </div>
         </div>
     </body>

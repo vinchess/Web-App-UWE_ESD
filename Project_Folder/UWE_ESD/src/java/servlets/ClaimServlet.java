@@ -47,7 +47,7 @@ public class ClaimServlet extends HttpServlet{
             if (addClaimReturn)
             {
                 session.setAttribute("success", "Claim added successfully"); //set success message
-                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
             }
             
@@ -55,7 +55,7 @@ public class ClaimServlet extends HttpServlet{
             else 
             {
                 session.setAttribute("error", "Error adding claim"); //set error message 
-                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
             }
         }

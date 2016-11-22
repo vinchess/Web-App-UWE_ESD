@@ -50,7 +50,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>loginservlet</servlet-name>
-        <url-pattern>/logins</url-pattern>
+        <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -58,7 +58,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PaymentServlet</servlet-name>
-        <url-pattern>/PaymentServlet</url-pattern>
+        <url-pattern>/dashboard/payment</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminLoginServlet</servlet-name>
@@ -70,7 +70,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ClaimServlet</servlet-name>
-        <url-pattern>/ClaimS</url-pattern>
+        <url-pattern>/dashboard/claim</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChargeMembershipServlet</servlet-name>

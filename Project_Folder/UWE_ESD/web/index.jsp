@@ -70,7 +70,7 @@
                     <div class="modal-body">
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade active in" id="signin">
-                                <form class="form-horizontal" action="logins" method="POST">
+                                <form class="form-horizontal" action="dashboard" method="POST">
                                     <fieldset>
                                         <div class="form-group focus">
                                             <label class="col-sm-4 control-label" for="userid">Username:</label>
@@ -181,8 +181,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for="userid">Username:</label>
                                         <div class="col-sm-8 controls">
-                                            <input required="" id="userid" name="userid" type="text" class="form-control" 
-                                                 placeholder="username" class="input-medium" required="">
+                                            <input id="userid" name="userid" type="text" class="form-control" 
+                                                 placeholder="username" class="input-medium" focused required>
                                         </div>
                                     </div>
                                     <div class="form-group">

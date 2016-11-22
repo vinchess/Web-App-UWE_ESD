@@ -23,6 +23,9 @@
         <%@ page import="user.User" %>
         <%! User user;%>
         <% user = (User)session.getAttribute("user");%>
+        <%! PaymentDAO payments = new PaymentDAO();%>
+        <%! ClaimDAO claims = new ClaimDAO();%>
+        
     </head>
     <body>
         <div class="container">
@@ -50,7 +53,7 @@
                 session.setAttribute("success", null);
             %>
             <div class="col-md-3 text-center">
-                <img src="assets/user_icon.png" height="150px">
+                <img src="/UWE_ESD/assets/user_icon.png" height="150px">
                     <h2><%=user.getFirstName()+" "+user.getLastName()%></h2>
                     <h3>Balance &#163;<%=String.format("%.2f",Double.parseDouble((new MemberDAO().getColumn(user.getID(),"balance"))))%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
@@ -91,7 +94,7 @@
                     </button>
                     <button type="button" class="btn btn-default btn-block" 
                             data-toggle="modal" data-target="#logout"
-                            aria-label="Left Align" onClick="location.href='LogoutServlet'">
+                            aria-label="Left Align" onClick="location.href='/UWE_ESD/LogoutServlet'">
                         
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-off"></span> 
@@ -132,7 +135,6 @@
                                     out.println("<th>Amount</th>");
                                     out.println("<th>Date</th>");
                                     out.println("</tr>");
-                                    PaymentDAO payments = new PaymentDAO();
                                     try{
                                         List list = payments.getRecordsById(user);
                                         if(list.isEmpty()){
@@ -168,7 +170,6 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
                             <%
-                                    //User user = (User)session.getAttribute("user");
                                     out.println("<table class=\"table\" >");
                                     out.println("<tr>");
                                     out.println("<th>#</th>");
@@ -178,7 +179,6 @@
                                     out.println("<th>Status</th>");
                                     out.println("<th>Amount</th>");
                                     out.println("</tr>");
-                                    ClaimDAO claims = new ClaimDAO();
                                     try{
                                         List claimList = claims.getClaimsById(user);
                                         if(claimList.isEmpty()){
@@ -238,7 +238,7 @@
                             </div>
                         <div class="panel-body">
                             <form role="form" id="payment-form" 
-                                  action="PaymentServlet" method="POST" >
+                                  action="dashboard/payment" method="POST" >
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
@@ -330,7 +330,7 @@
                     <div class="modal-body">
                         <p class="text-justify">By submitting this request, you agree to our terms and conditions under the clause "Claims".</p>
                         
-                        <form action="ClaimS" method="POST">
+                        <form action="dashboard/claim" method="POST">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
