@@ -8,10 +8,12 @@ package servlets;
 import database.RegistrationDAO;
 import user.Registration;
 import java.sql.*;
+import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,34 +42,50 @@ public class RegistrationServlet extends HttpServlet {
             HttpSession session = request.getSession();
             
             String password = request.getParameter("password");
+            String repassword = request.getParameter("reenterpassword");
             String firstName = request.getParameter("firstname");
             String lastName = request.getParameter("lastname");
             String address = request.getParameter("address");
             String dob = request.getParameter("dob");
             
-            Registration newUser = new Registration(password,firstName,lastName,address,dob);
-            //session.setAttribute("newUser", newUser);
+            List list = new ArrayList();
+            list.add(new Cookie("firstname",firstName));
+            list.add(new Cookie("lastname",lastName));
+            list.add(new Cookie("address",address));
+            list.add(new Cookie("dob",dob));
+            for(Object e:list){
+                ((Cookie)e).setMaxAge(20*60);
+                response.addCookie((Cookie)e);
+            }
             
-            RegistrationDAO register = new RegistrationDAO();
-            try{
-                if(register.checkExist(newUser.getID())){
-                    String error = "It seems user already exist. Contact our helpdesk for assistance.";
-                    session.setAttribute("error", error);
-                    response.sendRedirect("/UWE_ESD");
-                }else{
-                    try{
-                        String registerResult;
-                        registerResult = register.RegisterUser(newUser);
-                        session.setAttribute("success", registerResult);
-                        response.sendRedirect("/UWE_ESD");
-                    }catch (SQLException se){
-                        String error = "There seem to be a problem registering your details. Try again later.";
+            if(password.equals(repassword)){
+                Registration newUser = new Registration(password,firstName,lastName,address,dob);
+
+                RegistrationDAO register = new RegistrationDAO();
+                try{
+                    if(register.checkExist(newUser.getID())){
+                        String error = "It seems user already exist. Contact our helpdesk for assistance.";
                         session.setAttribute("error", error);
                         response.sendRedirect("/UWE_ESD");
-                    } 
+                    }else{
+                        try{
+                            String registerResult;
+                            registerResult = register.RegisterUser(newUser);
+                            session.setAttribute("success", registerResult);
+                            response.sendRedirect("/UWE_ESD");
+                        }catch (SQLException se){
+                            String error = "There seem to be a problem registering your details. Try again later.";
+                            session.setAttribute("error", error);
+                            response.sendRedirect("/UWE_ESD");
+                        } 
+                    }
+                }catch(SQLException se){
+                    String error = "Error establishing connection with database. Try again later.";
+                    session.setAttribute("error", error);
+                    response.sendRedirect("/UWE_ESD");
                 }
-            }catch(SQLException se){
-                String error = "Error establishing connection with database. Try again later.";
+            }else{
+                String error = "Password not identical,try again.";
                 session.setAttribute("error", error);
                 response.sendRedirect("/UWE_ESD");
             }
