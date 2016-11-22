@@ -61,8 +61,6 @@ public class ClaimDAO extends JDBC {
             
         return list;
     }   
-    
-    
     public boolean add_claim(String userid, Double claimAmount, String claimRational){
         try{
             //get connection
@@ -83,6 +81,17 @@ public class ClaimDAO extends JDBC {
         }
         //else return false if unsuccessfull
         return false;
+    }
+    public void updateClaim(String user, String status){
+        conn = getConnection();
+        String sql = "UPDATE claims SET status='" + status + "' WHERE mem_id='"+ user + "';";
+        try{
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("OPS");
+        }
     }
 }
 

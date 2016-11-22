@@ -134,5 +134,16 @@ public class MemberDAO<E> extends JDBC{
             System.out.println("SQL error occurred. " + se.getMessage());
         }
         return result;
+    }//end getColumn
+    public void updateStatus(String user, String status){
+        conn = getConnection();
+        String sql = "UPDATE members SET status='" + status + "' WHERE id='"+ user + "';";
+        try{
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("OPS");
+        }
     }
 }

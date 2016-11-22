@@ -44,6 +44,14 @@
         <servlet-name>ChargeMembershipServlet</servlet-name>
         <servlet-class>servlets.ChargeMembershipServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HandleStatusServlet</servlet-name>
+        <servlet-class>servlets.HandleStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HandleClaimsServlet</servlet-name>
+        <servlet-class>servlets.HandleClaimsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -75,6 +83,14 @@
     <servlet-mapping>
         <servlet-name>ChargeMembershipServlet</servlet-name>
         <url-pattern>/charge-members</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HandleStatusServlet</servlet-name>
+        <url-pattern>/update-status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HandleClaimsServlet</servlet-name>
+        <url-pattern>/update-claims</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

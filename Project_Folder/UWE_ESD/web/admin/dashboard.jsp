@@ -113,6 +113,7 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
+                            <br>
                             <div class="col-md-6">
                                 <center>
                                 <div class="panel panel-primary">
@@ -123,7 +124,21 @@
                                         
                                         <%
                                             List memlist = member.getAllRecords();
+                                            int applied = 0,approved = 0,suspended = 0;
                                             out.println("<h1 style=\"font-size:70px;\">"+memlist.size()+"</h1>");
+                                            for(Object e:memlist){
+                                                switch(((User)e).isUserValid()){
+                                                    case "APPLIED":
+                                                        applied++;break;
+                                                    case "APPROVED":
+                                                        approved++;break;
+                                                    case "SUSPENDED":
+                                                        suspended++;break;
+                                                }
+                                            }
+                                            out.println("<h3 class=\"text-warning\">APPLIED<span class=\"badge\">"+applied+"</span></h3>");//APPLIED
+                                            out.println("<h3 class=\"text-success\">APPROVED<span class=\"badge\">"+approved+"</span></h3>");//APPROVED
+                                            out.println("<h3 class=\"text-danger\">SUSPENDED<span class=\"badge\">"+suspended+"</span></h3>");//SUSPENDED
                                         %>
                                     </div>
                                 </div>
@@ -151,7 +166,7 @@
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
-                                            out.println("<h3>Fee : &#163;"+String.format("%.2f", totalClaims/size)+"</h3>");
+                                            out.println("<h3>Fee : &#163;"+String.format("%.2f", totalClaims/(member.getAllRecords().size()))+"</h3>");
                                         %>
                                         <form action="charge-members" method="POST">
                                             <button class="btn btn-primary btn-block">Charge Membership</button>
@@ -162,6 +177,7 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="users">
+                            <br>
                                 <%
                                     out.println("<table class=\"table\" >");
                                     out.println("<tr>");
@@ -180,7 +196,7 @@
 
                                     if(list.isEmpty()){
                                         out.println("<tr>");
-                                        out.println("<td>No Records Found</td>");
+                                        out.println("<td colspan=\"9\">No Records Found</td>");
                                         out.println("</tr>");
                                     }else{
                                         for(int i=0;i<list.size();i++){
@@ -201,11 +217,17 @@
                                             out.println("<td>" + user.isUserValid()+ "</td>");
                                             out.println("<td>&#163;" + user.getBalance() + "</td>");
                                             out.println("<td>");
+                                            out.println("<form action=\"update-status\" method=\"POST\">");
                                             if(user.isUserValid().equals("APPROVED")){
-                                                out.println("<button class=\"btn btn-default btn-sm\">SUSPEND</button>");
+                                                out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
+                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\""
+                                                        + "name=\"suspend\" value=\""+user.getID()+"\">SUSPEND</button>");
                                             }else{
-                                                out.println("<button class=\"btn btn-default btn-sm\">APPROVE</button>");
+                                                out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
+                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\""
+                                                        + "name=\"approve\" value=\""+user.getID()+"\">APPROVE</button>");
                                             }
+                                            out.println("</form>");
                                             out.println("</td>");
                                             out.println("</tr>");
                                         }
@@ -214,6 +236,7 @@
                                 %>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
+                            <br>
                             <%
                                     out.println("<table class=\"table\" >");
                                     out.println("<tr>");
@@ -229,11 +252,12 @@
                                         List claimlist = claim.getAllClaims();
                                         if(list.isEmpty()){
                                             out.println("<tr>");
-                                            out.println("<td>No Records Found</td>");
+                                            out.println("<td colspan=\"7\">No Records Found</td>");
                                             out.println("</tr>");
                                         }else{
                                             for(int i=0;i<claimlist.size();i++){
                                                 Claim claim = (Claim)claimlist.get(i);
+                                                String disabled = "";
                                                 out.println("<tr>");
                                                 out.println("<td>" + (i+1) + "</td>");
                                                 out.println("<td>" + claim.getMem_id() + "</td>");
@@ -242,16 +266,25 @@
                                                 out.println("<td>" + claim.getStatus() + "</td>");
                                                 out.println("<td>" + claim.getAmount() + "</td>");
                                                 out.println("<td>");
-                                                if(claim.getStatus().equals("SUBMITTED")){
+                                                out.println("<form action=\"update-claims\" method=\"POST\">");
+                                                if(!claim.getStatus().equals("SUBMITTED")){
+                                                    disabled = "disabled";
+                                                }
                                                     out.println("<div class=\"pull-right\">");
-                                                    out.println("<button class=\"btn btn-success btn-sm btn-circle\">");
+                                                    out.println("<button class=\"btn btn-success btn-sm btn-circle "+disabled+"\" type=\"submit\" "
+                                                            + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                            + "name=\"accepted\" value=\""+claim.getMem_id()+"\">");
                                                     out.println("<span class=\"glyphicon glyphicon-ok\"></span>");
                                                     out.println("</button>");
-                                                    out.println("<button class=\"btn btn-danger btn-sm btn-circle\">");
+                                                    
+                                                    out.println("<button class=\"btn btn-danger btn-sm btn-circle "+disabled+"\" type=\"submit\" "
+                                                            + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                            + "name=\"rejected\" value=\""+claim.getMem_id()+"\">");
                                                     out.println("<span class=\"glyphicon glyphicon-remove\"></span>");
                                                     out.println("</button>");
                                                     out.println("</div>");
-                                                }
+
+                                                out.println("</form>");
                                                 out.println("<td>");
                                                 out.println("</td>");
                                                 out.println("</tr>");
@@ -259,7 +292,7 @@
                                         }
                                     }catch(SQLException se){
                                         out.println("<tr>");
-                                        out.println("<td>Database connection error.</td>");
+                                        out.println("<td colspan=\"7\">Database connection error.</td>");
                                         out.println("</tr>");
                                     }
                                     
