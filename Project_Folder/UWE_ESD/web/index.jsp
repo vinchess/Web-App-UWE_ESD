@@ -80,6 +80,16 @@
                                                        type="text" 
                                                        class="form-control focus" 
                                                        placeholder="username"
+                                                       <%
+                                                           Cookie[] cookies = request.getCookies();
+
+                                                            for(int i = 0; i < cookies.length; i++) { 
+                                                                Cookie c = cookies[i];
+                                                                if (c.getName().equals("userid")) {
+                                                                    out.println("value=\"" + c.getValue() + "\"");
+                                                                }
+                                                            }  
+                                                       %>
                                                        required>
                                             </div>
                                         </div>
