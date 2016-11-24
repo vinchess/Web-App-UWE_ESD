@@ -78,6 +78,11 @@ public class RegistrationServlet extends HttpServlet {
                             session.setAttribute("error", error);
                             response.sendRedirect("/UWE_ESD");
                         } 
+                        catch (IOException e){
+                            String error = "Address entered is invalid. Please try again later";
+                            session.setAttribute("error", error);
+                            response.sendRedirect("/UWE_ESD");
+                        }
                     }
                 }catch(SQLException se){
                     String error = "Error establishing connection with database. Try again later.";
