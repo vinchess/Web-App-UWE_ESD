@@ -166,6 +166,7 @@
                                                 <input id="dob" name="dob" 
                                                        class="form-control" 
                                                        type="date"
+                                                       max="2016-01-01"
                                                        <%
                                                            for(Cookie c:cookies){
                                                                if (c.getName().equals("dob")) {

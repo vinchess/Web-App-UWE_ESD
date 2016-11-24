@@ -288,10 +288,11 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <label for="couponCode">Amount</label>
-                                            <input type="tel" 
+                                            <input type="number" 
                                                    id="couponCode"
                                                    class="form-control"
                                                    name="payAmount"
+                                                   min="0.01"
                                                    placeholder="0.00"
                                                    autocomplete="amount"
                                                    required />
@@ -345,7 +346,8 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <label for="amount">Amount</label>
-                                        <input type="text" 
+                                        <input type="number" 
+                                               min="0.01"
                                                class="form-control" 
                                                name="claimAmount"
                                                placeholder="0.00"
@@ -412,7 +414,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="dob">Date of Birth:</label>
                                             <% 
-                                                out.println("<input id=\"dob\" name=\"dob\" class=\"form-control\""+
+                                                out.println("<input id=\"dob\" name=\"dob\" class=\"form-control\" max=\"2016-01-01\" "+
                                                         "type=\"date\" value=\"" + user.getDOB() + "\" required>");
                                             %>
                                         </div>
