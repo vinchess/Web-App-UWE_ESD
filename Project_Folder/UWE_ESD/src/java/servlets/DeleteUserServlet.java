@@ -7,22 +7,19 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
 import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import database.PaymentDAO;
-import database.MemberDAO;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import database.MemberDAO;
 
 /**
  *
  * @author Vincent
  */
-public class ChargeMembershipServlet extends HttpServlet {
+public class DeleteUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,23 +34,17 @@ public class ChargeMembershipServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            double amount = (Double)session.getAttribute("amount");
-            PaymentDAO charge = new PaymentDAO();
-            MemberDAO members = new MemberDAO();
             
-            List list = members.getAllRecords();
+            String username = request.getParameter("username");
+            MemberDAO member = new MemberDAO();
             try{
-                charge.chargePayment(list, amount);
+                session.setAttribute("success", member.deleteUser(username)); //set success message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD"); //redirect back to main page
             }catch(SQLException se){
-                session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
-                RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-                rd.forward(request, response);
+                session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD"); //redirect back to main page
             }
-            session.setAttribute("success", "All members charged.");
-            RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-            rd.forward(request, response);
         }
     }
 

@@ -461,17 +461,17 @@
                         Delete Account
                     </div>
                     <div class="modal-body">
-                        <p class="text-justify">Are you sure you want to delete your membership? To confirm, type in your full name.</p>
+                        <p class="text-justify">Are you sure you want to delete your membership? To confirm, type in your username.</p>
                         
-                        <form action="#" method="POST">
+                        <form action="delete-account" method="POST">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
-                                        <label for="amount">Full Name</label>
+                                        <label for="amount">Username</label>
                                         <input type="text" 
                                                class="form-control" 
-                                               name="fullname"
-                                               placeholder="Your Name"
+                                               name="username"
+                                               placeholder="username"
                                                required />
                                     </div>
                                 </div>                        

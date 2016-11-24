@@ -145,5 +145,34 @@ public class MemberDAO<E> extends JDBC{
         }catch(SQLException se){
             System.out.println("OPS");
         }
-    }
+    }//end updateStatus
+    
+    public String deleteUser(String id)throws SQLException{
+        String result = "";
+        conn = getConnection();
+        
+        stmt = conn.createStatement();
+        
+        conn.setAutoCommit(false);
+
+        stmt.addBatch("DELETE FROM users WHERE id='" + id + "';");
+        stmt.addBatch("UPDATE members SET status='DELETED' WHERE id='" + id + "';");
+
+        int[] updateResult = stmt.executeBatch();
+
+        if(checkResult(updateResult)){
+            conn.commit();
+            result = "User " + id + " has been deleted.";
+        }else{
+            conn.close();
+            throw new SQLException("Commit Failed");
+        }
+        conn.close();
+        return result;
+    }//end deleteUser
+    
+    private boolean checkResult(int[] updateResults){
+        for(int i : updateResults) if(i!=1) return false;
+        return true;
+    }//end checkResult 
 }
