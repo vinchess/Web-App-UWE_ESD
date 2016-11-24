@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -51,7 +52,7 @@ public class RegistrationServlet extends HttpServlet {
             List list = new ArrayList();
             list.add(new Cookie("firstname",firstName));
             list.add(new Cookie("lastname",lastName));
-            list.add(new Cookie("address",address));
+            list.add(new Cookie("address",URLEncoder.encode(address, "UTF-8")));
             list.add(new Cookie("dob",dob));
             for(Object e:list){
                 ((Cookie)e).setMaxAge(20*60);

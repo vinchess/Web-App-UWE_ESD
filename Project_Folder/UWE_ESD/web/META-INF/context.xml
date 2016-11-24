@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/UWE_ESD"/>
+<Context antiJARLocking="true" path="/UWE_ESD">
+
+@Bean
+public EmbeddedServletContainerCustomizer customizer() {
+    return container -> {
+        if (container instanceof TomcatEmbeddedServletContainerFactory) {
+            TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+            tomcat.addContextCustomizers(context -> context.setCookieProcessor(new LegacyCookieProcessor()));
+        }
+    };
+}
+</Context>

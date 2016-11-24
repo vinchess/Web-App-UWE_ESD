@@ -4,6 +4,7 @@
     Author     : Vincent
 --%>
 
+<%@page import="java.net.URLDecoder"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
 <!DOCTYPE html>
@@ -154,7 +155,7 @@
                                                           required><%
                                                         for(Cookie c:cookies){
                                                             if (c.getName().equals("address")) {
-                                                                 out.println(c.getValue());
+                                                                 out.println(URLDecoder.decode(c.getValue(), "UTF-8"));
                                                              }
                                                         } 
                                                     %></textarea>

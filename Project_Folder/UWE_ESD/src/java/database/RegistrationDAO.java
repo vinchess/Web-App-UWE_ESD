@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -42,14 +43,14 @@ public class RegistrationDAO extends JDBC{
         
         boolean geoCheck = geolocationCheck(newUser);
         //GeoLocation check 
-        if(!geoCheck)
+        if(!geoCheck) //if address is invalid 
         {
-            conn.close();
-            throw new IOException("Address entered invalid");
+            conn.close(); //close DB connection
+            throw new IOException("Address entered invalid");   //throw IOException to catch 
         }
-        stmt = conn.createStatement();
+        stmt = conn.createStatement();  //create SQL statement
         
-        conn.setAutoCommit(false);
+        conn.setAutoCommit(false); // do not commmit SQL statement immediately 
 
         stmt.addBatch("INSERT INTO users VALUES('" + newUser.getID() + "','" + 
                 newUser.getPassword() + "','APPLIED');");
@@ -66,7 +67,7 @@ public class RegistrationDAO extends JDBC{
             throw new SQLException("Commit Failed");
         }
             
-        conn.close();
+        conn.close(); //close connection
 
         return result;
     }
@@ -76,42 +77,23 @@ public class RegistrationDAO extends JDBC{
     }//end checkResult 
     
     public boolean geolocationCheck(Registration newUser){
-        String url;
         try {
-            url = "https://maps.googleapis.com/maps/api/geocode/xml?address=" + newUser.getAddress() + "&key=AIzaSyDA2g2qxIuSTRXP69avdduFwJocW5zozQE";
+            String userAddress = newUser.getAddress(); //get user address from User class
+            URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(userAddress, "UTF-8") + "&key=AIzaSyDA2g2qxIuSTRXP69avdduFwJocW5zozQE");
+            String out = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next();
              
-            String content = getText(url);
+             Pattern pattern = Pattern.compile("<status>(\\w+)</status>"); //compile Regex pattern 
+             Matcher match = pattern.matcher(out); //execute Regex match
              
-             Pattern pattern = Pattern.compile("<status>(\\w+)</status>");
-             Matcher match = pattern.matcher(content);
-             
-             while (match.find()) {
+             while (match.find()) {     //loop through results
                 String find = match.group(1);
-                if (find.equals("OK")){
+                if (find.equals("OK")){ //if found <status>OK</status>
                     return true;
-                }
-            }
-
+                }// end IF
+            }//end WHILE
         } catch (Exception ex) {
             System.out.println("URL CHECK ERROR");
-        }
-        return false;
+        } //END TRY
+        return false; //if address is invalid 
     }
-    
-    public static String getText(String url) throws Exception {
-        URL website = new URL(url);
-        URLConnection connection = website.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-
-        while ((inputLine = in.readLine()) != null) 
-            response.append(inputLine);
-
-        in.close();
-
-        return response.toString();
-    }
-
 }
