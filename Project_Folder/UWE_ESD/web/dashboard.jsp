@@ -64,8 +64,9 @@
                             PAY
                         </div>
                     </button>
-                    <button type="button" class="btn btn-primary btn-block <%if(user.isUserValid().equals("SUSPENDED"))out.println("disabled");%>" 
-                            data-toggle="modal" data-target="#claim" aria-label="Left Align">
+                    <button type="button" class="btn btn-primary btn-block" 
+                            data-toggle="modal" data-target="#claim" aria-label="Left Align"  
+                            <%if(!user.isUserValid().equals("APPROVED"))out.println("disabled");%>>
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-pencil"></span> 
                         </div>
