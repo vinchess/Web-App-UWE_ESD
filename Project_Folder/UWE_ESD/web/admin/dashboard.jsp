@@ -5,6 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="user.User" %>
+<%@ page import="user.Claim" %>
+<%@ page import="database.MemberDAO" %>
+<%@ page import="database.ClaimDAO" %>
+<%! MemberDAO member;%>
+<%! ClaimDAO claim;%>
+<% member = new MemberDAO();%>
+<% claim = new ClaimDAO();%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,42 +25,33 @@
         <%@include file="/lib/bootstrap.html" %>
         <%@include file="/lib/banner.html" %>
         
-        <%@ page import="java.util.*" %>
-        <%@ page import="java.sql.*" %>
-        <%@ page import="user.User" %>
-        <%@ page import="user.Claim" %>
-        <%@ page import="database.MemberDAO" %>
-        <%@ page import="database.ClaimDAO" %>
-        <%! MemberDAO member;%>
-        <%! ClaimDAO claim;%>
-        <% member = new MemberDAO();%>
-        <% claim = new ClaimDAO();%>
+        
     </head>
     <body>
         <div class="container">
             <%
-                    String error = (String)session.getAttribute("error");
-                    if(error!=null){
-                        out.println("<div class=\"alert alert-danger\" role=\"alert\">");
-                        out.println(error);
-                        out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
-                         out.println("<span aria-hidden=\"true\">&times;</span>");
-                        out.println("</button>");
-                        out.println("</div>");
-                    }
-                    session.setAttribute("error", null);
-                    
-                    String success = (String)session.getAttribute("success");
-                    if(success!=null){
-                        out.println("<div class=\"alert alert-success\" role=\"alert\">");
-                        out.println(success);
-                        out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
-                         out.println("<span aria-hidden=\"true\">&times;</span>");
-                        out.println("</button>");
-                        out.println("</div>");
-                    }
-                    session.setAttribute("success", null);
-                %>
+                String error = (String)session.getAttribute("error");
+                if(error!=null){
+                    out.println("<div class=\"alert alert-danger\" role=\"alert\">");
+                    out.println(error);
+                    out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                    out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("</button>");
+                    out.println("</div>");
+                }
+                session.removeAttribute("error");
+
+                String success = (String)session.getAttribute("success");
+                if(success!=null){
+                    out.println("<div class=\"alert alert-success\" role=\"alert\">");
+                    out.println(success);
+                    out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
+                    out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("</button>");
+                    out.println("</div>");
+                }
+                session.removeAttribute("success");
+            %>
             <div class="col-md-3 ">
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
@@ -121,11 +123,11 @@
                                         <h3 class="panel-title">Total Members</h3>
                                     </div>
                                     <div class="panel-body">
-                                        
                                         <%
                                             List memlist = member.getAllRecords();
-                                            int applied = 0,approved = 0,suspended = 0;
                                             out.println("<h1 style=\"font-size:70px;\">"+memlist.size()+"</h1>");
+                                                            
+                                            int applied = 0,approved = 0,suspended = 0;
                                             for(Object e:memlist){
                                                 switch(((User)e).isUserValid()){
                                                     case "APPLIED":
@@ -136,10 +138,21 @@
                                                         suspended++;break;
                                                 }
                                             }
-                                            out.println("<h3 class=\"text-warning\">APPLIED<span class=\"badge\">"+applied+"</span></h3>");//APPLIED
-                                            out.println("<h3 class=\"text-success\">APPROVED<span class=\"badge\">"+approved+"</span></h3>");//APPROVED
-                                            out.println("<h3 class=\"text-danger\">SUSPENDED<span class=\"badge\">"+suspended+"</span></h3>");//SUSPENDED
                                         %>
+                                        <div class="col-md-9 text-left">
+                                            <%
+                                                out.println("<h3 class=\"text-warning\">APPLIED</h3>");//APPLIED
+                                                out.println("<h3 class=\"text-success\">APPROVED</h3>");//APPROVED
+                                                out.println("<h3 class=\"text-danger\">SUSPENDED</h3>");//SUSPENDED
+                                            %>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <%
+                                                out.println("<h3 class=\"text-warning\">"+applied+"</h3>");//APPLIED
+                                                out.println("<h3 class=\"text-success\">"+approved+"</h3>");//APPROVED
+                                                out.println("<h3 class=\"text-danger\">"+suspended+"</h3>");//SUSPENDED
+                                            %>
+                                        </div>
                                     </div>
                                 </div>
                                 </center>
@@ -166,7 +179,8 @@
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
-                                            out.println("<h3>Fee : &#163;"+String.format("%.2f", totalClaims/(member.getAllRecords().size()))+"</h3>");
+                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/(member.getAllRecords().size()))+"</h3>");
+                                            out.println("<h3>Fees : &#163; 10.00</h3>");
                                         %>
                                         <form action="charge-members" method="POST">
                                             <button class="btn btn-primary btn-block">Charge Membership</button>
@@ -191,7 +205,6 @@
                                     out.println("<th>Balance</th>");
                                     out.println("<th></th>");
                                     out.println("</tr>");
-                                    MemberDAO member = new MemberDAO();
                                     List list = member.getAllRecords();
 
                                     if(list.isEmpty()){
@@ -270,20 +283,19 @@
                                                 if(!claim.getStatus().equals("SUBMITTED")){
                                                     disabled = "disabled";
                                                 }
-                                                    out.println("<div class=\"pull-right\">");
-                                                    out.println("<button class=\"btn btn-success btn-sm btn-circle "+disabled+"\" type=\"submit\" "
-                                                            + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                            + "name=\"accepted\" value=\""+claim.getMem_id()+"\">");
-                                                    out.println("<span class=\"glyphicon glyphicon-ok\"></span>");
-                                                    out.println("</button>");
-                                                    
-                                                    out.println("<button class=\"btn btn-danger btn-sm btn-circle "+disabled+"\" type=\"submit\" "
-                                                            + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                            + "name=\"rejected\" value=\""+claim.getMem_id()+"\">");
-                                                    out.println("<span class=\"glyphicon glyphicon-remove\"></span>");
-                                                    out.println("</button>");
-                                                    out.println("</div>");
+                                                out.println("<div class=\"pull-right\">");
+                                                out.println("<button class=\"btn btn-success btn-sm btn-circle "+disabled+"\" type=\"submit\" "
+                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                        + "name=\"accepted\" value=\""+claim.getId()+"\">");
+                                                out.println("<span class=\"glyphicon glyphicon-ok\"></span>");
+                                                out.println("</button>");
 
+                                                out.println("<button class=\"btn btn-danger btn-sm btn-circle "+disabled+"\" type=\"submit\" "
+                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                        + "name=\"rejected\" value=\""+claim.getId()+"\">");
+                                                out.println("<span class=\"glyphicon glyphicon-remove\"></span>");
+                                                out.println("</button>");
+                                                out.println("</div>");
                                                 out.println("</form>");
                                                 out.println("<td>");
                                                 out.println("</td>");
@@ -306,8 +318,7 @@
         <!--Dimmer-->
         <div class="modal fade" id="dimmer" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            </div>
+            <div class="modal-dialog"></div>
         </div>
     </body>
     <%@include file="/lib/footer.html" %>

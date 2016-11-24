@@ -6,6 +6,7 @@ package user;
  */
 public class Claim {
     
+    private int id;
     private String mem_id;
     private String date;
     private String rationale;
@@ -17,7 +18,8 @@ public class Claim {
     public Claim(String status,double balance,int max_claim){
         
     }
-    public Claim(String mem_id, String date, String rationale, String status, double amount){
+    public Claim(int id,String mem_id, String date, String rationale, String status, double amount){
+        this.id = id;
         this.mem_id = mem_id;
         this.date = date;
         this.rationale = rationale;
@@ -29,6 +31,13 @@ public class Claim {
         return status;
     }
 
+    public void setId(int id){
+        this.id = id;
+    }
+    public int getId(){
+        return this.id;
+    }
+    
     public void setStatus(String status) {
         this.status = status;
     }

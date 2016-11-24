@@ -41,9 +41,9 @@ public class HandleClaimsServlet extends HttpServlet {
             ClaimDAO updateClaim = new ClaimDAO();
             
             if(accepted!=null){
-                updateClaim.updateClaim(accepted, "ACCEPTED");
+                updateClaim.updateClaim(Integer.parseInt(accepted), "ACCEPTED");
             }else if(rejected!=null){
-                updateClaim.updateClaim(rejected, "REJECTED");
+                updateClaim.updateClaim(Integer.parseInt(rejected), "REJECTED");
             }
             RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
             rd.forward(request, response);

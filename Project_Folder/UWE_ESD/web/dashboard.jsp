@@ -4,28 +4,27 @@
     Author     : Vincent
 --%>
 
+<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="user.Payments" %>
+<%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
 <%@ page import="database.ClaimDAO"%>
 <%@ page import="database.PaymentDAO" %>
 <%@ page import="database.MemberDAO" %>
+<%! User user;%>
+<% user = (User)session.getAttribute("user");%>
+<%! PaymentDAO payments = new PaymentDAO();%>
+<%! ClaimDAO claims = new ClaimDAO();%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Dashboard</title>
-        <%@include file="/lib/bootstrap.html" %>
-        <%@include file="/lib/banner.html" %>
-        <%@ page import="java.util.*" %>
-        <%@ page import="java.sql.*" %>
-        
-        <%@ page import="user.Payments" %>
-        <%@ page import="user.User" %>
-        <%! User user;%>
-        <% user = (User)session.getAttribute("user");%>
-        <%! PaymentDAO payments = new PaymentDAO();%>
-        <%! ClaimDAO claims = new ClaimDAO();%>
-        
+        <%@include file="/lib/bootstrap.html" %><!--call in bootstrap imports html-->
+        <%@include file="/lib/banner.html" %><!--call in banner html-->   
     </head>
     <body>
         <div class="container">
@@ -35,7 +34,7 @@
                     out.println("<div class=\"alert alert-danger\" role=\"alert\">");
                     out.println(error);
                     out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
-                     out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("<span aria-hidden=\"true\">&times;</span>");
                     out.println("</button>");
                     out.println("</div>");
                 }
@@ -46,7 +45,7 @@
                     out.println("<div class=\"alert alert-success\" role=\"alert\">");
                     out.println(success);
                     out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">");
-                     out.println("<span aria-hidden=\"true\">&times;</span>");
+                    out.println("<span aria-hidden=\"true\">&times;</span>");
                     out.println("</button>");
                     out.println("</div>");
                 }
@@ -65,7 +64,7 @@
                             PAY
                         </div>
                     </button>
-                    <button type="button" class="btn btn-primary btn-block" 
+                    <button type="button" class="btn btn-primary btn-block <%if(user.isUserValid().equals("SUSPENDED"))out.println("disabled");%>" 
                             data-toggle="modal" data-target="#claim" aria-label="Left Align">
                         <div class="col-md-1">
                             <span class="glyphicon glyphicon-pencil"></span> 
@@ -127,46 +126,46 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
                             <%
-                                    out.println("<table class=\"table\" >");
-                                    out.println("<tr>");
-                                    out.println("<th>#</th>");
-                                    out.println("<th>ID</th>");
-                                    out.println("<th>Payment Type</th>");
-                                    out.println("<th>Amount</th>");
-                                    out.println("<th>Date</th>");
-                                    out.println("</tr>");
-                                    try{
-                                        List list = payments.getRecordsById(user);
-                                        if(list.isEmpty()){
-                                            out.println("<tr>");
-                                            out.println("<td>No Records Found</td>");
-                                            out.println("</tr>");
-                                        }else{
-                                            for(int i=0;i<list.size();i++){
-                                                Payments payment = (Payments)list.get(i);
-                                                out.println("<tr>");
-                                                out.println("<td>" + (i+1) + "</td>");
-                                                out.println("<td>" + payment.getId() + "</td>");
-                                                out.println("<td>" + payment.getType() + "</td>");
-                                                out.println("<td>" + payment.getAmount() + "</td>");
-                                                out.println("<td>" + payment.getDate() + "</td>");
-                                                out.println("</tr>");
-                                            }
-                                        }
-                                    }catch(SQLException se){
+                                out.println("<table class=\"table\" >");
+                                out.println("<tr>");
+                                out.println("<th>#</th>");
+                                out.println("<th>ID</th>");
+                                out.println("<th>Payment Type</th>");
+                                out.println("<th>Amount</th>");
+                                out.println("<th>Date</th>");
+                                out.println("</tr>");
+                                try{
+                                    List list = payments.getRecordsById(user);
+                                    if(list.isEmpty()){
                                         out.println("<tr>");
-                                        out.println("<td>Database connection error.</td>");
+                                        out.println("<td colspan=\"5\">No Records Found</td>");
                                         out.println("</tr>");
+                                    }else{
+                                        for(int i=0;i<list.size();i++){
+                                            Payments payment = (Payments)list.get(i);
+                                            out.println("<tr>");
+                                            out.println("<td>" + (i+1) + "</td>");
+                                            out.println("<td>" + payment.getId() + "</td>");
+                                            out.println("<td>" + payment.getType() + "</td>");
+                                            out.println("<td>" + payment.getAmount() + "</td>");
+                                            out.println("<td>" + payment.getDate() + "</td>");
+                                            out.println("</tr>");
+                                        }
                                     }
-                                    
+                                }catch(SQLException se){
                                     out.println("<tr>");
-                                    out.println("<td colspan=\"5\" align=\"right\">");
-                                    out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
-                                    out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
-                                    out.println("</button>");
+                                    out.println("<td>Database connection error.</td>");
                                     out.println("</tr>");
-                                    out.println("</table>");
-                                %>
+                                }
+
+                                out.println("<tr>");
+                                out.println("<td colspan=\"5\" align=\"right\">");
+                                out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
+                                out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
+                                out.println("</button>");
+                                out.println("</tr>");
+                                out.println("</table>");
+                            %>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
                             <%
@@ -183,7 +182,7 @@
                                         List claimList = claims.getClaimsById(user);
                                         if(claimList.isEmpty()){
                                             out.println("<tr>");
-                                            out.println("<td>No Records Found</td>");
+                                            out.println("<td colspan=\"6\">No Records Found</td>");
                                             out.println("</tr>");
                                         }else{
                                             for(int i=0;i<claimList.size();i++){
@@ -200,7 +199,7 @@
                                         }
                                     }catch(SQLException se){
                                         out.println("<tr>");
-                                        out.println("<td>Database connection error.</td>");
+                                        out.println("<td colspan=\"6\">Database connection error.</td>");
                                         out.println("</tr>");
                                     }
                                     
@@ -216,8 +215,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
+        </div>       
         <!--Payment Modal-->
         <div class="modal fade bs-modal-sm" id="payment" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -260,15 +258,17 @@
                                 <div class="row">
                                     <div class="col-xs-7 col-md-7">
                                         <div class="form-group">
-                                            <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                            <label for="cardExpiry">
+                                                <span class="hidden-xs">EXPIRATION</span>
+                                                <span class="visible-xs-inline">EXP</span> DATE
+                                            </label>
                                             <input 
                                                 type="tel" 
                                                 class="form-control" 
                                                 name="cardExpiry"
                                                 placeholder="MM / YY"
                                                 autocomplete="cc-exp"
-                                                required 
-                                            />
+                                                required />
                                         </div>
                                     </div>
                                     <div class="col-xs-5 col-md-5 pull-right">
@@ -280,8 +280,7 @@
                                                 name="cardCVC"
                                                 placeholder="CVC"
                                                 autocomplete="cc-csc"
-                                                required
-                                            />
+                                                required />
                                         </div>
                                     </div>
                                 </div>
@@ -295,8 +294,7 @@
                                                    name="payAmount"
                                                    placeholder="0.00"
                                                    autocomplete="amount"
-                                                   required
-                                            />
+                                                   required />
                                         </div>
                                     </div>                        
                                 </div>
@@ -471,8 +469,7 @@
                                                class="form-control" 
                                                name="fullname"
                                                placeholder="Your Name"
-                                               required
-                                        />
+                                               required />
                                     </div>
                                 </div>                        
                             </div>

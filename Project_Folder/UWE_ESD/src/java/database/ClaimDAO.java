@@ -25,6 +25,7 @@ public class ClaimDAO extends JDBC {
         while(rs.next()){
             //get all data fields in Claims table
             list.add(new Claim(
+                    Integer.parseInt(rs.getString("id")),
                     rs.getString("mem_id"),
                     rs.getString("date"),
                     rs.getString("rationale"),
@@ -50,6 +51,7 @@ public class ClaimDAO extends JDBC {
         while(rs.next()){
             //get all data fields in Claims table
             list.add(new Claim(
+                    Integer.parseInt(rs.getString("id")),
                     rs.getString("mem_id"),
                     rs.getString("date"),
                     rs.getString("rationale"),
@@ -82,9 +84,9 @@ public class ClaimDAO extends JDBC {
         //else return false if unsuccessfull
         return false;
     }
-    public void updateClaim(String user, String status){
+    public void updateClaim(int id, String status){
         conn = getConnection();
-        String sql = "UPDATE claims SET status='" + status + "' WHERE mem_id='"+ user + "';";
+        String sql = "UPDATE claims SET status='" + status + "' WHERE id="+ id + ";";
         try{
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
