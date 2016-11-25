@@ -293,7 +293,7 @@
                                                    id="couponCode"
                                                    class="form-control"
                                                    name="payAmount"
-                                                   min="0.01"
+                                                   min="0.00"
                                                    placeholder="0.00"
                                                    autocomplete="amount"
                                                    required />
@@ -348,7 +348,7 @@
                                     <div class="form-group">
                                         <label for="amount">Amount</label>
                                         <input type="number" 
-                                               min="0.01"
+                                               min="0.00"
                                                class="form-control" 
                                                name="claimAmount"
                                                placeholder="0.00"

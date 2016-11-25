@@ -56,6 +56,10 @@
         <servlet-name>DeleteUserServlet</servlet-name>
         <servlet-class>servlets.DeleteUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminFilterServlet</servlet-name>
+        <servlet-class>servlets.AdminFilterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -86,19 +90,23 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChargeMembershipServlet</servlet-name>
-        <url-pattern>/charge-members</url-pattern>
+        <url-pattern>/admin/charge-members</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HandleStatusServlet</servlet-name>
-        <url-pattern>/update-status</url-pattern>
+        <url-pattern>/admin/update-status</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HandleClaimsServlet</servlet-name>
-        <url-pattern>/update-claims</url-pattern>
+        <url-pattern>/admin/update-claims</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteUserServlet</servlet-name>
         <url-pattern>/delete-account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminFilterServlet</servlet-name>
+        <url-pattern>/admin/filter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

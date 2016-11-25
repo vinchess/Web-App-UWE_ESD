@@ -84,8 +84,10 @@ public class PaymentDAO extends JDBC{
         
         for(int i = 0; i < list.size(); i++){
             User user = (User)list.get(i);
-            stmt.addBatch("UPDATE members SET balance=balance-"+ amount +
+            if(!user.isUserValid().equals("DELETED")){
+                stmt.addBatch("UPDATE members SET balance=balance-"+ amount +
                             " WHERE id='"+ user.getID() + "';");
+            }
         }
             
         int[] updateResult = stmt.executeBatch();

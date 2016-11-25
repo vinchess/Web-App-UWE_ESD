@@ -45,8 +45,12 @@ public class HandleClaimsServlet extends HttpServlet {
             }else if(rejected!=null){
                 updateClaim.updateClaim(Integer.parseInt(rejected), "REJECTED");
             }
-            RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-            rd.forward(request, response);
+            
+            session.setAttribute("home", false);
+            session.setAttribute("users", false);
+            session.setAttribute("claims", true);
+            
+            response.sendRedirect("dashboard.jsp");
         }
     }
 

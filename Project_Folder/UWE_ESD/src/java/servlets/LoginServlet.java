@@ -58,8 +58,9 @@ public class LoginServlet extends HttpServlet {
             if(loginDaoReturn.equals("SUCCESS")){ //if password and username matches
                 session.setAttribute("user", user); //set User object as session wide attribute
             
-                RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
-                rd.forward(request, response);
+                response.sendRedirect("dashboard.jsp");
+                //RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
+                //rd.forward(request, response);
             }  
             else if(loginDaoReturn.equals("ADMIN")){ //if password and username matches
             
