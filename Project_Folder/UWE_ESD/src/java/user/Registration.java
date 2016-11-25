@@ -37,7 +37,7 @@ public class Registration
     }
     
     private String generateID(String firstName, String lastName){
-        String generatedID = firstName.substring(0, 2) + "-" + lastName;
+        String generatedID = firstName.substring(0, 1) + "-" + lastName;
         return generatedID;
     }
 

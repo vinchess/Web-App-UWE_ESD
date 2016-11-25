@@ -191,7 +191,7 @@
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
-                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/(member.getAllRecords().size()))+"</h3>");
+                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/size)+"</h3>");
                                             out.println("<h3>Fees : &#163; 10.00</h3>");
                                         %>
                                         <form action="charge-members" method="POST">

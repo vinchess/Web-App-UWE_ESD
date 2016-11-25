@@ -61,7 +61,7 @@ public class RegistrationDAO extends JDBC{
 
         if(checkResult(updateResult)){
             conn.commit();
-            result = "Successfully registered. Your username is" + newUser.getID() + " .Proceed to login.";
+            result = "Successfully registered. Your username is " + newUser.getID() + " .Proceed to login.";
         }else{
             conn.close();
             throw new SQLException("Commit Failed");

@@ -1,25 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
+import database.MemberDAO;
+import database.LoginDao;
+import user.User;
+import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import database.MemberDAO;
 
 /**
  *
  * @author Vincent
  */
-public class DeleteUserServlet extends HttpServlet {
+public class EditUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,14 +32,31 @@ public class DeleteUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
+            User user = (User)session.getAttribute("user");
             
-            String username = request.getParameter("username");
-            MemberDAO member = new MemberDAO();
-            try{
-                session.setAttribute("success", member.deleteUser(username)); //set success message to be sent to index.jsp
-                response.sendRedirect("/UWE_ESD"); //redirect back to main page
-            }catch(SQLException se){
-                session.setAttribute("error", "Error deleting account. Please check your input."); //set error message to be sent to index.jsp
+            if(request.getParameter("password").equals(request.getParameter("reenterpassword"))){
+                LoginDao login = new LoginDao();
+                
+                user.setFirstName(request.getParameter("firstname"));
+                user.setLastName(request.getParameter("lastname"));
+                user.setAddress(request.getParameter("address"));
+                user.setDOB(request.getParameter("dob"));
+
+                MemberDAO member = new MemberDAO();
+
+                try{
+                    session.setAttribute("success", member.editDetails(user)); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }catch(SQLException se){
+                    session.setAttribute("error", "Connection error, please try again later."); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }catch(IOException io){
+                    session.setAttribute("error", "Address is invalid, try again."); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }
+            
+            }else{
+                session.setAttribute("error", "Password not identical. Try again."); //set error message to be sent to index.jsp
                 response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
             }
         }

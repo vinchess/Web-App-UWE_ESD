@@ -60,6 +60,10 @@
         <servlet-name>AdminFilterServlet</servlet-name>
         <servlet-class>servlets.AdminFilterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditUserServlet</servlet-name>
+        <servlet-class>servlets.EditUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -107,6 +111,10 @@
     <servlet-mapping>
         <servlet-name>AdminFilterServlet</servlet-name>
         <url-pattern>/admin/filter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditUserServlet</servlet-name>
+        <url-pattern>/edit-user</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
