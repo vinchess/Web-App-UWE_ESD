@@ -53,6 +53,9 @@ public class LoginServlet extends HttpServlet {
 
             MemberDAO member = new MemberDAO();
             User user = (User)member.getSingleById(userid);
+            
+            boolean isAdmin = false;
+            isAdmin = (boolean) session.getAttribute("isAdmin");
 
             
             if(loginDaoReturn.equals("SUCCESS")){ //if password and username matches
@@ -61,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
                 rd.forward(request, response);
             }  
-            else if(loginDaoReturn.equals("ADMIN")){ //if password and username matches
+            else if(isAdmin){ //if password and username matches
             
                 session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
                 response.sendRedirect("/UWE_ESD"); //redirect back to main page
