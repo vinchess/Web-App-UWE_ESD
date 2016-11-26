@@ -137,14 +137,16 @@ public class AuthenticationFilter implements Filter {
                 if(rs.getString("id").equals(userid) && rs.getString("password").equals(passwordinput))
                 {
                     isAdmin = true;
-                    session.setAttribute("isAdmin", isAdmin);
+                    
                 }
             }
             rs.close();
             conn.close();
+            session.setAttribute("isAdmin", isAdmin);
             
         }catch(SQLException se){
             System.out.println("SQL error occurred.");
+            session.setAttribute("isAdmin", isAdmin);
         }
         
         Throwable problem = null;
