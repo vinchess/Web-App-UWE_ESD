@@ -13,8 +13,15 @@
 <%@ page import="database.ClaimDAO" %>
 <%! MemberDAO member;%>
 <%! ClaimDAO claim;%>
-<% member = new MemberDAO();%>
-<% claim = new ClaimDAO();%>
+<%! String applied = null,approved = null,suspended = null;%>
+<%! boolean homeTab,usersTab,claimsTab;%>
+<% member = new MemberDAO(); claim = new ClaimDAO();%>
+<% applied = (String)session.getAttribute("applied");%>
+<% approved = (String)session.getAttribute("approved");%>
+<% suspended = (String)session.getAttribute("suspended");%>
+<% homeTab = (boolean)session.getAttribute("home");%>
+<% usersTab = (boolean)session.getAttribute("users");%>
+<% claimsTab = (boolean)session.getAttribute("claims");%>
 
 <!DOCTYPE html>
 <html>
@@ -64,22 +71,25 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
-                            <form action="#" method="POST"><!--need servlet to update the list-->
+                            <form action="filter" method="POST"><!--need servlet to update the list-->
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="applied" value="">
+                                        <input type="checkbox" name="applied" value="APPLIED" 
+                                               <%if(applied!=null) { if(applied.equals("APPLIED")) { out.println("checked"); } }%>>
                                         APPLIED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="approved" value="">
+                                        <input type="checkbox" name="approved" value="APPROVED" 
+                                               <%if(approved!=null) { if(approved.equals("APPROVED")) { out.println("checked"); } }%>>
                                         APPROVED
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="suspended" value="">
+                                        <input type="checkbox" name="suspended" value="SUSPENDED" 
+                                               <%if(suspended!=null) { if(suspended.equals("SUSPENDED")) { out.println("checked"); } }%>>
                                         SUSPENDED
                                     </label>
                                 </div>
@@ -91,7 +101,7 @@
                 </div>
                 <button type="button" class="btn btn-default btn-block" 
                         data-toggle="modal" data-target="#dimmer"
-                        aria-label="Left Align" onClick="location.href='./LogoutServlet'">
+                        aria-label="Left Align" onClick="location.href='/UWE_ESD/LogoutServlet'">
                     <div class="col-md-1">
                         <span class="glyphicon glyphicon-off"></span> 
                     </div>
@@ -103,18 +113,19 @@
             <div class="col-md-9 ">
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
+                        <li role="presentation" <%if(homeTab) { out.println("class=\"active\""); }%> >
                             <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
                         </li>
-                        <li role="presentation">
+                        <li role="presentation" <%if(usersTab) { out.println("class=\"active\""); }%>>
                             <a href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a>
                         </li>
-                        <li role="presentation">
+                        <li role="presentation" <%if(claimsTab) { out.println("class=\"active\""); }%>>
                             <a href="#claims" aria-controls="claims" role="tab" data-toggle="tab">Claims</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home">
+                        <div role="tabpanel" class="tab-pane 
+                             <%if(homeTab) { out.println("active"); }%>" id="home">
                             <br>
                             <div class="col-md-6">
                                 <center>
@@ -127,15 +138,15 @@
                                             List memlist = member.getAllRecords();
                                             out.println("<h1 style=\"font-size:70px;\">"+memlist.size()+"</h1>");
                                                             
-                                            int applied = 0,approved = 0,suspended = 0;
+                                            int apply = 0,approve = 0,suspend = 0;
                                             for(Object e:memlist){
                                                 switch(((User)e).isUserValid()){
                                                     case "APPLIED":
-                                                        applied++;break;
+                                                        apply++;break;
                                                     case "APPROVED":
-                                                        approved++;break;
+                                                        approve++;break;
                                                     case "SUSPENDED":
-                                                        suspended++;break;
+                                                        suspend++;break;
                                                 }
                                             }
                                         %>
@@ -148,9 +159,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <%
-                                                out.println("<h3 class=\"text-warning\">"+applied+"</h3>");//APPLIED
-                                                out.println("<h3 class=\"text-success\">"+approved+"</h3>");//APPROVED
-                                                out.println("<h3 class=\"text-danger\">"+suspended+"</h3>");//SUSPENDED
+                                                out.println("<h3 class=\"text-warning\">"+apply+"</h3>");//APPLIED
+                                                out.println("<h3 class=\"text-success\">"+approve+"</h3>");//APPROVED
+                                                out.println("<h3 class=\"text-danger\">"+suspend+"</h3>");//SUSPENDED
                                             %>
                                         </div>
                                     </div>
@@ -165,21 +176,22 @@
                                     </div>
                                     <div class="panel-body">
                                         <%
+                                            //CHECK ALGORITHM!!!!!!!!!!!!
                                             double totalClaims = 0;
                                             int size = 0;
                                             try{
                                                 List userClaims = claim.getAllClaims();
-                                                for(int i=0;i<userClaims.size();i++){
-                                                    Claim amount = (Claim)userClaims.get(i);
-                                                    totalClaims+=amount.getAmount();
+                                                for(Object uc:userClaims){
+                                                    if(((Claim)uc).getStatus().equals("ACCEPTED"))
+                                                        totalClaims += ((Claim)uc).getAmount();
                                                 }
-                                                size = userClaims.size();
-                                                session.setAttribute("amount", (totalClaims/size));
+                                                size = apply + approve + suspend;
+                                                session.setAttribute("amount", String.format("%.2f",(totalClaims/size)+10));
                                             }catch(SQLException se){
                                                 out.println("value/database problem");
                                             }
                                             out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
-                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/(member.getAllRecords().size()))+"</h3>");
+                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/size)+"</h3>");
                                             out.println("<h3>Fees : &#163; 10.00</h3>");
                                         %>
                                         <form action="charge-members" method="POST">
@@ -190,65 +202,75 @@
                                 </center>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="users">
+                        <div role="tabpanel" class="tab-pane 
+                             <%if(usersTab) { out.println("active"); }%>" id="users">
                             <br>
-                                <%
-                                    out.println("<table class=\"table\" >");
-                                    out.println("<tr>");
-                                    out.println("<th>#</th>");
-                                    out.println("<th>ID</th>");
-                                    out.println("<th>Name</th>");
-                                    out.println("<th>Address</th>");
-                                    out.println("<th>DOB</th>");
-                                    out.println("<th>DOR</th>");
-                                    out.println("<th>Status</th>");
-                                    out.println("<th>Balance</th>");
-                                    out.println("<th></th>");
-                                    out.println("</tr>");
-                                    List list = member.getAllRecords();
+                            <table class="table" >
+                                <tr>
+                                    <th>#</th><th>ID</th><th>Name</th><th>Address</th><th>DOB</th><th>DOR</th><th>Status</th><th>Balance</th><th></th>
+                                </tr>
+                            <%
 
-                                    if(list.isEmpty()){
-                                        out.println("<tr>");
-                                        out.println("<td colspan=\"9\">No Records Found</td>");
-                                        out.println("</tr>");
-                                    }else{
-                                        for(int i=0;i<list.size();i++){
-                                            User user = (User)list.get(i);
-                                            if(user.isUserValid().equals("APPLIED")){
-                                                out.println("<tr class=\"warning\">");
-                                            }else if(user.isUserValid().equals("APPROVED")){
-                                                out.println("<tr class=\"success\">");
-                                            }else{
-                                                out.println("<tr class=\"danger\">");
-                                            }
-                                            out.println("<td>" + (i+1) + "</td>");
-                                            out.println("<td>" + user.getID() + "</td>");
-                                            out.println("<td>" + user.getFirstName() + " " + user.getLastName() + "</td>");
-                                            out.println("<td>" + user.getAddress() + "</td>");
-                                            out.println("<td>" + user.getDOB() + "</td>");
-                                            out.println("<td>" + user.getDOR() + "</td>");
-                                            out.println("<td>" + user.isUserValid()+ "</td>");
-                                            out.println("<td>&#163;" + user.getBalance() + "</td>");
-                                            out.println("<td>");
-                                            out.println("<form action=\"update-status\" method=\"POST\">");
-                                            if(user.isUserValid().equals("APPROVED")){
-                                                out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
-                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\""
-                                                        + "name=\"suspend\" value=\""+user.getID()+"\">SUSPEND</button>");
-                                            }else{
-                                                out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
-                                                        + "data-toggle=\"modal\" data-target=\"#dimmer\""
-                                                        + "name=\"approve\" value=\""+user.getID()+"\">APPROVE</button>");
-                                            }
-                                            out.println("</form>");
-                                            out.println("</td>");
-                                            out.println("</tr>");
+                                List list = member.getAllRecords();
+                                List filter = new ArrayList();
+                                
+                                for(Object u:list){
+                                    if(applied!=null) { if((((User)u).isUserValid()).equals(applied)) { filter.add(u); } }
+                                    if(approved!=null) { if((((User)u).isUserValid()).equals(approved)) { filter.add(u); } }
+                                    if(suspended!=null) { if((((User)u).isUserValid()).equals(suspended)) { filter.add(u); } }
+                                }
+                                if(applied!=null || approved!=null || suspended!=null) { list = filter; }
+
+                                if(list.isEmpty()){
+                                    out.println("<tr>");
+                                    out.println("<td colspan=\"9\">No Records Found</td>");
+                                    out.println("</tr>");
+                                }else{
+                                    for(int i=0;i<list.size();i++){
+                                        User user = (User)list.get(i);
+                                        
+                                        switch(user.isUserValid()){
+                                            case "APPLIED":
+                                                out.println("<tr class=\"warning\">");break;
+                                            case "APPROVED":
+                                                out.println("<tr class=\"success\">");break;
+                                            case "SUSPENDED":
+                                                out.println("<tr class=\"danger\">");break;
+                                            default :
+                                                out.println("<tr class=\"active text-muted\">");
                                         }
+                                        out.println("<td>" + (i+1) + "</td>");
+                                        out.println("<td>" + user.getID() + "</td>");
+                                        out.println("<td>" + user.getFirstName() + " " + user.getLastName() + "</td>");
+                                        out.println("<td>" + user.getAddress() + "</td>");
+                                        out.println("<td>" + user.getDOB() + "</td>");
+                                        out.println("<td>" + user.getDOR() + "</td>");
+                                        out.println("<td>" + user.isUserValid()+ "</td>");
+                                        out.println("<td>&#163; " + user.getBalance() + "</td>");
+                                        out.println("<td>");
+                                        out.println("<form action=\"update-status\" method=\"POST\">");
+                                        if(user.isUserValid().equals("APPROVED")){
+                                            out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
+                                                    + "data-toggle=\"modal\" data-target=\"#dimmer\""
+                                                    + "name=\"suspend\" value=\""+user.getID()+"\">SUSPEND</button>");
+                                        }else if(user.isUserValid().equals("DELETED")){
+                                            out.println("");
+                                        }else{
+                                            out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
+                                                    + "data-toggle=\"modal\" data-target=\"#dimmer\""
+                                                    + "name=\"approve\" value=\""+user.getID()+"\">APPROVE</button>");
+                                        }
+                                        out.println("</form>");
+                                        out.println("</td>");
+                                        out.println("</tr>");
                                     }
-                                    out.println("</table>");
-                                %>
+                                }
+                                out.println("</table>");
+                            %>
+                            </table>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="claims">
+                        <div role="tabpanel" class="tab-pane 
+                             <%if(claimsTab) { out.println("active"); }%>" id="claims">
                             <br>
                             <%
                                     out.println("<table class=\"table\" >");
@@ -277,7 +299,7 @@
                                                 out.println("<td>" + claim.getDate() + "</td>");
                                                 out.println("<td>" + claim.getRationale() + "</td>");
                                                 out.println("<td>" + claim.getStatus() + "</td>");
-                                                out.println("<td>" + claim.getAmount() + "</td>");
+                                                out.println("<td>&#163; " + claim.getAmount() + "</td>");
                                                 out.println("<td>");
                                                 out.println("<form action=\"update-claims\" method=\"POST\">");
                                                 if(!claim.getStatus().equals("SUBMITTED")){

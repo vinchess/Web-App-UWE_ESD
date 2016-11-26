@@ -293,7 +293,7 @@
                                                    id="couponCode"
                                                    class="form-control"
                                                    name="payAmount"
-                                                   min="0.01"
+                                                   min="0.00"
                                                    placeholder="0.00"
                                                    autocomplete="amount"
                                                    required />
@@ -348,7 +348,7 @@
                                     <div class="form-group">
                                         <label for="amount">Amount</label>
                                         <input type="number" 
-                                               min="0.01"
+                                               min="0.00"
                                                class="form-control" 
                                                name="claimAmount"
                                                placeholder="0.00"
@@ -377,20 +377,20 @@
                         Edit Profile
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" action="" method="POST">
+                        <form class="form-horizontal" action="edit-user" method="POST">
                             <fieldset class="form-inline">
                                 <div class="control-group">
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <label class="control-label" for="Name">First Name:</label>
                                             <% 
-                                                out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
+                                                out.println("<input id=\"firstname\" name=\"firstname\" class=\"form-control\" "
                                                         + "type=\"text\" value=" + user.getFirstName() + " required>");
                                             %>
                                         
                                             <label class="control-label" for="Name">Last Name:</label>
                                             <% 
-                                                out.println("<input id=\"userid\" name=\"userid\" class=\"form-control\" "
+                                                out.println("<input id=\"lastname\" name=\"lastname\" class=\"form-control\" "
                                                         + "type=\"text\" value=" + user.getLastName() + " required>");
                                             %>
                                         </div>

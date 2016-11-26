@@ -39,7 +39,7 @@ public class ChargeMembershipServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            double amount = (Double)session.getAttribute("amount");
+            double amount = Double.parseDouble((String)session.getAttribute("amount"));
             PaymentDAO charge = new PaymentDAO();
             MemberDAO members = new MemberDAO();
             
@@ -48,12 +48,20 @@ public class ChargeMembershipServlet extends HttpServlet {
                 charge.chargePayment(list, amount);
             }catch(SQLException se){
                 session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
-                RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-                rd.forward(request, response);
+                
+                session.setAttribute("home", true);
+                session.setAttribute("users", false);
+                session.setAttribute("claims", false);
+
+                response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
             }
             session.setAttribute("success", "All members charged.");
-            RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-            rd.forward(request, response);
+            
+            session.setAttribute("home", true);
+            session.setAttribute("users", false);
+            session.setAttribute("claims", false);
+            
+            response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
         }
     }
 

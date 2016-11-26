@@ -1,7 +1,13 @@
 package database;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import user.Registration;
 import user.User;
 
 /**
@@ -146,6 +152,34 @@ public class MemberDAO<E> extends JDBC{
             System.out.println("OPS");
         }
     }//end updateStatus
+    public String editDetails(User user)throws SQLException,IOException{
+        String result = "";
+        String sql = "UPDATE members SET " + 
+                     "name='" + user.getFirstName() + " " + user.getLastName() + "'," + 
+                     "address='"+ user.getAddress() +"'," +
+                     "dob='"+ user.getDOB() +"'" +
+                     "WHERE id='"+ user.getID() + "';";
+        conn = getConnection();
+        
+        boolean geoCheck = geolocationCheck(user);
+        //GeoLocation check 
+        if(!geoCheck) //if address is invalid 
+        {
+            conn.close(); //close DB connection
+            throw new IOException("Address entered invalid");   //throw IOException to catch 
+        }
+        stmt = conn.createStatement();  //create SQL statement
+
+        stmt.executeUpdate(sql);
+
+        conn.close(); //close connection
+        
+        result = "User details successfully updated.";
+        
+        return result;
+    }
+    
+    
     
     public String deleteUser(String id)throws SQLException{
         String result = "";
@@ -175,4 +209,25 @@ public class MemberDAO<E> extends JDBC{
         for(int i : updateResults) if(i!=1) return false;
         return true;
     }//end checkResult 
+    
+    public boolean geolocationCheck(User user){
+        try {
+            String userAddress = user.getAddress(); //get user address from User class
+            URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(userAddress, "UTF-8") + "&key=AIzaSyDA2g2qxIuSTRXP69avdduFwJocW5zozQE");
+            String out = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next();
+             
+             Pattern pattern = Pattern.compile("<status>(\\w+)</status>"); //compile Regex pattern 
+             Matcher match = pattern.matcher(out); //execute Regex match
+             
+             while (match.find()) {     //loop through results
+                String find = match.group(1);
+                if (find.equals("OK")){ //if found <status>OK</status>
+                    return true;
+                }// end IF
+            }//end WHILE
+        } catch (Exception ex) {
+            System.out.println("URL CHECK ERROR");
+        } //END TRY
+        return false; //if address is invalid 
+    }
 }

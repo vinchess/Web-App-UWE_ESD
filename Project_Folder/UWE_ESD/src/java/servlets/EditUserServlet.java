@@ -1,63 +1,63 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
-
-import database.ClaimDAO;
+import database.MemberDAO;
+import database.LoginDao;
+import user.User;
+import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.User;
 
 /**
  *
- * @author User
+ * @author Vincent
  */
-public class ClaimServlet extends HttpServlet{
+public class EditUserServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            //get session
             HttpSession session = request.getSession();
-            
-            //get Params from JSP
-            String claimRational = request.getParameter("rationale");
-            double claim_amount = Double.parseDouble(request.getParameter("claimAmount"));
-            
-            //get user ID
             User user = (User)session.getAttribute("user");
-            String userid = user.getID();
             
-            //add claim to DB
-            ClaimDAO claimDao = new ClaimDAO();
-            boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
+            if(request.getParameter("password").equals(request.getParameter("reenterpassword"))){
+                LoginDao login = new LoginDao();
+                
+                user.setFirstName(request.getParameter("firstname"));
+                user.setLastName(request.getParameter("lastname"));
+                user.setAddress(request.getParameter("address"));
+                user.setDOB(request.getParameter("dob"));
+
+                MemberDAO member = new MemberDAO();
+
+                try{
+                    session.setAttribute("success", member.editDetails(user)); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }catch(SQLException se){
+                    session.setAttribute("error", "Connection error, please try again later."); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }catch(IOException io){
+                    session.setAttribute("error", "Address is invalid, try again."); //set error message to be sent to index.jsp
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
+                }
             
-            //if claim added successfully
-            if (addClaimReturn)
-            {
-                session.setAttribute("success", "Claim added successfully"); //set success message
-                response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
-            }
-            //else 
-            else 
-            {
-                session.setAttribute("error", "Error adding claim"); //set error message 
-                response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
+            }else{
+                session.setAttribute("error", "Password not identical. Try again."); //set error message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
             }
         }
     }

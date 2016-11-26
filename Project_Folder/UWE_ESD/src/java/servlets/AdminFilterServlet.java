@@ -5,60 +5,49 @@
  */
 package servlets;
 
-
-import database.ClaimDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.User;
 
 /**
  *
- * @author User
+ * @author Vincent
  */
-public class ClaimServlet extends HttpServlet{
+public class AdminFilterServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            //get session
             HttpSession session = request.getSession();
             
-            //get Params from JSP
-            String claimRational = request.getParameter("rationale");
-            double claim_amount = Double.parseDouble(request.getParameter("claimAmount"));
+            String applied = request.getParameter("applied");
+            String approved = request.getParameter("approved");
+            String suspended = request.getParameter("suspended");
             
-            //get user ID
-            User user = (User)session.getAttribute("user");
-            String userid = user.getID();
+            session.setAttribute("applied", applied);
+            session.setAttribute("approved", approved);
+            session.setAttribute("suspended", suspended);
             
-            //add claim to DB
-            ClaimDAO claimDao = new ClaimDAO();
-            boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
+            session.setAttribute("home", false);
+            session.setAttribute("users", true);
+            session.setAttribute("claims", false);
             
-            //if claim added successfully
-            if (addClaimReturn)
-            {
-                session.setAttribute("success", "Claim added successfully"); //set success message
-                response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
-            }
-            //else 
-            else 
-            {
-                session.setAttribute("error", "Error adding claim"); //set error message 
-                response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
-            }
+            response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
+  
         }
     }
 

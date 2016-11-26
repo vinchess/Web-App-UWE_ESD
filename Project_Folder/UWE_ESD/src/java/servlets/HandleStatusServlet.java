@@ -45,8 +45,12 @@ public class HandleStatusServlet extends HttpServlet {
             }else if(approve!=null){
                 member.updateStatus(approve, "APPROVED");
             }
-            RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp"); //forwards to dashboard.jsp
-            rd.forward(request, response);
+            
+            session.setAttribute("home", false);
+            session.setAttribute("users", true);
+            session.setAttribute("claims", false);
+            
+            response.sendRedirect("dashboard.jsp");
         }
     }
 

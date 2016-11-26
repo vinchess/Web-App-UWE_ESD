@@ -41,12 +41,17 @@ public class PaymentServlet extends HttpServlet {
                 
                 if (paymentReturn){
                     session.setAttribute("success", "Payment made successfully."); //set success message
-                    RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                    rd.forward(request, response);
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    //System.out.println(url);
+                    //response.sendRedirect("/UWE_ESD/user");
+                    //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
+                    //response.setHeader("Location", "UWE_ESD/dashboard"); 
+                    //rd.forward(request, response);
                 }else{
                     session.setAttribute("error", "Failed to make payment. Contact our helpdesk for assistance."); //set error message 
-                    RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                    rd.forward(request, response);
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
+                    //rd.forward(request, response);
                 }
             }
     }

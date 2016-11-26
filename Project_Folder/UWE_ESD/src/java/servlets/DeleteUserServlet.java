@@ -42,8 +42,8 @@ public class DeleteUserServlet extends HttpServlet {
                 session.setAttribute("success", member.deleteUser(username)); //set success message to be sent to index.jsp
                 response.sendRedirect("/UWE_ESD"); //redirect back to main page
             }catch(SQLException se){
-                session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
-                response.sendRedirect("/UWE_ESD"); //redirect back to main page
+                session.setAttribute("error", "Error deleting account. Please check your input."); //set error message to be sent to index.jsp
+                response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
             }
         }
     }

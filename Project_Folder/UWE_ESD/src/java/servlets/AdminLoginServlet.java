@@ -43,9 +43,13 @@ public class AdminLoginServlet extends HttpServlet{
             String password = request.getParameter("passwordinput");
             
             AdminLoginDAO login = new AdminLoginDAO();
+            
             if(login.authenticate(username, password)){
-                RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
-                rd.forward(request, response);
+                session.setAttribute("home", true);
+                session.setAttribute("users", false);
+                session.setAttribute("claims", false);
+                
+                response.sendRedirect("admin/dashboard.jsp");
             }else{
                 String error = "It appears that the username and password is wrong. Try again.";
                 session.setAttribute("error", error);
