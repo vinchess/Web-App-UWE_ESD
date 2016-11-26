@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
             else if(isAdmin){ //if password and username matches
             
                 session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
-                response.sendRedirect("/UWE_ESD"); //redirect back to main page
+                response.sendRedirect("admin/dashboard.jsp");
             } 
             else 
             {
