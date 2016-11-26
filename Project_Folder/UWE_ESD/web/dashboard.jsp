@@ -9,13 +9,10 @@
 <%@ page import="user.Payments" %>
 <%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
-<%@ page import="database.ClaimDAO"%>
-<%@ page import="database.PaymentDAO" %>
-<%@ page import="database.MemberDAO" %>
-<%! User user;%>
+<%! User user; List paymentlist; List claimlist;%>
 <% user = (User)session.getAttribute("user");%>
-<%! PaymentDAO payments = new PaymentDAO();%>
-<%! ClaimDAO claims = new ClaimDAO();%>
+<% paymentlist = (ArrayList)session.getAttribute("paymentlist"); %>
+<% claimlist = (ArrayList)session.getAttribute("claimlist"); %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -54,7 +51,7 @@
             <div class="col-md-3 text-center">
                 <img src="/UWE_ESD/assets/user_icon.png" height="150px">
                     <h2><%=user.getFirstName()+" "+user.getLastName()%></h2>
-                    <h3>Balance &#163;<%=String.format("%.2f",Double.parseDouble((new MemberDAO().getColumn(user.getID(),"balance"))))%></h3>
+                    <h3>Balance &#163;<%=String.format("%.2f",user.getBalance())%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -71,7 +68,7 @@
                             <span class="glyphicon glyphicon-pencil"></span> 
                         </div>
                         <div class="col-md-2 ">
-                            CLAIM
+                            CLAIM<%if(!user.isUserValid().equals("APPROVED"))out.println(" (suspended)");%>
                         </div>
                     </button>
                     <button type="button" class="btn btn-success btn-block" 
@@ -135,36 +132,24 @@
                                 out.println("<th>Amount</th>");
                                 out.println("<th>Date</th>");
                                 out.println("</tr>");
-                                try{
-                                    List list = payments.getRecordsById(user);
-                                    if(list.isEmpty()){
-                                        out.println("<tr>");
-                                        out.println("<td colspan=\"5\">No Records Found</td>");
-                                        out.println("</tr>");
-                                    }else{
-                                        for(int i=0;i<list.size();i++){
-                                            Payments payment = (Payments)list.get(i);
-                                            out.println("<tr>");
-                                            out.println("<td>" + (i+1) + "</td>");
-                                            out.println("<td>" + payment.getId() + "</td>");
-                                            out.println("<td>" + payment.getType() + "</td>");
-                                            out.println("<td>" + payment.getAmount() + "</td>");
-                                            out.println("<td>" + payment.getDate() + "</td>");
-                                            out.println("</tr>");
-                                        }
-                                    }
-                                }catch(SQLException se){
+                                
+                                if(paymentlist.isEmpty()){
                                     out.println("<tr>");
-                                    out.println("<td>Database connection error.</td>");
+                                    out.println("<td colspan=\"5\">No Records Found</td>");
                                     out.println("</tr>");
+                                }else{
+                                    for(int i=0;i<paymentlist.size();i++){
+                                        Payments payment = (Payments)paymentlist.get(i);
+                                        out.println("<tr>");
+                                        out.println("<td>" + (i+1) + "</td>");
+                                        out.println("<td>" + payment.getId() + "</td>");
+                                        out.println("<td>" + payment.getType() + "</td>");
+                                        out.println("<td>" + payment.getAmount() + "</td>");
+                                        out.println("<td>" + payment.getDate() + "</td>");
+                                        out.println("</tr>");
+                                    }
                                 }
 
-                                out.println("<tr>");
-                                out.println("<td colspan=\"5\" align=\"right\">");
-                                out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
-                                out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
-                                out.println("</button>");
-                                out.println("</tr>");
                                 out.println("</table>");
                             %>
                         </div>
@@ -179,37 +164,25 @@
                                     out.println("<th>Status</th>");
                                     out.println("<th>Amount</th>");
                                     out.println("</tr>");
-                                    try{
-                                        List claimList = claims.getClaimsById(user);
-                                        if(claimList.isEmpty()){
-                                            out.println("<tr>");
-                                            out.println("<td colspan=\"6\">No Records Found</td>");
-                                            out.println("</tr>");
-                                        }else{
-                                            for(int i=0;i<claimList.size();i++){
-                                                Claim claim = (Claim)claimList.get(i);
-                                                out.println("<tr>");
-                                                out.println("<td>" + (i+1) + "</td>");
-                                                out.println("<td>" + claim.getMem_id()+ "</td>");
-                                                out.println("<td>" + claim.getDate()+ "</td>");
-                                                out.println("<td>" + claim.getRationale() + "</td>");
-                                                out.println("<td>" + claim.getStatus() + "</td>");
-                                                out.println("<td>" + claim.getAmount() + "</td>");
-                                                out.println("</tr>");
-                                            }
-                                        }
-                                    }catch(SQLException se){
+                                    
+                                    if(claimlist.isEmpty()){
                                         out.println("<tr>");
-                                        out.println("<td colspan=\"6\">Database connection error.</td>");
+                                        out.println("<td colspan=\"6\">No Records Found</td>");
                                         out.println("</tr>");
+                                    }else{
+                                        for(int i=0;i<claimlist.size();i++){
+                                            Claim claim = (Claim)claimlist.get(i);
+                                            out.println("<tr>");
+                                            out.println("<td>" + (i+1) + "</td>");
+                                            out.println("<td>" + claim.getMem_id()+ "</td>");
+                                            out.println("<td>" + claim.getDate()+ "</td>");
+                                            out.println("<td>" + claim.getRationale() + "</td>");
+                                            out.println("<td>" + claim.getStatus() + "</td>");
+                                            out.println("<td>" + claim.getAmount() + "</td>");
+                                            out.println("</tr>");
+                                        }
                                     }
                                     
-                                    out.println("<tr>");
-                                    out.println("<td colspan=\"6\" align=\"right\">");
-                                    out.println("<button onclick=\"jQuery('#list').load('LoadPaymentList');\">");
-                                    out.println("<span class=\"glyphicon glyphicon-refresh\"></span>");
-                                    out.println("</button>");
-                                    out.println("</tr>");
                                     out.println("</table>");
                                 %>
                         </div>

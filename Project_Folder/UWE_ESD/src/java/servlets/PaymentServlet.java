@@ -1,6 +1,7 @@
 package servlets;
 
 import database.PaymentDAO;
+import database.MemberDAO;
 import user.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,18 +41,15 @@ public class PaymentServlet extends HttpServlet {
                 boolean paymentReturn = payment.updatePayment(user, amount);
                 
                 if (paymentReturn){
+                    user.setBalance(Double.parseDouble(new MemberDAO().getColumn(user.getID(),"balance")));
+                    session.setAttribute("user", user);
                     session.setAttribute("success", "Payment made successfully."); //set success message
+                    session.setAttribute("paymentlist", payment.getRecordsById(user));
+                    
                     response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                    //System.out.println(url);
-                    //response.sendRedirect("/UWE_ESD/user");
-                    //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                    //response.setHeader("Location", "UWE_ESD/dashboard"); 
-                    //rd.forward(request, response);
                 }else{
                     session.setAttribute("error", "Failed to make payment. Contact our helpdesk for assistance."); //set error message 
                     response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                    //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                    //rd.forward(request, response);
                 }
             }
     }

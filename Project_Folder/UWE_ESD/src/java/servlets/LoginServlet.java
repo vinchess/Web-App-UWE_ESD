@@ -3,6 +3,8 @@ package servlets;
 import user.User;
 import database.MemberDAO;
 import database.LoginDao;
+import database.ClaimDAO;
+import database.PaymentDAO;
 import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,23 +56,25 @@ public class LoginServlet extends HttpServlet {
             MemberDAO member = new MemberDAO();
             User user = (User)member.getSingleById(userid);
             
+            PaymentDAO payments = new PaymentDAO();
+            ClaimDAO claims = new ClaimDAO();
+            
             boolean isAdmin = false;
             isAdmin = (boolean) session.getAttribute("isAdmin");
 
             
             if(loginDaoReturn.equals("SUCCESS")){ //if password and username matches
                 session.setAttribute("user", user); //set User object as session wide attribute
+                session.setAttribute("paymentlist", payments.getRecordsById(user));
+                session.setAttribute("claimlist", claims.getClaimsById(user));
             
                 response.sendRedirect("dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
             }  
             else if(isAdmin){ //if password and username matches
             
                 session.setAttribute("home", true);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);
-                //session.setAttribute("error", "Admin please use the admin login."); //set error message to be sent to index.jsp
                 response.sendRedirect("admin/dashboard.jsp");
             } 
             else 

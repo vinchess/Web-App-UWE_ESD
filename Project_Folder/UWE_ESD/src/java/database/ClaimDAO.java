@@ -37,29 +37,32 @@ public class ClaimDAO extends JDBC {
 
         return list;
     } 
-    public List getClaimsById(User user)throws SQLException{
+    public List getClaimsById(User user){
         conn = getConnection();
         String sql = "SELECT * FROM Claims WHERE mem_id='"+ user.getID() +"';";
         List list = new ArrayList();
+        try{
+            stmt=conn.createStatement();
 
-        stmt=conn.createStatement();
+            //execute query
+            ResultSet rs=stmt.executeQuery(sql);
 
-        //execute query
-        ResultSet rs=stmt.executeQuery(sql);
-
-        //loop through the result set to get data 
-        while(rs.next()){
-            //get all data fields in Claims table
-            list.add(new Claim(
-                    Integer.parseInt(rs.getString("id")),
-                    rs.getString("mem_id"),
-                    rs.getString("date"),
-                    rs.getString("rationale"),
-                    rs.getString("status"),
-                    Double.parseDouble(rs.getString("amount"))));
+            //loop through the result set to get data 
+            while(rs.next()){
+                //get all data fields in Claims table
+                list.add(new Claim(
+                        Integer.parseInt(rs.getString("id")),
+                        rs.getString("mem_id"),
+                        rs.getString("date"),
+                        rs.getString("rationale"),
+                        rs.getString("status"),
+                        Double.parseDouble(rs.getString("amount"))));
+            }
+            rs.close();
+            conn.close();
+        }catch(SQLException se){
+            System.out.println("SQL error occurred. " + se.getMessage());
         }
-        rs.close();
-        conn.close();
             
         return list;
     }   

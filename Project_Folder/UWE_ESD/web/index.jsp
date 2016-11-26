@@ -19,6 +19,7 @@
     </head>
     <body>
         <div class="container">
+            <!-- Display appropriate message to user -->
             <%
                 String error = (String)session.getAttribute("error");
                 if(error!=null){
@@ -42,7 +43,7 @@
                 }
                 session.setAttribute("success", null);
             %>
-                
+            <!-- Main body display jumbotron -->    
             <div class="jumbotron">
                 <h1>XYZ Drivers Associations</h1>
                 <h3>Welcome to your personal claims portal.<br>
@@ -50,8 +51,8 @@
                     To proceed please login.</h3>
                 <button class="btn btn-primary " href="#signin" 
                     data-toggle="modal" data-target="#myModal">Sign In/Register</button>
-                <button class="btn btn-primary " href="#admin"
-                        data-toggle="modal" data-target="#myAdmin">Admin</button>
+                <!--<button class="btn btn-primary " href="#admin"
+                        data-toggle="modal" data-target="#myAdmin">Admin</button>-->
             </div>
         </div>
         
@@ -211,8 +212,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="myAdmin" tabindex="-1" role="dialog" 
+        <!-- Modal -->
+        <!--<div class="modal fade" id="myAdmin" tabindex="-1" role="dialog" 
                aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -251,7 +252,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </body>
     <%@include file="/lib/footer.html" %>
 </html>

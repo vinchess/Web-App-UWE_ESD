@@ -1,7 +1,6 @@
 package servlets;
 
 import database.MemberDAO;
-import database.LoginDao;
 import user.User;
 import java.sql.*;
 import java.io.IOException;
@@ -35,7 +34,6 @@ public class EditUserServlet extends HttpServlet {
             User user = (User)session.getAttribute("user");
             
             if(request.getParameter("password").equals(request.getParameter("reenterpassword"))){
-                LoginDao login = new LoginDao();
                 
                 user.setFirstName(request.getParameter("firstname"));
                 user.setLastName(request.getParameter("lastname"));

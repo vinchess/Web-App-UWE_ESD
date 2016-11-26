@@ -44,20 +44,17 @@ public class ClaimServlet extends HttpServlet{
             boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
             
             //if claim added successfully
-            if (addClaimReturn)
-            {
+            if (addClaimReturn){
                 session.setAttribute("success", "Claim added successfully"); //set success message
+                session.setAttribute("claimlist", claimDao.getClaimsById(user));
+                
                 response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
             }
             //else 
             else 
             {
                 session.setAttribute("error", "Error adding claim"); //set error message 
                 response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                //RequestDispatcher rd = request.getRequestDispatcher("../dashboard.jsp"); //forwards to dashboard.jsp
-                //rd.forward(request, response);
             }
         }
     }

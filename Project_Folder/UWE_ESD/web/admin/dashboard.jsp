@@ -36,6 +36,7 @@
     </head>
     <body>
         <div class="container">
+            <!-- Display appropriate message to user -->
             <%
                 String error = (String)session.getAttribute("error");
                 if(error!=null){
@@ -65,13 +66,13 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
                                accesskey=""aria-expanded="true" aria-controls="collapseOne">
-                                Filter
+                                Users Filter
                             </a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
-                            <form action="filter" method="POST"><!--need servlet to update the list-->
+                            <form action="filter" method="POST">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="applied" value="APPLIED" 
@@ -95,6 +96,70 @@
                                 </div>
                                 <input type="submit" class="btn btn-success btn-block" data-toggle="modal" 
                                        data-target="#dimmer" value="Update"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="claimsFilterHeading">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#claimsFilterCollapse" 
+                               accesskey=""aria-expanded="true" aria-controls="claimsFilterCollapse">
+                                Claims Filter
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="claimsFilterCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="claimsFilterHeading">
+                        <div class="panel-body">
+                            <form action="filter" method="POST">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="applied" value="SUBMITTED" 
+                                               <%if(applied!=null) { if(applied.equals("APPLIED")) { out.println("checked"); } }%>>
+                                        SUBMITTED
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="approved" value="ACCEPTED" 
+                                               <%if(approved!=null) { if(approved.equals("APPROVED")) { out.println("checked"); } }%>>
+                                        ACCEPTED
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="suspended" value="REJECTED" 
+                                               <%if(suspended!=null) { if(suspended.equals("SUSPENDED")) { out.println("checked"); } }%>>
+                                        REJECTED
+                                    </label>
+                                </div>
+                                <input type="submit" class="btn btn-success btn-block" data-toggle="modal" 
+                                       data-target="#dimmer" value="Update"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" 
+                               accesskey=""aria-expanded="true" aria-controls="collapseTwo">
+                                Search
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <form class="form-horizontal" action="#" method="POST"><!--need servlet to update the list-->
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" id="userid" name="userid" placeholder="User ID" required>
+                                    </div>
+                                        <button type="submit" class="btn btn-default btn-control" data-toggle="modal" data-target="#dimmer" >
+                                            <center><span class="glyphicon glyphicon-search" /></center>
+                                        </button>
+                               
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -293,7 +358,18 @@
                                             for(int i=0;i<claimlist.size();i++){
                                                 Claim claim = (Claim)claimlist.get(i);
                                                 String disabled = "";
-                                                out.println("<tr>");
+                                                
+                                                switch(claim.getStatus()){
+                                                    case "SUBMITTED":
+                                                        out.println("<tr class=\"warning\">");break;
+                                                    case "ACCEPTED":
+                                                        out.println("<tr class=\"success\">");break;
+                                                    case "REJECTED":
+                                                        out.println("<tr class=\"danger\">");break;
+                                                    default :
+                                                        out.println("<tr class=\"active text-muted\">");
+                                                }
+                                                
                                                 out.println("<td>" + (i+1) + "</td>");
                                                 out.println("<td>" + claim.getMem_id() + "</td>");
                                                 out.println("<td>" + claim.getDate() + "</td>");
@@ -308,13 +384,13 @@
                                                 out.println("<div class=\"pull-right\">");
                                                 out.println("<button class=\"btn btn-success btn-sm btn-circle "+disabled+"\" type=\"submit\" "
                                                         + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                        + "name=\"accepted\" value=\""+claim.getId()+"\">");
+                                                        + "name=\"accepted\" value=\""+claim.getId()+"\" "+disabled+">");
                                                 out.println("<span class=\"glyphicon glyphicon-ok\"></span>");
                                                 out.println("</button>");
 
                                                 out.println("<button class=\"btn btn-danger btn-sm btn-circle "+disabled+"\" type=\"submit\" "
                                                         + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                        + "name=\"rejected\" value=\""+claim.getId()+"\">");
+                                                        + "name=\"rejected\" value=\""+claim.getId()+"\" "+disabled+">");
                                                 out.println("<span class=\"glyphicon glyphicon-remove\"></span>");
                                                 out.println("</button>");
                                                 out.println("</div>");
