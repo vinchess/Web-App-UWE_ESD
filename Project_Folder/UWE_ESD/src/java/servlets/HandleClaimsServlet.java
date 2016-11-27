@@ -50,6 +50,7 @@ public class HandleClaimsServlet extends HttpServlet {
             session.setAttribute("home", false);
             session.setAttribute("users", false);
             session.setAttribute("claims", true);
+            session.setAttribute("search", false);
             
             response.sendRedirect("dashboard.jsp");
         }

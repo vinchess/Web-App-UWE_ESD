@@ -4,12 +4,14 @@
     Author     : Vincent
 --%>
 
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="user.Payments" %>
 <%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
 <%! User user; List paymentlist; List claimlist;%>
+<%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
 <% user = (User)session.getAttribute("user");%>
 <% paymentlist = (ArrayList)session.getAttribute("paymentlist"); %>
 <% claimlist = (ArrayList)session.getAttribute("claimlist"); %>
@@ -51,7 +53,7 @@
             <div class="col-md-3 text-center">
                 <img src="/UWE_ESD/assets/user_icon.png" height="150px">
                     <h2><%=user.getFirstName()+" "+user.getLastName()%></h2>
-                    <h3>Balance &#163;<%=String.format("%.2f",user.getBalance())%></h3>
+                    <h3>Balance &#163; <%=String.format("%.2f",user.getBalance())%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -159,10 +161,10 @@
                                     out.println("<tr>");
                                     out.println("<th>#</th>");
                                     out.println("<th>ID</th>");
-                                    out.println("<th>Date</th>");
                                     out.println("<th>Rational</th>");
                                     out.println("<th>Status</th>");
                                     out.println("<th>Amount</th>");
+                                    out.println("<th>Date</th>");
                                     out.println("</tr>");
                                     
                                     if(claimlist.isEmpty()){
@@ -175,10 +177,13 @@
                                             out.println("<tr>");
                                             out.println("<td>" + (i+1) + "</td>");
                                             out.println("<td>" + claim.getMem_id()+ "</td>");
-                                            out.println("<td>" + claim.getDate()+ "</td>");
                                             out.println("<td>" + claim.getRationale() + "</td>");
                                             out.println("<td>" + claim.getStatus() + "</td>");
                                             out.println("<td>&#163; " + claim.getAmount() + "</td>");
+                                            
+                                            String stringdate = DATE_FORMAT.format(claim.getDate());
+                                            
+                                            out.println("<td>" + stringdate+ "</td>");
                                             out.println("</tr>");
                                         }
                                     }
@@ -217,7 +222,7 @@
                                             <label for="cardNumber">CARD NUMBER</label>
                                             <div class="input-group">
                                                 <input 
-                                                    type="tel"
+                                                    type="cc-number"
                                                     class="form-control"
                                                     name="cardNumber"
                                                     placeholder="Valid Card Number"
@@ -237,7 +242,7 @@
                                                 <span class="visible-xs-inline">EXP</span> DATE
                                             </label>
                                             <input 
-                                                type="tel" 
+                                                type="cc-exp" 
                                                 class="form-control" 
                                                 name="cardExpiry"
                                                 placeholder="MM / YY"
@@ -249,7 +254,7 @@
                                         <div class="form-group">
                                             <label for="cardCVC">CV CODE</label>
                                             <input 
-                                                type="tel" 
+                                                type="cc-csc" 
                                                 class="form-control"
                                                 name="cardCVC"
                                                 placeholder="CVC"
@@ -266,7 +271,9 @@
                                                    id="couponCode"
                                                    class="form-control"
                                                    name="payAmount"
+                                                   step="any" 
                                                    min="0.00"
+                                                   max="9999.99"
                                                    placeholder="0.00"
                                                    autocomplete="amount"
                                                    required />
@@ -322,6 +329,8 @@
                                         <label for="amount">Amount</label>
                                         <input type="number" 
                                                min="0.00"
+                                               max="9999.99"
+                                               step="any" 
                                                class="form-control" 
                                                name="claimAmount"
                                                placeholder="0.00"
@@ -388,7 +397,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="dob">Date of Birth:</label>
                                             <% 
-                                                out.println("<input id=\"dob\" name=\"dob\" class=\"form-control\" max=\"2016-01-01\" "+
+                                                out.println("<input id=\"dob\" name=\"dob\" class=\"form-control\" min=\"1970-01-01\" max=\"2016-01-01\" "+
                                                         "type=\"date\" value=\"" + user.getDOB() + "\" required>");
                                             %>
                                         </div>

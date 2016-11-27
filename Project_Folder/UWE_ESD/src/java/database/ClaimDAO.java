@@ -28,7 +28,7 @@ public class ClaimDAO extends JDBC {
                 list.add(new Claim(
                         Integer.parseInt(rs.getString("id")),
                         rs.getString("mem_id"),
-                        rs.getString("date"),
+                        rs.getTimestamp("date"),
                         rs.getString("rationale"),
                         rs.getString("status"),
                         Double.parseDouble(rs.getString("amount"))));
@@ -57,7 +57,7 @@ public class ClaimDAO extends JDBC {
                 list.add(new Claim(
                         Integer.parseInt(rs.getString("id")),
                         rs.getString("mem_id"),
-                        rs.getString("date"),
+                        rs.getTimestamp("date"),
                         rs.getString("rationale"),
                         rs.getString("status"),
                         Double.parseDouble(rs.getString("amount"))));

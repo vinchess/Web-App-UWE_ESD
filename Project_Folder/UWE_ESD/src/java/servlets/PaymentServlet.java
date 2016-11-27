@@ -35,20 +35,26 @@ public class PaymentServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 User user = (User)session.getAttribute("user");
                 double amount = Double.parseDouble(request.getParameter("payAmount"));
+                double newAmount = amount + user.getBalance();
                 
-                PaymentDAO payment = new PaymentDAO();
+                if(newAmount<=10000){
+                    PaymentDAO payment = new PaymentDAO();
                 
-                boolean paymentReturn = payment.updatePayment(user, amount);
-                
-                if (paymentReturn){
-                    user.setBalance(Double.parseDouble(new MemberDAO().getColumn(user.getID(),"balance")));
-                    session.setAttribute("user", user);
-                    session.setAttribute("success", "Payment made successfully."); //set success message
-                    session.setAttribute("paymentlist", payment.getRecordsById(user));
-                    
-                    response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    boolean paymentReturn = payment.updatePayment(user, amount);
+
+                    if (paymentReturn){
+                        user.setBalance(Double.parseDouble(new MemberDAO().getColumn(user.getID(),"balance")));
+                        session.setAttribute("user", user);
+                        session.setAttribute("success", "Payment made successfully."); //set success message
+                        session.setAttribute("paymentlist", payment.getRecordsById(user));
+
+                        response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    }else{
+                        session.setAttribute("error", "Failed to make payment. Contact our helpdesk for assistance."); //set error message 
+                        response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    }
                 }else{
-                    session.setAttribute("error", "Failed to make payment. Contact our helpdesk for assistance."); //set error message 
+                    session.setAttribute("error", "Your balance will exceed &#163; 10,000 limit. Pay smaller amount."); //set error message 
                     response.sendRedirect("/UWE_ESD/dashboard.jsp");
                 }
             }

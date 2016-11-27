@@ -1,5 +1,7 @@
 package user;
 
+import java.util.Date;
+
 /**
  *
  * @author jayson
@@ -8,7 +10,7 @@ public class Claim {
     
     private int id;
     private String mem_id;
-    private String date;
+    private Date date;
     private String rationale;
     private String status;
     private double amount;
@@ -18,7 +20,7 @@ public class Claim {
     public Claim(String status,double balance,int max_claim){
         
     }
-    public Claim(int id,String mem_id, String date, String rationale, String status, double amount){
+    public Claim(int id,String mem_id, Date date, String rationale, String status, double amount){
         this.id = id;
         this.mem_id = mem_id;
         this.date = date;
@@ -58,14 +60,15 @@ public class Claim {
     /**
      * @return the date
      */
-    public String getDate() {
+    public Date getDate() {
+        
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

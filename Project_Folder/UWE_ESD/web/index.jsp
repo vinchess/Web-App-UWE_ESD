@@ -168,6 +168,7 @@
                                                 <input id="dob" name="dob" 
                                                        class="form-control" 
                                                        type="date"
+                                                       min="1970-01-01"
                                                        max="2016-01-01"
                                                        <%
                                                            for(Cookie c:cookies){

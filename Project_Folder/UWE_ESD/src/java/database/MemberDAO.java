@@ -32,7 +32,7 @@ public class MemberDAO extends JDBC{
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("dob"),
-                        rs.getString("dor"),
+                        rs.getTimestamp("dor"),
                         Double.parseDouble(rs.getString("balance"))));
             }
             rs.close();
@@ -58,7 +58,7 @@ public class MemberDAO extends JDBC{
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("dob"),
-                        rs.getString("dor"),
+                        rs.getTimestamp("dor"),
                         Double.parseDouble(rs.getString("balance")));
             
             rs.close();
@@ -85,7 +85,7 @@ public class MemberDAO extends JDBC{
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("dob"),
-                        rs.getString("dor"),
+                        rs.getTimestamp("dor"),
                         Double.parseDouble(rs.getString("balance"))));
             }
             rs.close();
@@ -112,7 +112,7 @@ public class MemberDAO extends JDBC{
                         rs.getString("status"),
                         rs.getString("address"),
                         rs.getString("dob"),
-                        rs.getString("dor"),
+                        rs.getTimestamp("dor"),
                         Double.parseDouble(rs.getString("balance"))));
             }
             rs.close();

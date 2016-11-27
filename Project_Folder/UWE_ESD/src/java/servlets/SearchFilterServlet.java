@@ -39,7 +39,7 @@ public class SearchFilterServlet extends HttpServlet {
             String userid = request.getParameter("userid");
             MemberDAO user = new MemberDAO();
             
-            session.setAttribute("user",(User)user.getSingleById(userid));
+            session.setAttribute("searchuser",(User)user.getSingleById(userid));
             
             session.setAttribute("home", false);
             session.setAttribute("users", false);

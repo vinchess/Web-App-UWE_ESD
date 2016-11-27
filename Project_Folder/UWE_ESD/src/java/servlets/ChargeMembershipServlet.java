@@ -52,14 +52,18 @@ public class ChargeMembershipServlet extends HttpServlet {
                 session.setAttribute("home", true);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);
+                session.setAttribute("search", false);
 
                 response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
             }
+            
+            session.setAttribute("userlist", members.getAllRecords());
             session.setAttribute("success", "All members charged.");
             
             session.setAttribute("home", true);
             session.setAttribute("users", false);
             session.setAttribute("claims", false);
+            session.setAttribute("search", false);
             
             response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
         }

@@ -1,5 +1,7 @@
 package user;
 
+import java.util.Date;
+
 /**
  *
  * @author Richard
@@ -12,12 +14,12 @@ public class User {
     private String userValid;
     private String address;
     private String DOB;
-    private String DOR;
+    private Date DOR;
     private double balance;
       
     public User(){}
     public User(String ID,String name,String userValid,
-                    String address,String DOB,String DOR,double balance){
+                    String address,String DOB,Date DOR,double balance){
         this.ID =  ID;
         String[] split = name.split(" ");
         this.firstName = split[0];
@@ -45,11 +47,11 @@ public class User {
           DOB = newDOB;
       }
       
-      public String getDOR(){
+      public Date getDOR(){
           return DOR;
       }
       
-      public void setDOR(String newDOR){
+      public void setDOR(Date newDOR){
           DOR = newDOR;
       }
       

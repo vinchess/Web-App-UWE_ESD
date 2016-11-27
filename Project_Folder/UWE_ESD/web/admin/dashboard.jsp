@@ -4,7 +4,8 @@
     Author     : Vincent
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="user.User" %>
@@ -14,7 +15,8 @@
 <%! List userClaims; %>
 <%! List userList; %>
 <%! User user;%>
-<% user = (User)session.getAttribute("user");%>
+<%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
+<% user = (User)session.getAttribute("searchuser");%>
 <% userList = (ArrayList)session.getAttribute("userlist");%>
 <% userClaims = (ArrayList)session.getAttribute("claimlist");%>
 <% applied = (String)session.getAttribute("applied");%>
@@ -208,7 +210,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <%
-                                            out.println("<h1 style=\"font-size:70px;\">"+userList.size()+"</h1>");
+                                            out.println("<h1 style=\"font-size:50px;\">"+userList.size()+"</h1>");
                                                             
                                             int apply = 0,approve = 0,suspend = 0;
                                             for(Object e:userList){
@@ -258,7 +260,7 @@
                                             size = apply + approve + suspend;
                                             session.setAttribute("amount", String.format("%.2f",(totalClaims/size)+10));
 
-                                            out.println("<h1>&#163;"+String.format("%.2f", totalClaims)+"</h1>");
+                                            out.println("<h1 style=\"font-size:50px;\">&#163; "+String.format("%.2f", totalClaims)+"</h1>");
                                             out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/size)+"</h3>");
                                             out.println("<h3>Fees : &#163; 10.00</h3>");
                                         %>
@@ -311,7 +313,10 @@
                                         out.println("<td>" + member.getFirstName() + " " + member.getLastName() + "</td>");
                                         out.println("<td>" + member.getAddress() + "</td>");
                                         out.println("<td>" + member.getDOB() + "</td>");
-                                        out.println("<td>" + member.getDOR() + "</td>");
+                                        
+                                        String stringDOR = DATE_FORMAT.format(member.getDOR());
+                                        
+                                        out.println("<td>" + stringDOR + "</td>");
                                         out.println("<td>" + member.isUserValid()+ "</td>");
                                         out.println("<td>&#163; " + member.getBalance() + "</td>");
                                         out.println("<td>");
@@ -376,7 +381,10 @@
 
                                             out.println("<td>" + (i+1) + "</td>");
                                             out.println("<td>" + claim.getMem_id() + "</td>");
-                                            out.println("<td>" + claim.getDate() + "</td>");
+                                            
+                                            String claimDate = DATE_FORMAT.format(claim.getDate());
+                                            
+                                            out.println("<td>" + claimDate + "</td>");
                                             out.println("<td>" + claim.getRationale() + "</td>");
                                             out.println("<td>" + claim.getStatus() + "</td>");
                                             out.println("<td>&#163; " + claim.getAmount() + "</td>");
