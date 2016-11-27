@@ -22,10 +22,6 @@
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
     <servlet>
-        <servlet-name>test1</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
-    </servlet>
-    <servlet>
         <servlet-name>loginservlet</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
@@ -81,10 +77,6 @@
         <servlet-name>SearchFilterServlet</servlet-name>
         <servlet-class>servlets.SearchFilterServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>test1</servlet-name>
-        <url-pattern>/test2</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>loginservlet</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -142,9 +134,7 @@
         <url-pattern>/admin/searchfilter</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>20</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
