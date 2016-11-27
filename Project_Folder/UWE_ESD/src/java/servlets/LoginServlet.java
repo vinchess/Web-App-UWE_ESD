@@ -5,10 +5,8 @@ import database.MemberDAO;
 import database.LoginDao;
 import database.ClaimDAO;
 import database.PaymentDAO;
-import java.util.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author Richard
  */
-@WebServlet("/test1")
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -70,7 +67,7 @@ public class LoginServlet extends HttpServlet {
             
                 response.sendRedirect("dashboard.jsp");
             }  
-            else if(isAdmin){ //if password and username matches
+            else if(isAdmin){ //if user is an Admin
             
                 session.setAttribute("claimlist", claims.getAllClaims());
                 session.setAttribute("userlist", member.getAllRecords());
