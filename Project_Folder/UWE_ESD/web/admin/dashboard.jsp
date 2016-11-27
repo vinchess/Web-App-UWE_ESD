@@ -13,6 +13,8 @@
 <%! boolean homeTab,usersTab,claimsTab,searchTab;%>
 <%! List userClaims; %>
 <%! List userList; %>
+<%! User user;%>
+<% user = (User)session.getAttribute("user");%>
 <% userList = (ArrayList)session.getAttribute("userlist");%>
 <% userClaims = (ArrayList)session.getAttribute("claimlist");%>
 <% applied = (String)session.getAttribute("applied");%>
@@ -153,7 +155,7 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
-                            <form class="form-horizontal" action="#" method="POST">
+                            <form class="form-horizontal" action="searchfilter" method="POST">
                                 <div class="form-group">
                                     <div class="col-sm-9">
                                         <input class="form-control" type="text" id="userid" name="userid" placeholder="User ID" required>
@@ -292,9 +294,9 @@
                                     out.println("</tr>");
                                 }else{
                                     for(int i=0;i<userList.size();i++){
-                                        User user = (User)userList.get(i);
+                                        User member = (User)userList.get(i);
                                         
-                                        switch(user.isUserValid()){
+                                        switch(member.isUserValid()){
                                             case "APPLIED":
                                                 out.println("<tr class=\"warning\">");break;
                                             case "APPROVED":
@@ -305,25 +307,25 @@
                                                 out.println("<tr class=\"active text-muted\">");
                                         }
                                         out.println("<td>" + (i+1) + "</td>");
-                                        out.println("<td>" + user.getID() + "</td>");
-                                        out.println("<td>" + user.getFirstName() + " " + user.getLastName() + "</td>");
-                                        out.println("<td>" + user.getAddress() + "</td>");
-                                        out.println("<td>" + user.getDOB() + "</td>");
-                                        out.println("<td>" + user.getDOR() + "</td>");
-                                        out.println("<td>" + user.isUserValid()+ "</td>");
-                                        out.println("<td>&#163; " + user.getBalance() + "</td>");
+                                        out.println("<td>" + member.getID() + "</td>");
+                                        out.println("<td>" + member.getFirstName() + " " + member.getLastName() + "</td>");
+                                        out.println("<td>" + member.getAddress() + "</td>");
+                                        out.println("<td>" + member.getDOB() + "</td>");
+                                        out.println("<td>" + member.getDOR() + "</td>");
+                                        out.println("<td>" + member.isUserValid()+ "</td>");
+                                        out.println("<td>&#163; " + member.getBalance() + "</td>");
                                         out.println("<td>");
                                         out.println("<form action=\"update-status\" method=\"POST\">");
-                                        if(user.isUserValid().equals("APPROVED")){
+                                        if(member.isUserValid().equals("APPROVED")){
                                             out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
                                                     + "data-toggle=\"modal\" data-target=\"#dimmer\""
-                                                    + "name=\"suspend\" value=\""+user.getID()+"\">SUSPEND</button>");
-                                        }else if(user.isUserValid().equals("DELETED")){
+                                                    + "name=\"suspend\" value=\""+member.getID()+"\">SUSPEND</button>");
+                                        }else if(member.isUserValid().equals("DELETED")){
                                             out.println("");
                                         }else{
                                             out.println("<button class=\"btn btn-default btn-sm\" type=\"submit\" "
                                                     + "data-toggle=\"modal\" data-target=\"#dimmer\""
-                                                    + "name=\"approve\" value=\""+user.getID()+"\">APPROVE</button>");
+                                                    + "name=\"approve\" value=\""+member.getID()+"\">APPROVE</button>");
                                         }
                                         out.println("</form>");
                                         out.println("</td>");
@@ -408,18 +410,47 @@
                         <div role="tabpanel" class="tab-pane 
                              <%if(searchTab) { out.println("active"); }%>" id="search">
                             <br>
-                            <table class="table">
-                                <tr>
-                                    <td class="col-md-2"><img src="/UWE_ESD/assets/user_icon.png" height="100px"></td>
-                                    <td class="col-md-7">
-                                        <h4>Name</h4>
-                                        <h4>Address</h4>
-                                        <h4>Balance</h4>
-                                    </td>
-                                    <td class="col-md-3">
-                                        <button class="btn btn-default btn-block">Distributed Charges</button>
-                                        <button class="btn btn-default btn-block">Membership Fees</button>
-                                    </td>
+                            <table >
+                                <%
+                                
+                                    if(user==null){
+                                        out.println("<tr>");
+                                        out.println("<td>No Records Found</td>");
+                                        out.println("</tr>");
+                                    }else{
+                                        if(user.isUserValid().equals("DELETED"))
+                                            out.println("<tr class=\"text-muted\">"); 
+                                        else
+                                            out.println("<tr>");
+                                        out.println("<td class=\"col-md-2\">");
+                                        out.println("<center><img src=\"/UWE_ESD/assets/user_icon.png\" width=\"100px\"></center>");
+                                        out.println("</td>");
+                                        out.println("<td class=\"col-md-7\">");
+                                        switch(user.isUserValid()){
+                                            case "APPLIED":
+                                                out.println("<h5><span class=\"label label-warning\">APPLIED</span></h5>");break;
+                                            case "APPROVED":
+                                                out.println("<h5><span class=\"label label-success\">APPROVED</span></h5>");break;
+                                            case "SUSPENDED":
+                                                out.println("<h5><span class=\"label label-danger\">SUSPENDED</span></h5>");break;
+                                            case "DELETED":
+                                                out.println("<h5><span class=\"label label-default\">DELETED</span></h5>");break;
+                                        }
+                                        out.println("<h4>"+user.getFirstName()+" "+user.getLastName()+"</h4>");
+                                        out.println("<h4>&#163; "+user.getBalance()+"</h4>");
+                                        out.println("</td>");
+                                        out.println("<td class=\"col-md-3\">");
+                                        if(!user.isUserValid().equals("DELETED")){
+                                            out.println("<button class=\"btn btn-default btn-block\" "
+                                                + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                + "onClick=\"location.href='charge-members'\" >Distributed Charges</button>");
+                                            out.println("<button class=\"btn btn-default btn-block\" "
+                                                + "data-toggle=\"modal\" data-target=\"#dimmer\" "
+                                                + "onClick=\"location.href='charge-members'\" >&#163; 10 Fees</button>");
+                                        }
+                                        out.println("</td>");
+                                    }
+                                %>
                                 </tr>
                             </table>
                         </div>

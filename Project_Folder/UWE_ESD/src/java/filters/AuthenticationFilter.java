@@ -145,7 +145,7 @@ public class AuthenticationFilter implements Filter {
             session.setAttribute("isAdmin", isAdmin);
             
         }catch(SQLException se){
-            System.out.println("SQL error occurred.");
+            System.out.println("SQL error occurred (doFilter).");
             session.setAttribute("isAdmin", isAdmin);
         }
         

@@ -144,7 +144,7 @@
                                         out.println("<td>" + (i+1) + "</td>");
                                         out.println("<td>" + payment.getId() + "</td>");
                                         out.println("<td>" + payment.getType() + "</td>");
-                                        out.println("<td>" + payment.getAmount() + "</td>");
+                                        out.println("<td>&#163; " + payment.getAmount() + "</td>");
                                         out.println("<td>" + payment.getDate() + "</td>");
                                         out.println("</tr>");
                                     }
@@ -178,7 +178,7 @@
                                             out.println("<td>" + claim.getDate()+ "</td>");
                                             out.println("<td>" + claim.getRationale() + "</td>");
                                             out.println("<td>" + claim.getStatus() + "</td>");
-                                            out.println("<td>" + claim.getAmount() + "</td>");
+                                            out.println("<td>&#163; " + claim.getAmount() + "</td>");
                                             out.println("</tr>");
                                         }
                                     }

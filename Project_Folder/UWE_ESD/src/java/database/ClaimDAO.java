@@ -36,7 +36,7 @@ public class ClaimDAO extends JDBC {
             rs.close();
             conn.close();
         }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+            System.out.println("SQL error occurred (getAllCLaims). " + se.getMessage());
         }
 
         return list;
@@ -65,7 +65,7 @@ public class ClaimDAO extends JDBC {
             rs.close();
             conn.close();
         }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+            System.out.println("SQL error occurred (getClaimsById). " + se.getMessage());
         }
             
         return list;

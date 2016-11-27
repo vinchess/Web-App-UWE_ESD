@@ -41,7 +41,13 @@ public class ClaimServlet extends HttpServlet{
             
             //add claim to DB
             ClaimDAO claimDao = new ClaimDAO();
+            
+            //verify date here 1st
+            //java.util.Date newDate = result.getTimestamp("VALUEDATE");
+            
             boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
+            
+            
             
             //if claim added successfully
             if (addClaimReturn){

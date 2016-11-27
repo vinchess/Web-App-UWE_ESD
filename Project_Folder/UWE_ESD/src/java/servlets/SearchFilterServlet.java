@@ -5,10 +5,10 @@
  */
 package servlets;
 
-import database.ClaimDAO;
+import user.User;
+import database.MemberDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Vincent
  */
-public class HandleClaimsServlet extends HttpServlet {
+public class SearchFilterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,22 +36,17 @@ public class HandleClaimsServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             
-            String accepted = request.getParameter("accepted");
-            String rejected = request.getParameter("rejected");
-            ClaimDAO updateClaim = new ClaimDAO();
+            String userid = request.getParameter("userid");
+            MemberDAO user = new MemberDAO();
             
-            if(accepted!=null){
-                updateClaim.updateClaim(Integer.parseInt(accepted), "ACCEPTED");
-            }else if(rejected!=null){
-                updateClaim.updateClaim(Integer.parseInt(rejected), "REJECTED");
-            }
+            session.setAttribute("user",(User)user.getSingleById(userid));
             
-            session.setAttribute("claimlist", updateClaim.getAllClaims());
             session.setAttribute("home", false);
             session.setAttribute("users", false);
-            session.setAttribute("claims", true);
+            session.setAttribute("claims", false);
+            session.setAttribute("search", true);
             
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
         }
     }
 

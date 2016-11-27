@@ -77,6 +77,10 @@
         <servlet-name>ClaimFilterServlet</servlet-name>
         <servlet-class>servlets.ClaimFilterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchFilterServlet</servlet-name>
+        <servlet-class>servlets.SearchFilterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -132,6 +136,10 @@
     <servlet-mapping>
         <servlet-name>ClaimFilterServlet</servlet-name>
         <url-pattern>/admin/claimfilter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchFilterServlet</servlet-name>
+        <url-pattern>/admin/searchfilter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

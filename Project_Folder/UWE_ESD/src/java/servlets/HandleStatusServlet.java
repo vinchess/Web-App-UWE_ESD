@@ -46,9 +46,11 @@ public class HandleStatusServlet extends HttpServlet {
                 member.updateStatus(approve, "APPROVED");
             }
             
+            session.setAttribute("userlist", member.getAllRecords());
             session.setAttribute("home", false);
             session.setAttribute("users", true);
             session.setAttribute("claims", false);
+            session.setAttribute("search", false);
             
             response.sendRedirect("dashboard.jsp");
         }

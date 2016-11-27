@@ -14,7 +14,7 @@ import user.User;
  *
  * @author Vincent
  */
-public class MemberDAO<E> extends JDBC{
+public class MemberDAO extends JDBC{
     public List getAllRecords(){
         List list = new ArrayList();
         conn = getConnection();
@@ -38,11 +38,11 @@ public class MemberDAO<E> extends JDBC{
             rs.close();
             conn.close();
         }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+            System.out.println("SQL error occurred (getAllRecords). " + se.getMessage());
         }
         return list;
     }//end getAllRecords
-    public Object getSingleById(String id){
+    public User getSingleById(String id){
         User user = null;
         conn = getConnection();
         String sql = "SELECT * FROM members WHERE id='" + id + "';";
@@ -64,7 +64,7 @@ public class MemberDAO<E> extends JDBC{
             rs.close();
             conn.close();
         }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+            System.out.println("SQL error occurred (getSingleById). " + se.getMessage());
         }
         return user;
     }//end getSingleById
@@ -149,7 +149,7 @@ public class MemberDAO<E> extends JDBC{
             stmt.executeUpdate(sql);
             conn.close();
         }catch(SQLException se){
-            System.out.println("OPS");
+            System.out.println("SQL Error.");
         }
     }//end updateStatus
     public String editDetails(User user)throws SQLException,IOException{
@@ -177,9 +177,7 @@ public class MemberDAO<E> extends JDBC{
         result = "User details successfully updated.";
         
         return result;
-    }
-    
-    
+    }   
     
     public String deleteUser(String id)throws SQLException{
         String result = "";

@@ -54,8 +54,7 @@ public class LoginServlet extends HttpServlet {
             String loginDaoReturn = loginDao.authenticateUser(userInput);  //authenticate user
 
             MemberDAO member = new MemberDAO();
-            User user = (User)member.getSingleById(userid);
-            
+
             PaymentDAO payments = new PaymentDAO();
             ClaimDAO claims = new ClaimDAO();
             
@@ -64,6 +63,7 @@ public class LoginServlet extends HttpServlet {
 
             
             if(loginDaoReturn.equals("SUCCESS")){ //if password and username matches
+                User user = (User)member.getSingleById(userid);
                 session.setAttribute("user", user); //set User object as session wide attribute
                 session.setAttribute("paymentlist", payments.getRecordsById(user));
                 session.setAttribute("claimlist", claims.getClaimsById(user));

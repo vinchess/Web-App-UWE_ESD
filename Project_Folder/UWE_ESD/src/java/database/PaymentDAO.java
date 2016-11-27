@@ -74,7 +74,7 @@ public class PaymentDAO extends JDBC{
             rs.close();
             conn.close();
         }catch(SQLException se){
-            System.out.println("SQL error occurred. " + se.getMessage());
+            System.out.println("SQL error occurred (getRecordsById). " + se.getMessage());
         }
         return list;
     }//end getRecordsById
