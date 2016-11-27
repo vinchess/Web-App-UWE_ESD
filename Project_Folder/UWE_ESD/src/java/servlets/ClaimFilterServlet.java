@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Vincent
  */
-public class AdminFilterServlet extends HttpServlet {
+public class ClaimFilterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,21 +34,20 @@ public class AdminFilterServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             
-            String applied = request.getParameter("applied");
-            String approved = request.getParameter("approved");
-            String suspended = request.getParameter("suspended");
+            String submitted = request.getParameter("submitted");
+            String accepted = request.getParameter("accepted");
+            String rejected = request.getParameter("rejected");
             
-            session.setAttribute("applied", applied);
-            session.setAttribute("approved", approved);
-            session.setAttribute("suspended", suspended);
+            session.setAttribute("submitted", submitted);
+            session.setAttribute("accepted", accepted);
+            session.setAttribute("rejected", rejected);
             
             session.setAttribute("home", false);
-            session.setAttribute("users", true);
-            session.setAttribute("claims", false);
+            session.setAttribute("users", false);
+            session.setAttribute("claims", true);
             session.setAttribute("search", false);
             
             response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
-  
         }
     }
 

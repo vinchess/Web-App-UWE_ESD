@@ -73,6 +73,10 @@
         <servlet-name>EditUserServlet</servlet-name>
         <servlet-class>servlets.EditUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClaimFilterServlet</servlet-name>
+        <servlet-class>servlets.ClaimFilterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>test1</servlet-name>
         <url-pattern>/test2</url-pattern>
@@ -124,6 +128,10 @@
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>
         <url-pattern>/edit-user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClaimFilterServlet</servlet-name>
+        <url-pattern>/admin/claimfilter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

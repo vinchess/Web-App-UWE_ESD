@@ -41,9 +41,11 @@ public class EditUserServlet extends HttpServlet {
                 user.setDOB(request.getParameter("dob"));
 
                 MemberDAO member = new MemberDAO();
+                
 
                 try{
                     session.setAttribute("success", member.editDetails(user)); //set error message to be sent to index.jsp
+                    session.setAttribute("user", member.getSingleById(user.getID()));
                     response.sendRedirect("/UWE_ESD/dashboard.jsp"); //redirect back to main page
                 }catch(SQLException se){
                     session.setAttribute("error", "Connection error, please try again later."); //set error message to be sent to index.jsp

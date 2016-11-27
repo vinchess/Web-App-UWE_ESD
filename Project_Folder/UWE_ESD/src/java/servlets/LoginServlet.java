@@ -72,9 +72,13 @@ public class LoginServlet extends HttpServlet {
             }  
             else if(isAdmin){ //if password and username matches
             
+                session.setAttribute("claimlist", claims.getAllClaims());
+                session.setAttribute("userlist", member.getAllRecords());
+                
                 session.setAttribute("home", true);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);
+                session.setAttribute("search", false);
                 response.sendRedirect("admin/dashboard.jsp");
             } 
             else 
