@@ -1,6 +1,8 @@
 package database;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -24,5 +26,5 @@ public class AdminDashboardDAO extends JDBC{
         }catch(SQLException se){
             System.out.println("SQL error occurred.");
         }
-    }
+    }//end findByStatus
 }

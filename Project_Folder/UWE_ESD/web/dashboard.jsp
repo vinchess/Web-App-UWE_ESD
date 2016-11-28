@@ -4,6 +4,7 @@
     Author     : Vincent
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
@@ -11,6 +12,7 @@
 <%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
 <%! User user; List paymentlist; List claimlist;%>
+<%! DecimalFormat df = new DecimalFormat("0.00"); %>
 <%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
 <% user = (User)session.getAttribute("user");%>
 <% paymentlist = (ArrayList)session.getAttribute("paymentlist"); %>
@@ -27,6 +29,7 @@
     </head>
     <body>
         <div class="container">
+            <!-- Display appropriate message to user -->
             <%
                 String error = (String)session.getAttribute("error");
                 if(error!=null){
@@ -50,10 +53,11 @@
                 }
                 session.setAttribute("success", null);
             %>
+            
             <div class="col-md-3 text-center">
                 <img src="/UWE_ESD/assets/user_icon.png" height="150px">
                     <h2><%=user.getFirstName()+" "+user.getLastName()%></h2>
-                    <h3>Balance &#163; <%=String.format("%.2f",user.getBalance())%></h3>
+                    <h3>Balance &#163; <%=df.format(user.getBalance())%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
                             data-toggle="modal" data-target="#payment" aria-label="Left Align">
                         <div class="col-md-1">
@@ -104,6 +108,7 @@
                     </button>
             </div>
             <div class="col-md-9 ">
+                <!--Apply appropriate label based on status-->
                 <%
                     String status =user.isUserValid();
                     if(status.equals("APPLIED"))
@@ -125,71 +130,58 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
-                            <%
-                                out.println("<table class=\"table\" >");
-                                out.println("<tr>");
-                                out.println("<th>#</th>");
-                                out.println("<th>ID</th>");
-                                out.println("<th>Payment Type</th>");
-                                out.println("<th>Amount</th>");
-                                out.println("<th>Date</th>");
-                                out.println("</tr>");
-                                
-                                if(paymentlist.isEmpty()){
-                                    out.println("<tr>");
-                                    out.println("<td colspan=\"5\">No Records Found</td>");
-                                    out.println("</tr>");
-                                }else{
-                                    for(int i=0;i<paymentlist.size();i++){
-                                        Payments payment = (Payments)paymentlist.get(i);
-                                        out.println("<tr>");
-                                        out.println("<td>" + (i+1) + "</td>");
-                                        out.println("<td>" + payment.getId() + "</td>");
-                                        out.println("<td>" + payment.getType() + "</td>");
-                                        out.println("<td>&#163; " + payment.getAmount() + "</td>");
-                                        out.println("<td>" + payment.getDate() + "</td>");
-                                        out.println("</tr>");
-                                    }
-                                }
+                            <table class="table" >
+                                <tr><th>#</th><th>ID</th><th>Payment Type</th><th>Amount</th><th>Date</th></tr>
+                                <!--Gather payment records to display-->
+                                <%
 
-                                out.println("</table>");
-                            %>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="claims">
-                            <%
-                                    out.println("<table class=\"table\" >");
-                                    out.println("<tr>");
-                                    out.println("<th>#</th>");
-                                    out.println("<th>ID</th>");
-                                    out.println("<th>Rational</th>");
-                                    out.println("<th>Status</th>");
-                                    out.println("<th>Amount</th>");
-                                    out.println("<th>Date</th>");
-                                    out.println("</tr>");
-                                    
-                                    if(claimlist.isEmpty()){
+                                    if(paymentlist.isEmpty()){
                                         out.println("<tr>");
-                                        out.println("<td colspan=\"6\">No Records Found</td>");
+                                        out.println("<td colspan=\"5\">No Records Found</td>");
                                         out.println("</tr>");
                                     }else{
-                                        for(int i=0;i<claimlist.size();i++){
-                                            Claim claim = (Claim)claimlist.get(i);
+                                        for(int i=0;i<paymentlist.size();i++){
+                                            Payments payment = (Payments)paymentlist.get(i);
                                             out.println("<tr>");
                                             out.println("<td>" + (i+1) + "</td>");
-                                            out.println("<td>" + claim.getMem_id()+ "</td>");
-                                            out.println("<td>" + claim.getRationale() + "</td>");
-                                            out.println("<td>" + claim.getStatus() + "</td>");
-                                            out.println("<td>&#163; " + claim.getAmount() + "</td>");
-                                            
-                                            String stringdate = DATE_FORMAT.format(claim.getDate());
-                                            
-                                            out.println("<td>" + stringdate+ "</td>");
+                                            out.println("<td>" + payment.getId() + "</td>");
+                                            out.println("<td>" + payment.getType() + "</td>");
+                                            out.println("<td>&#163; " + payment.getAmount() + "</td>");
+                                            out.println("<td>" + payment.getDate() + "</td>");
                                             out.println("</tr>");
                                         }
                                     }
-                                    
-                                    out.println("</table>");
                                 %>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="claims">
+                            <table class="table" >
+                                <tr><th>#</th><th>ID</th><th>Rational</th><th>Status</th><th>Amount</th><th>Date</th></tr>
+                                <!--Gather claim records to display-->
+                                <%
+
+                                        if(claimlist.isEmpty()){
+                                            out.println("<tr>");
+                                            out.println("<td colspan=\"6\">No Records Found</td>");
+                                            out.println("</tr>");
+                                        }else{
+                                            for(int i=0;i<claimlist.size();i++){
+                                                Claim claim = (Claim)claimlist.get(i);
+                                                out.println("<tr>");
+                                                out.println("<td>" + (i+1) + "</td>");
+                                                out.println("<td>" + claim.getMem_id()+ "</td>");
+                                                out.println("<td>" + claim.getRationale() + "</td>");
+                                                out.println("<td>" + claim.getStatus() + "</td>");
+                                                out.println("<td>&#163; " + claim.getAmount() + "</td>");
+
+                                                String stringdate = DATE_FORMAT.format(claim.getDate());
+
+                                                out.println("<td>" + stringdate+ "</td>");
+                                                out.println("</tr>");
+                                            }
+                                        }
+                                    %>
+                            </table>
                         </div>
                     </div>
                 </div>

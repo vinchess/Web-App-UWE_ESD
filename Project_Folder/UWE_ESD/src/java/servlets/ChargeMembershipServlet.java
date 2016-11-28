@@ -37,7 +37,7 @@ public class ChargeMembershipServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            //get session
             HttpSession session = request.getSession();
             
             PaymentDAO charge = new PaymentDAO();
@@ -45,6 +45,7 @@ public class ChargeMembershipServlet extends HttpServlet {
             List list = members.getAllRecords();
             double amount = 0.00;
             
+            //check if fees have value and appoint the charges
             if(request.getParameter("fees")!=null){ 
                 amount = Double.parseDouble(request.getParameter("fees"));
                 
@@ -64,7 +65,9 @@ public class ChargeMembershipServlet extends HttpServlet {
 
                     response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
                 }
-            }else if(request.getParameter("distributed")!=null){ 
+            }//end if
+            //check if distributed have value and appoint the charges
+            else if(request.getParameter("distributed")!=null){ 
                 amount = Double.parseDouble(request.getParameter("distributed"));
                 
                 try{
@@ -83,7 +86,8 @@ public class ChargeMembershipServlet extends HttpServlet {
 
                     response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
                 }
-            }else{
+            }//end else if
+            else{
                 session.setAttribute("error", "Error occured charging members."); //set error message to be sent to index.jsp
                 
                 session.setAttribute("home", true);
@@ -92,7 +96,7 @@ public class ChargeMembershipServlet extends HttpServlet {
                 session.setAttribute("search", false);
 
                 response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
-            }
+            }//end else
 
         }
     }

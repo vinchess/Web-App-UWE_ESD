@@ -3,7 +3,8 @@ package database;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +28,7 @@ public class RegistrationDAO extends JDBC{
             }
         }
         return result;
-    }
+    } //end checkExist
     
     public String RegisterUser(Registration newUser) throws SQLException, IOException{
         String result = "false";
@@ -62,7 +63,7 @@ public class RegistrationDAO extends JDBC{
         conn.close(); //close connection
 
         return result;
-    }
+    } //end RegisterUser
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
@@ -87,5 +88,5 @@ public class RegistrationDAO extends JDBC{
             System.out.println("URL CHECK ERROR");
         } //END TRY
         return false; //if address is invalid 
-    }
+    } //end geolocationCheck
 }

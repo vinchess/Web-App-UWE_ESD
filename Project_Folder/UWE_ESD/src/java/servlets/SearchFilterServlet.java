@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import user.User;
@@ -34,11 +29,13 @@ public class SearchFilterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             HttpSession session = request.getSession();
             
             String userid = request.getParameter("userid");
             MemberDAO user = new MemberDAO();
             
+            //search for user based on ID and set to searchuser attribute
             session.setAttribute("searchuser",(User)user.getSingleById(userid));
             
             session.setAttribute("home", false);

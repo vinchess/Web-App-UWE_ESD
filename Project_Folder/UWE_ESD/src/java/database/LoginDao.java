@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
 import java.sql.ResultSet;
@@ -14,8 +9,7 @@ import user.User;
  * @author Richard
  */
 public class LoginDao extends JDBC{
-    public String authenticateUser (User userInput)
-    {
+    public String authenticateUser (User userInput){
         String result = "false";
         
         String username = userInput.getID();
@@ -50,5 +44,5 @@ public class LoginDao extends JDBC{
             }
         
         return result;
-    }
+    }//end authenticateUser
 }

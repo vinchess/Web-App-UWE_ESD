@@ -1,8 +1,9 @@
 package database;
-import user.Claim;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import user.Claim;
 import user.User;
 /**
  *
@@ -40,7 +41,7 @@ public class ClaimDAO extends JDBC {
         }
 
         return list;
-    } 
+    } //end getAllClaims
     public List getClaimsById(User user){
         conn = getConnection();
         String sql = "SELECT * FROM Claims WHERE mem_id='"+ user.getID() +"';";
@@ -69,7 +70,7 @@ public class ClaimDAO extends JDBC {
         }
             
         return list;
-    }   
+    } //end getClaimsById
     public boolean add_claim(String userid, Double claimAmount, String claimRational){
         try{
             //get connection
@@ -90,7 +91,7 @@ public class ClaimDAO extends JDBC {
         }
         //else return false if unsuccessfull
         return false;
-    }
+    } //end add_claim
     public void updateClaim(int id, String status){
         conn = getConnection();
         String sql = "UPDATE claims SET status='" + status + "' WHERE id="+ id + ";";
@@ -101,7 +102,7 @@ public class ClaimDAO extends JDBC {
         }catch(SQLException se){
             System.out.println("OPS");
         }
-    }
+    } // end updateClaim
 }
 
                        

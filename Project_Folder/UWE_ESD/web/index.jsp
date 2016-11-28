@@ -51,8 +51,6 @@
                     To proceed please login.</h3>
                 <button class="btn btn-primary " href="#signin" 
                     data-toggle="modal" data-target="#myModal">Sign In/Register</button>
-                <!--<button class="btn btn-primary " href="#admin"
-                        data-toggle="modal" data-target="#myAdmin">Admin</button>-->
             </div>
         </div>
         
@@ -213,47 +211,6 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <!--<div class="modal fade" id="myAdmin" tabindex="-1" role="dialog" 
-               aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        Sign In
-                    </div>
-                    <div class="modal-body">
-                        <div class="tab-pane fade active in" id="admin">
-                            <form class="form-horizontal" action="admin-dashboard" method="POST">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="userid">Username:</label>
-                                        <div class="col-sm-8 controls">
-                                            <input id="userid" name="userid" type="text" class="form-control" 
-                                                 placeholder="username" class="input-medium" focused required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="passwordinput">Password:</label>
-                                        <div class="col-sm-8 controls">
-                                            <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="signin"></label>
-                                        <div class="controls">
-                                            <center>
-                                                <button id="signin" name="signin" class="btn btn-success">Sign In</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </center>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </body>
     <%@include file="/lib/footer.html" %>
 </html>

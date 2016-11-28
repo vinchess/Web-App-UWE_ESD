@@ -3,11 +3,13 @@ package database;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import user.Registration;
 import user.User;
 
 /**
@@ -177,8 +179,7 @@ public class MemberDAO extends JDBC{
         result = "User details successfully updated.";
         
         return result;
-    }   
-    
+    } //end editDetails
     public String deleteUser(String id)throws SQLException{
         String result = "";
         conn = getConnection();
@@ -202,12 +203,10 @@ public class MemberDAO extends JDBC{
         conn.close();
         return result;
     }//end deleteUser
-    
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
     }//end checkResult 
-    
     public boolean geolocationCheck(User user){
         try {
             String userAddress = user.getAddress(); //get user address from User class
@@ -227,5 +226,5 @@ public class MemberDAO extends JDBC{
             System.out.println("URL CHECK ERROR");
         } //END TRY
         return false; //if address is invalid 
-    }
+    } //end geolocationCheck
 }

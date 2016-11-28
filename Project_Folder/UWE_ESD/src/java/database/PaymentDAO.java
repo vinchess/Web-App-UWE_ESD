@@ -1,6 +1,8 @@
 package database;
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import user.User;
 import user.Payments;
 /**
@@ -39,6 +41,7 @@ public class PaymentDAO extends JDBC{
         }
         return result;
     }//end updatePayment
+    //query list of all payment records
     public List getAllRecords(){
         List list = new ArrayList();
         conn = getConnection();
@@ -59,6 +62,7 @@ public class PaymentDAO extends JDBC{
         }
         return list;
     }//end getAllRecords
+    //query payment records of specific id
     public List getRecordsById(User user){
         List list = new ArrayList();
         conn = getConnection();
@@ -78,6 +82,7 @@ public class PaymentDAO extends JDBC{
         }
         return list;
     }//end getRecordsById
+    //charge payment to list of uses from list
     public void chargePayment(List list,double amount)throws SQLException{
         conn = getConnection();
         
@@ -100,7 +105,8 @@ public class PaymentDAO extends JDBC{
             conn.close();
             throw new SQLException("Commit Failed");
         }
-    }
+    } //end chargePayment
+    //check if all sql statement is successfull
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
