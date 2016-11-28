@@ -47,7 +47,7 @@ public class RegistrationDAO extends JDBC{
         stmt.addBatch("INSERT INTO users VALUES('" + newUser.getID() + "','" + 
                 newUser.getPassword() + "','APPLIED');");
         stmt.addBatch("INSERT INTO members VALUES('" + newUser.getID() + "','" + 
-                newUser.getName()+ "','" + newUser.getAddress() + "','" + newUser.getDOB() + "',now(),'APPLIED','0.00');");
+                newUser.getName()+ "','" + newUser.getAddress() + "','" + newUser.getDOB() + "',now(),'APPLIED','-10.00');");
 
         int[] updateResult = stmt.executeBatch();
 
