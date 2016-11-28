@@ -71,6 +71,7 @@ public class LoginServlet extends HttpServlet {
             
                 session.setAttribute("claimlist", claims.getAllClaims());
                 session.setAttribute("userlist", member.getAllRecords());
+                session.setAttribute("paymentlist", payments.getAllRecords());
                 
                 session.setAttribute("home", true);
                 session.setAttribute("users", false);

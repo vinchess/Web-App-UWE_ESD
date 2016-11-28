@@ -1,5 +1,8 @@
 package user;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author God
@@ -44,6 +47,13 @@ public class Payments {
     
     public String getDate() {
         return date;
+    }
+    
+    public Date returnDate()throws ParseException{
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        Date returnDate ;
+        returnDate = dateformat.parse(date);
+        return returnDate;
     }
 
     public void setDate(String date) {

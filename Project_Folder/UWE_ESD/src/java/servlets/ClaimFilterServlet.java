@@ -37,10 +37,12 @@ public class ClaimFilterServlet extends HttpServlet {
             String submitted = request.getParameter("submitted");
             String accepted = request.getParameter("accepted");
             String rejected = request.getParameter("rejected");
+            String username = request.getParameter("userid");
             
             session.setAttribute("submitted", submitted);
             session.setAttribute("accepted", accepted);
             session.setAttribute("rejected", rejected);
+            session.setAttribute("claimuserid", username);
             
             session.setAttribute("home", false);
             session.setAttribute("users", false);

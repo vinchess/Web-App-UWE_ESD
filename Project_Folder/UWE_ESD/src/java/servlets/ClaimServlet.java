@@ -72,21 +72,16 @@ public class ClaimServlet extends HttpServlet{
             
             
             if(minDays<diffDays){
-                if(claimAmount < 2){
-                    boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
-                    //if claim added successfully
-                    if (addClaimReturn){
-                        session.setAttribute("success", "Claim added successfully"); //set success message
-                        session.setAttribute("claimlist", claimDao.getClaimsById(user));
+                boolean addClaimReturn = claimDao.add_claim(userid, claim_amount,claimRational);
+                //if claim added successfully
+                if (addClaimReturn){
+                    session.setAttribute("success", "Claim added successfully"); //set success message
+                    session.setAttribute("claimlist", claimDao.getClaimsById(user));
 
-                        response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                    }else{
-                        session.setAttribute("error", "Error adding claim"); //set error message 
-                        response.sendRedirect("/UWE_ESD/dashboard.jsp");
-                    }
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp");
                 }else{
-                    session.setAttribute("error", "You've exceeded max amount of claims."); //set error message 
-                response.sendRedirect("/UWE_ESD/dashboard.jsp");
+                    session.setAttribute("error", "Error adding claim"); //set error message 
+                    response.sendRedirect("/UWE_ESD/dashboard.jsp");
                 }
             }else{
                 session.setAttribute("error", "Your account has not mature yet."); //set error message 

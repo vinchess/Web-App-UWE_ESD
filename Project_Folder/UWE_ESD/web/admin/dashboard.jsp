@@ -7,23 +7,32 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="java.text.DecimalFormat"%>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="user.User" %>
 <%@ page import="user.Claim" %>
-<%! String applied = null,approved = null,suspended = null, submitted = null,accepted = null,rejected = null ;%>
+<%@ page import="user.Payments" %>
+<%! String applied = null,approved = null,suspended = null, submitted = null,accepted = null,rejected = null,claimid = null, memid = null ;%>
 <%! double distributed = 0.00, fees = 0.00, MEM_FEE = 10.00;%>
 <%! boolean homeTab,usersTab,claimsTab,searchTab;%>
-<%! List userClaims,userList; %>
+<%! List userClaims,userList,memList,paymentlist; %>
 <%! User user;%>
-<%! DecimalFormat df = new DecimalFormat("0.00"); %>
+<%! Calendar today = Calendar.getInstance(); %>
+<%! DecimalFormat df = new DecimalFormat("#,###,###.00"); %>
 <%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
+<% today.setTime(new Date()); %>
 <% user = (User)session.getAttribute("searchuser");%>
+<% paymentlist = (ArrayList)session.getAttribute("paymentlist");%>
 <% userList = (ArrayList)session.getAttribute("userlist");%>
+<% memList = (ArrayList)session.getAttribute("userlist");%>
 <% userClaims = (ArrayList)session.getAttribute("claimlist");%>
+<% memid = (String)session.getAttribute("memid");%>
 <% applied = (String)session.getAttribute("applied");%>
 <% approved = (String)session.getAttribute("approved");%>
 <% suspended = (String)session.getAttribute("suspended");%>
+<% claimid = (String)session.getAttribute("claimuserid");%>
 <% submitted = (String)session.getAttribute("submitted");%>
 <% accepted = (String)session.getAttribute("accepted");%>
 <% rejected = (String)session.getAttribute("rejected");%>
@@ -75,13 +84,15 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
                                accesskey=""aria-expanded="true" aria-controls="collapseOne">
-                                Users Filter
+                                Users Filter<span class="glyphicon glyphicon-chevron-down pull-right"></span>
                             </a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <form action="filter" method="POST">
+                                <input class="form-control" type="text" id="userid" 
+                                       name="userid" placeholder="User ID" <%if(memid!=null){ out.println("value=\""+memid+"\""); }%>>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="applied" value="APPLIED" 
@@ -114,13 +125,15 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#claimsFilterCollapse" 
                                accesskey=""aria-expanded="true" aria-controls="claimsFilterCollapse">
-                                Claims Filter
+                                Claims Filter<span class="glyphicon glyphicon-chevron-down pull-right"></span>
                             </a>
                         </h4>
                     </div>
                     <div id="claimsFilterCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="claimsFilterHeading">
                         <div class="panel-body">
                             <form action="claimfilter" method="POST">
+                                <input class="form-control" type="text" id="userid" 
+                                       name="userid" placeholder="User ID" <%if(claimid!=null){ out.println("value=\""+claimid+"\""); }%>>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="submitted" value="SUBMITTED" 
@@ -153,7 +166,7 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" 
                                accesskey=""aria-expanded="true" aria-controls="collapseTwo">
-                                Search Filter
+                                Search Filter<span class="glyphicon glyphicon-chevron-down pull-right"></span>
                             </a>
                         </h4>
                     </div>
@@ -206,13 +219,13 @@
                             <br>
                             <div class="col-md-6">
                                 <center>
-                                <div class="panel panel-primary">
+                                <div class="panel panel-primary" style="height:325px">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">Total Members</h3>
                                     </div>
                                     <div class="panel-body">
                                         <%
-                                            out.println("<h1 style=\"font-size:50px;\">"+userList.size()+"</h1>");
+                                            out.println("<h1 style=\"font-size:40px;\">"+userList.size()+"</h1>");
                                                             
                                             int apply = 0,approve = 0,suspend = 0;
                                             for(Object e:userList){
@@ -246,23 +259,27 @@
                             </div>
                             <div class="col-md-6">
                                 <center>
-                                <div class="panel panel-primary">
+                                <div class="panel panel-primary" style="height:325px">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">Total Claims</h3>
                                     </div>
                                     <div class="panel-body">
                                         <%
-                                            double totalClaims = 0.00;
+                                            Calendar checkClaim = Calendar.getInstance();
+                                            double thisYearClaims = 0.00;
                                             int size = 0;
 
                                             for(Object uc:userClaims){
-                                                if(((Claim)uc).getStatus().equals("ACCEPTED"))
-                                                    totalClaims += ((Claim)uc).getAmount();
+                                                checkClaim.setTime(((Claim)uc).getDate());
+                                                    if(today.get(Calendar.YEAR)==checkClaim.get(Calendar.YEAR) && 
+                                                            ((Claim)uc).getStatus().equals("ACCEPTED")){
+                                                        thisYearClaims += ((Claim)uc).getAmount();
+                                                    }
                                             }
                                             size = apply + approve + suspend;
-                                            double average = totalClaims/size;
+                                            double average = thisYearClaims/size;
                                             
-                                            out.println("<h1 style=\"font-size:50px;\">&#163; " + df.format(totalClaims) + "</h1>");
+                                            out.println("<h1 style=\"font-size:40px;\">&#163; " + df.format(thisYearClaims) + "</h1>");
                                         %>
                                         <div class="col-md-7 text-left">
                                             <%
@@ -300,13 +317,72 @@
                                 </div>
                                 </center>
                             </div>
+                            <div class="col-md-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Annual Report</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-sm-9 text-left">
+                                            <h4>Total payment this year</h4>
+                                            <h4>Total claims pay out this year</h4>
+                                            <h4>Total payment all time</h4>
+                                            <h4>Total claims all time</h4>
+                                        </div>
+                                        <div class="col-sm-3 text-right">
+                                            <h4>
+                                                <%
+                                                    Calendar checkPayment = Calendar.getInstance();
+                                                    
+                                                    double thisYearPayments = 0.00;
+                                                    
+                                                    for(Object p:paymentlist){
+                                                        checkPayment.setTime(((Payments)p).returnDate());
+                                                        if(today.get(Calendar.YEAR)==checkPayment.get(Calendar.YEAR)){
+                                                            thisYearPayments += Double.parseDouble(((Payments)p).getAmount());
+                                                        }
+                                                    }
+                                                    out.println("&#163; " + df.format(thisYearPayments));
+                                                %>
+                                            </h4>
+                                            <h4><%=df.format(thisYearClaims)%></h4>
+                                            <h4>
+                                                <%
+                                                    double allTimePayments = 0.00;
+                                                    
+                                                    for(Object p:paymentlist){
+                                                        allTimePayments += Double.parseDouble(((Payments)p).getAmount());
+                                                    }
+                                                    out.println("&#163; " + df.format(allTimePayments));
+                                                %>
+                                            </h4>
+                                            <h4>
+                                                <%
+                                                    double allTimeClaims = 0.00;
+                                                    
+                                                    for(Object uc:userClaims){
+                                                        allTimeClaims += ((Claim)uc).getAmount();
+                                                    }
+                                                    out.println("&#163; " + df.format(allTimeClaims));
+                                                %>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                         <div role="tabpanel" class="tab-pane 
                              <%if(usersTab) { out.println("active"); }%>" id="users">
                             <br>
                             <table class="table" >
                                 <tr>
-                                    <th>#</th><!--<th>ID</th>--><th>Name</th><th>Address</th><th>DOB</th><th>DOR</th><th>Status</th><th>Balance</th><th></th>
+                                    <th>#</th><!--<th>ID</th>-->
+                                    <th>Name</th><th>Address</th>
+                                    <th class="text-center">DOB</th>
+                                    <th class="text-center">DOR</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-right">Balance</th><th></th>
                                 </tr>
                             <%
 
@@ -317,15 +393,25 @@
                                     if(approved!=null) { if((((User)u).isUserValid()).equals(approved)) { filter.add(u); } }
                                     if(suspended!=null) { if((((User)u).isUserValid()).equals(suspended)) { filter.add(u); } }
                                 }
-                                if(applied!=null || approved!=null || suspended!=null) { userList = filter; }
+                                if(applied!=null || approved!=null || suspended!=null) { memList = filter; }
+                                
+                                if(memid!=null && !memid.equals("")){
+                                    List filterMember = new ArrayList();
+                                    for(Object u:memList){
+                                        if(((User)u).getID().equals(memid)){
+                                            filterMember.add(u);
+                                        }
+                                    }
+                                    memList = filterMember;
+                                }
 
-                                if(userList.isEmpty()){
+                                if(memList.isEmpty()){
                                     out.println("<tr>");
                                     out.println("<td colspan=\"9\">No Records Found</td>");
                                     out.println("</tr>");
                                 }else{
-                                    for(int i=0;i<userList.size();i++){
-                                        User member = (User)userList.get(i);
+                                    for(int i=0;i<memList.size();i++){
+                                        User member = (User)memList.get(i);
                                         
                                         switch(member.isUserValid()){
                                             case "APPLIED":
@@ -346,8 +432,8 @@
                                         String stringDOR = DATE_FORMAT.format(member.getDOR());
                                         
                                         out.println("<td>" + stringDOR + "</td>");
-                                        out.println("<td>" + member.isUserValid()+ "</td>");
-                                        out.println("<td>&#163; " + member.getBalance() + "</td>");
+                                        out.println("<td class=\"text-center\">" + member.isUserValid()+ "</td>");
+                                        out.println("<td class=\"text-right\">&#163; " + df.format(member.getBalance()) + "</td>");
                                         out.println("<td>");
                                         out.println("<form action=\"update-status\" method=\"POST\">");
                                         if(member.isUserValid().equals("APPROVED")){
@@ -387,7 +473,17 @@
                                         if(rejected!=null) { if((((Claim)c).getStatus()).equals(rejected)) { claimfilter.add(c); } }
                                     }
                                     if(submitted!=null || accepted!=null || rejected!=null) { userClaims = claimfilter; }
-                                        
+                                    
+                                    if(claimid!=null && !claimid.equals("")){
+                                        List filterUser = new ArrayList();
+                                        for(Object c:userClaims){
+                                            if(((Claim)c).getMem_id().equals(claimid)){
+                                                filterUser.add(c);
+                                            }
+                                        }
+                                        userClaims = filterUser;
+                                    }
+                                    
                                     if(userClaims.isEmpty()){
                                         out.println("<tr>");
                                         out.println("<td colspan=\"7\">No Records Found</td>");
@@ -497,7 +593,6 @@
                                         out.println("</td>");
                                     }
                                 %>
-                                </tr>
                             </table>
                         </div>
                     </div>

@@ -12,7 +12,7 @@
 <%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
 <%! User user; List paymentlist; List claimlist;%>
-<%! DecimalFormat df = new DecimalFormat("0.00"); %>
+<%! DecimalFormat df = new DecimalFormat("##,###.00"); %>
 <%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
 <% user = (User)session.getAttribute("user");%>
 <% paymentlist = (ArrayList)session.getAttribute("paymentlist"); %>
@@ -146,7 +146,7 @@
                                             out.println("<td>" + (i+1) + "</td>");
                                             out.println("<td>" + payment.getId() + "</td>");
                                             out.println("<td>" + payment.getType() + "</td>");
-                                            out.println("<td>&#163; " + payment.getAmount() + "</td>");
+                                            out.println("<td>&#163; " + df.format(payment.getAmount()) + "</td>");
                                             out.println("<td>" + payment.getDate() + "</td>");
                                             out.println("</tr>");
                                         }
@@ -172,7 +172,7 @@
                                                 out.println("<td>" + claim.getMem_id()+ "</td>");
                                                 out.println("<td>" + claim.getRationale() + "</td>");
                                                 out.println("<td>" + claim.getStatus() + "</td>");
-                                                out.println("<td>&#163; " + claim.getAmount() + "</td>");
+                                                out.println("<td>&#163; " + df.format(claim.getAmount()) + "</td>");
 
                                                 String stringdate = DATE_FORMAT.format(claim.getDate());
 

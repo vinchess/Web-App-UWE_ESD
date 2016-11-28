@@ -37,10 +37,12 @@ public class AdminFilterServlet extends HttpServlet {
             String applied = request.getParameter("applied");
             String approved = request.getParameter("approved");
             String suspended = request.getParameter("suspended");
+            String username = request.getParameter("userid");
             
             session.setAttribute("applied", applied);
             session.setAttribute("approved", approved);
             session.setAttribute("suspended", suspended);
+            session.setAttribute("memid", username);
             
             session.setAttribute("home", false);
             session.setAttribute("users", true);
