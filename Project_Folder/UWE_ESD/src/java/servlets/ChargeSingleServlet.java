@@ -5,24 +5,24 @@
  */
 package servlets;
 
+import database.MemberDAO;
+import database.PaymentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.*;
-import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import database.PaymentDAO;
-import database.MemberDAO;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import user.User;
 
 /**
  *
  * @author Vincent
  */
-public class ChargeMembershipServlet extends HttpServlet {
+public class ChargeSingleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,12 +37,13 @@ public class ChargeMembershipServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             
             PaymentDAO charge = new PaymentDAO();
             MemberDAO members = new MemberDAO();
-            List list = members.getAllRecords();
+            User user = (User)session.getAttribute("searchuser");
+            List list = new ArrayList();
+            list.add(user);
             double amount = 0.00;
             
             if(request.getParameter("fees")!=null){ 
@@ -50,17 +51,17 @@ public class ChargeMembershipServlet extends HttpServlet {
                 
                 try{
                     charge.chargePayment(list, amount);
-                    
                     session.setAttribute("userlist", members.getAllRecords());
-                    session.setAttribute("success", "All members charged.");
+                    session.setAttribute("searchuser",(User)members.getSingleById(user.getID()));
+                    session.setAttribute("success", user.getFirstName() + " successfully charged.");
                     
                 }catch(SQLException se){
-                    session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
+                    session.setAttribute("error", "Problem charging "+ user.getFirstName() +"."); //set error message to be sent to index.jsp
                 }finally{
-                    session.setAttribute("home", true);
+                    session.setAttribute("home", false);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
-                    session.setAttribute("search", false);
+                    session.setAttribute("search", true);
 
                     response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
                 }
@@ -69,27 +70,27 @@ public class ChargeMembershipServlet extends HttpServlet {
                 
                 try{
                     charge.chargePayment(list, amount);
-                    
                     session.setAttribute("userlist", members.getAllRecords());
-                    session.setAttribute("success", "All members charged.");
+                    session.setAttribute("searchuser",(User)members.getSingleById(user.getID()));
+                    session.setAttribute("success", user.getFirstName() + " successfully charged.");
 
                 }catch(SQLException se){
-                    session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
+                    session.setAttribute("error", "Problem charging "+ user.getFirstName() +"."); //set error message to be sent to index.jsp
                 }finally{
-                    session.setAttribute("home", true);
+                    session.setAttribute("home", false);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
-                    session.setAttribute("search", false);
+                    session.setAttribute("search", true);
 
                     response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
                 }
             }else{
-                session.setAttribute("error", "Error occured charging members."); //set error message to be sent to index.jsp
+                session.setAttribute("error", "Error in button submit."); //set error message to be sent to index.jsp
                 
-                session.setAttribute("home", true);
+                session.setAttribute("home", false);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);
-                session.setAttribute("search", false);
+                session.setAttribute("search", true);
 
                 response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
             }

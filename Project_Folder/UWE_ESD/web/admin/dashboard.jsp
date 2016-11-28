@@ -5,16 +5,18 @@
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="java.text.DecimalFormat"%>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="user.User" %>
 <%@ page import="user.Claim" %>
 <%! String applied = null,approved = null,suspended = null, submitted = null,accepted = null,rejected = null ;%>
+<%! double distributed = 0.00, fees = 0.00, MEM_FEE = 10.00;%>
 <%! boolean homeTab,usersTab,claimsTab,searchTab;%>
-<%! List userClaims; %>
-<%! List userList; %>
+<%! List userClaims,userList; %>
 <%! User user;%>
+<%! DecimalFormat df = new DecimalFormat("0.00"); %>
 <%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
 <% user = (User)session.getAttribute("searchuser");%>
 <% userList = (ArrayList)session.getAttribute("userlist");%>
@@ -250,7 +252,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <%
-                                            double totalClaims = 0;
+                                            double totalClaims = 0.00;
                                             int size = 0;
 
                                             for(Object uc:userClaims){
@@ -258,14 +260,41 @@
                                                     totalClaims += ((Claim)uc).getAmount();
                                             }
                                             size = apply + approve + suspend;
-                                            session.setAttribute("amount", String.format("%.2f",(totalClaims/size)+10));
-
-                                            out.println("<h1 style=\"font-size:50px;\">&#163; "+String.format("%.2f", totalClaims)+"</h1>");
-                                            out.println("<h3>Average : &#163; "+String.format("%.2f", totalClaims/size)+"</h3>");
-                                            out.println("<h3>Fees : &#163; 10.00</h3>");
+                                            double average = totalClaims/size;
+                                            
+                                            out.println("<h1 style=\"font-size:50px;\">&#163; " + df.format(totalClaims) + "</h1>");
                                         %>
+                                        <div class="col-md-7 text-left">
+                                            <%
+                                                out.println("<h3>Average</h3>");
+                                                out.println("<h3>Fees</h3>");
+                                            %>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <%
+                                                out.println("<h3>&#163; " + df.format(average) + "</h3>");
+                                                out.println("<h3>&#163; " + df.format(MEM_FEE) + "</h3>");
+                                            %>
+                                        </div>
                                         <form action="charge-members" method="POST">
-                                            <button class="btn btn-primary btn-block">Charge Membership</button>
+                                            <div class="form-group">
+                                                <button type="submit"class="btn btn-default btn-block" 
+                                                        id="distributed" name="distributed"
+                                                        value="<%=df.format(average)%>" data-toggle="modal"
+                                                        data-target="#dimmer">
+                                                    Charge Average
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <form action="charge-members" method="POST">
+                                            <div class="form-group">
+                                                <button type="submit"class="btn btn-default btn-block" 
+                                                        id="fees" name="fees"
+                                                        value="<%=df.format(MEM_FEE)%>" data-toggle="modal"
+                                                        data-target="#dimmer">
+                                                    Charge Fees
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -277,7 +306,7 @@
                             <br>
                             <table class="table" >
                                 <tr>
-                                    <th>#</th><th>ID</th><th>Name</th><th>Address</th><th>DOB</th><th>DOR</th><th>Status</th><th>Balance</th><th></th>
+                                    <th>#</th><!--<th>ID</th>--><th>Name</th><th>Address</th><th>DOB</th><th>DOR</th><th>Status</th><th>Balance</th><th></th>
                                 </tr>
                             <%
 
@@ -309,7 +338,7 @@
                                                 out.println("<tr class=\"active text-muted\">");
                                         }
                                         out.println("<td>" + (i+1) + "</td>");
-                                        out.println("<td>" + member.getID() + "</td>");
+                                        //out.println("<td>" + member.getID() + "</td>");
                                         out.println("<td>" + member.getFirstName() + " " + member.getLastName() + "</td>");
                                         out.println("<td>" + member.getAddress() + "</td>");
                                         out.println("<td>" + member.getDOB() + "</td>");
@@ -449,12 +478,21 @@
                                         out.println("</td>");
                                         out.println("<td class=\"col-md-3\">");
                                         if(!user.isUserValid().equals("DELETED")){
-                                            out.println("<button class=\"btn btn-default btn-block\" "
-                                                + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                + "onClick=\"location.href='charge-members'\" >Distributed Charges</button>");
-                                            out.println("<button class=\"btn btn-default btn-block\" "
-                                                + "data-toggle=\"modal\" data-target=\"#dimmer\" "
-                                                + "onClick=\"location.href='charge-members'\" >&#163; 10 Fees</button>");
+                                            out.println("<form action=\"charge-member\" method=\"POST\">");
+                                            out.println("<div class=\"form-group\">");
+                                            out.println("<button type=\"submit\"class=\"btn btn-default btn-block\" "
+                                                    + "id=\"distributed\" name=\"distributed\" "
+                                                    + "value=\""+df.format(average)+"\" data-toggle=\"modal\" "
+                                                    + "data-target=\"#dimmer\">Distributed Average</button>");
+                                            out.println("</div></form>");
+                                            out.println("<form action=\"charge-member\" method=\"POST\">");
+                                            out.println("<div class=\"form-group\">");
+                                            out.println("<button type=\"submit\"class=\"btn btn-default btn-block\" "
+                                                    + "id=\"fees\" name=\"fees\" "
+                                                    + "value=\""+df.format(MEM_FEE)+"\" data-toggle=\"modal\" "
+                                                    + "data-target=\"#dimmer\">&#163; 10 Fees</button>");
+                                            out.println("</div></form>");
+                                            
                                         }
                                         out.println("</td>");
                                     }

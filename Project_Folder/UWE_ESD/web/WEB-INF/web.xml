@@ -65,6 +65,10 @@
         <servlet-name>SearchFilterServlet</servlet-name>
         <servlet-class>servlets.SearchFilterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChargeSingleServlet</servlet-name>
+        <servlet-class>servlets.ChargeSingleServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginservlet</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -120,6 +124,10 @@
     <servlet-mapping>
         <servlet-name>SearchFilterServlet</servlet-name>
         <url-pattern>/admin/searchfilter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChargeSingleServlet</servlet-name>
+        <url-pattern>/admin/charge-member</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>20</session-timeout>
