@@ -12,7 +12,7 @@
 <%@ page import="user.User" %>
 <%@ page import="user.Claim"%>
 <%! User user; List paymentlist; List claimlist;%>
-<%! DecimalFormat df = new DecimalFormat("##,###.00"); %>
+<%! DecimalFormat df = new DecimalFormat("##,##0.00"); %>
 <%! SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy"); %>
 <% user = (User)session.getAttribute("user");%>
 <% paymentlist = (ArrayList)session.getAttribute("paymentlist"); %>
@@ -25,7 +25,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Dashboard</title>
         <%@include file="/lib/bootstrap.html" %><!--call in bootstrap imports html-->
-        <%@include file="/lib/banner.html" %><!--call in banner html-->   
+        <%@include file="/lib/banner.html" %><!--call in banner html-->  
+        <script>
+            $(document).ready(function() {
+                $('#paymenttable').DataTable();
+                $('#claimtable').DataTable();
+            } );
+        </script>
     </head>
     <body>
         <div class="container">
@@ -56,6 +62,16 @@
             
             <div class="col-md-3 text-center">
                 <img src="/UWE_ESD/assets/user_icon.png" height="150px">
+                <!--Apply appropriate label based on status-->
+                <%
+                    String status =user.isUserValid();
+                    if(status.equals("APPLIED"))
+                        out.println("<h1><span class=\"label label-warning\">APPLIED</span></h1>");
+                    else if(status.equals("APPROVED"))
+                        out.println("<h1><span class=\"label label-success\">APPROVED</span></h1>");
+                    else if(status.equals("SUSPENDED"))
+                        out.println("<h1><span class=\"label label-danger\">SUSPENDED</span></h1>");
+                %>
                     <h2><%=user.getFirstName()+" "+user.getLastName()%></h2>
                     <h3>Balance &#163; <%=df.format(user.getBalance())%></h3>
                     <button type="button" class="btn btn-primary btn-block" 
@@ -108,17 +124,6 @@
                     </button>
             </div>
             <div class="col-md-9 ">
-                <!--Apply appropriate label based on status-->
-                <%
-                    String status =user.isUserValid();
-                    if(status.equals("APPLIED"))
-                        out.println("<h1><span class=\"label label-warning\">APPLIED</span></h1>");
-                    else if(status.equals("APPROVED"))
-                        out.println("<h1><span class=\"label label-success\">APPROVED</span></h1>");
-                    else if(status.equals("SUSPENDED"))
-                        out.println("<h1><span class=\"label label-danger\">SUSPENDED</span></h1>");
-                %>
-                <br>
                 <div>
                     <ul class="nav nav-tabs" role="tablist">
                       <li role="presentation" class="active">
@@ -130,8 +135,18 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="payments">
-                            <table class="table" >
-                                <tr><th>#</th><th>ID</th><th>Payment Type</th><th>Amount</th><th>Date</th></tr>
+                            <br>
+                            <table id="paymenttable" class="table table-condensed" >
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Payment Type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 <!--Gather payment records to display-->
                                 <%
 
@@ -146,17 +161,29 @@
                                             out.println("<td>" + (i+1) + "</td>");
                                             out.println("<td>" + payment.getId() + "</td>");
                                             out.println("<td>" + payment.getType() + "</td>");
-                                            out.println("<td>&#163; " + df.format(payment.getAmount()) + "</td>");
+                                            out.println("<td>&#163; " + df.format(Double.parseDouble(payment.getAmount())) + "</td>");
                                             out.println("<td>" + payment.getDate() + "</td>");
                                             out.println("</tr>");
                                         }
                                     }
                                 %>
+                                </tbody>
                             </table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="claims">
-                            <table class="table" >
-                                <tr><th>#</th><th>ID</th><th>Rational</th><th>Status</th><th>Amount</th><th>Date</th></tr>
+                            <br>
+                            <table  id="claimtable" class="table table-condensed" >
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Rational</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 <!--Gather claim records to display-->
                                 <%
 
@@ -181,6 +208,7 @@
                                             }
                                         }
                                     %>
+                                </tbody>
                             </table>
                         </div>
                     </div>
