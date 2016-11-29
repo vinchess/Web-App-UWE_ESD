@@ -17,6 +17,7 @@ import user.User;
  * @author Vincent
  */
 public class MemberDAO extends JDBC{
+    //query for all member records
     public List getAllRecords(){
         List list = new ArrayList();
         conn = getConnection();
@@ -44,6 +45,7 @@ public class MemberDAO extends JDBC{
         }
         return list;
     }//end getAllRecords
+    //query specific member records
     public User getSingleById(String id){
         User user = null;
         conn = getConnection();
@@ -70,6 +72,7 @@ public class MemberDAO extends JDBC{
         }
         return user;
     }//end getSingleById
+    //query records by id
     public List getRecordsById(String id){
         List list = new ArrayList();
         conn = getConnection();
@@ -97,6 +100,7 @@ public class MemberDAO extends JDBC{
         }
         return list;
     }//end getRecordsById
+    //query records by status
     public List getRecordsByStatus(String status){
         List list = new ArrayList();
         conn = getConnection();
@@ -124,6 +128,7 @@ public class MemberDAO extends JDBC{
         }
         return list;
     }//end getRecordsByStatus
+    //query values of specific column from a specific id
     public String getColumn(String id,String column){
         conn = getConnection();
         String sql = "SELECT " + column + " FROM members WHERE id='" + id + "';";
@@ -143,6 +148,7 @@ public class MemberDAO extends JDBC{
         }
         return result;
     }//end getColumn
+    //update/change status of specific user
     public void updateStatus(String user, String status){
         conn = getConnection();
         String sql = "UPDATE members SET status='" + status + "' WHERE id='"+ user + "';";
@@ -154,6 +160,7 @@ public class MemberDAO extends JDBC{
             System.out.println("SQL Error.");
         }
     }//end updateStatus
+    //update/edit details of specific registered user
     public String editDetails(User user)throws SQLException,IOException{
         String result = "";
         String sql = "UPDATE members SET " + 
@@ -180,6 +187,7 @@ public class MemberDAO extends JDBC{
         
         return result;
     } //end editDetails
+    //remove user entry from Users table and mark status as DELETED in Members table
     public String deleteUser(String id)throws SQLException{
         String result = "";
         conn = getConnection();
@@ -203,10 +211,12 @@ public class MemberDAO extends JDBC{
         conn.close();
         return result;
     }//end deleteUser
+    //check batch SQL statement have no error
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
     }//end checkResult 
+    //Web Service implementation for location verification
     public boolean geolocationCheck(User user){
         try {
             String userAddress = user.getAddress(); //get user address from User class

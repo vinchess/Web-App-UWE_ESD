@@ -16,6 +16,7 @@ import user.Registration;
  */
 public class RegistrationDAO extends JDBC{
     
+    //method to check if user already exists
     public boolean checkExist(String id) throws SQLException{
         boolean result = false;
         conn = getConnection();
@@ -29,7 +30,7 @@ public class RegistrationDAO extends JDBC{
         }
         return result;
     } //end checkExist
-    
+    //method to register new user into database
     public String RegisterUser(Registration newUser) throws SQLException, IOException{
         String result = "false";
         conn = getConnection();
@@ -54,7 +55,7 @@ public class RegistrationDAO extends JDBC{
 
         if(checkResult(updateResult)){
             conn.commit();
-            result = "Successfully registered. Your username is " + newUser.getID() + " .Proceed to login.";
+            result = "Successfully registered. Username : " + newUser.getID() + " Password : " + newUser.getPassword() + ".Proceed to login.";
         }else{
             conn.close();
             throw new SQLException("Commit Failed");
@@ -64,11 +65,12 @@ public class RegistrationDAO extends JDBC{
 
         return result;
     } //end RegisterUser
+    //method to check all batch statement to be executed for SQL purposes
     private boolean checkResult(int[] updateResults){
         for(int i : updateResults) if(i!=1) return false;
         return true;
     }//end checkResult 
-    
+    //Web Services implementation for location verification
     public boolean geolocationCheck(Registration newUser){
         try {
             String userAddress = newUser.getAddress(); //get user address from User class

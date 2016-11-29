@@ -9,6 +9,7 @@ import user.User;
  * @author Richard
  */
 public class LoginDao extends JDBC{
+    //authenticate username and password from user input
     public String authenticateUser (User userInput){
         String result = "false";
         

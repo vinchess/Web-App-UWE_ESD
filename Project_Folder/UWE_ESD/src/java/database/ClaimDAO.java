@@ -11,7 +11,7 @@ import user.User;
  * @author Jayson
  */
 public class ClaimDAO extends JDBC {
-    
+    //query all claims from database
     public List getAllClaims(){
         List list = new ArrayList();
         conn = getConnection();
@@ -42,6 +42,7 @@ public class ClaimDAO extends JDBC {
 
         return list;
     } //end getAllClaims
+    //query claims based on id
     public List getClaimsById(User user){
         conn = getConnection();
         String sql = "SELECT * FROM Claims WHERE mem_id='"+ user.getID() +"';";
@@ -71,6 +72,7 @@ public class ClaimDAO extends JDBC {
             
         return list;
     } //end getClaimsById
+    //adding a claim into the database
     public boolean add_claim(String userid, Double claimAmount, String claimRational){
         try{
             //get connection
@@ -92,6 +94,7 @@ public class ClaimDAO extends JDBC {
         //else return false if unsuccessfull
         return false;
     } //end add_claim
+    //update claim status of given id
     public void updateClaim(int id, String status){
         conn = getConnection();
         String sql = "UPDATE claims SET status='" + status + "' WHERE id="+ id + ";";
