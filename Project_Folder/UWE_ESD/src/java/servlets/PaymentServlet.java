@@ -5,7 +5,6 @@ import database.MemberDAO;
 import user.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +36,11 @@ public class PaymentServlet extends HttpServlet {
                 double amount = Double.parseDouble(request.getParameter("payAmount"));
                 double newAmount = amount + user.getBalance();
                 
+                //prevent user from paying too much into their account
                 if(newAmount<=10000){
                     PaymentDAO payment = new PaymentDAO();
                 
+                    //attempt to make payment and update database and return appropriate message
                     boolean paymentReturn = payment.updatePayment(user, amount);
 
                     if (paymentReturn){

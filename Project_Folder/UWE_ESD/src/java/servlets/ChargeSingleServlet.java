@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import database.MemberDAO;
@@ -10,7 +5,8 @@ import database.PaymentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +54,7 @@ public class ChargeSingleServlet extends HttpServlet {
                 }catch(SQLException se){
                     session.setAttribute("error", "Problem charging "+ user.getFirstName() +"."); //set error message to be sent to index.jsp
                 }finally{
+                    //set the tab view upon return
                     session.setAttribute("home", false);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
@@ -77,6 +74,7 @@ public class ChargeSingleServlet extends HttpServlet {
                 }catch(SQLException se){
                     session.setAttribute("error", "Problem charging "+ user.getFirstName() +"."); //set error message to be sent to index.jsp
                 }finally{
+                    //set the tab view upon return
                     session.setAttribute("home", false);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
@@ -86,7 +84,7 @@ public class ChargeSingleServlet extends HttpServlet {
                 }
             }else{
                 session.setAttribute("error", "Error in button submit."); //set error message to be sent to index.jsp
-                
+                //set the tab view upon return
                 session.setAttribute("home", false);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);

@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 
 import database.ClaimDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Date;
+import java.util.Calendar;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,18 +42,20 @@ public class ClaimServlet extends HttpServlet{
             
             today.setTime(new Date());registerDay.setTime(userDOR);
             
+            //clear off other values to get the day only
             today.clear(Calendar.HOUR_OF_DAY);registerDay.clear(Calendar.HOUR_OF_DAY);
             today.clear(Calendar.AM_PM);registerDay.clear(Calendar.AM_PM);
             today.clear(Calendar.MINUTE);registerDay.clear(Calendar.MINUTE);
             today.clear(Calendar.SECOND);registerDay.clear(Calendar.SECOND);
             today.clear(Calendar.MILLISECOND);registerDay.clear(Calendar.MILLISECOND);
             
+            //calculate the difference in days from date of registration and today
             Date startDate = registerDay.getTime();Date endDate = today.getTime();
             long startTime = startDate.getTime();long endTime = endDate.getTime();
             long diffTime = endTime - startTime;
             long diffDays = diffTime / (1000 * 60 * 60 * 24);
-            long minDays =  6 * 30;
             
+            long minDays =  6 * 30;
             int thisYear = today.get(Calendar.YEAR);
             int claimAmount = 0;
             //add claim to DB

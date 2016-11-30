@@ -1,21 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
-import java.sql.*;
+import java.util.List;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import database.PaymentDAO;
 import database.MemberDAO;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -58,6 +52,7 @@ public class ChargeMembershipServlet extends HttpServlet {
                 }catch(SQLException se){
                     session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
                 }finally{
+                    //set the tab view upon return
                     session.setAttribute("home", true);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
@@ -79,6 +74,7 @@ public class ChargeMembershipServlet extends HttpServlet {
                 }catch(SQLException se){
                     session.setAttribute("error", "Problem charging members."); //set error message to be sent to index.jsp
                 }finally{
+                    //set the tab view upon return
                     session.setAttribute("home", true);
                     session.setAttribute("users", false);
                     session.setAttribute("claims", false);
@@ -89,7 +85,7 @@ public class ChargeMembershipServlet extends HttpServlet {
             }//end else if
             else{
                 session.setAttribute("error", "Error occured charging members."); //set error message to be sent to index.jsp
-                
+                //set the tab view upon return
                 session.setAttribute("home", true);
                 session.setAttribute("users", false);
                 session.setAttribute("claims", false);
@@ -97,7 +93,6 @@ public class ChargeMembershipServlet extends HttpServlet {
 
                 response.sendRedirect("/UWE_ESD/admin/dashboard.jsp");
             }//end else
-
         }
     }
 

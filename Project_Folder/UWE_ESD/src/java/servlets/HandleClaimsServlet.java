@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import database.ClaimDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,13 +34,16 @@ public class HandleClaimsServlet extends HttpServlet {
             String rejected = request.getParameter("rejected");
             ClaimDAO updateClaim = new ClaimDAO();
             
+            //change claim status based on given conditions
             if(accepted!=null){
                 updateClaim.updateClaim(Integer.parseInt(accepted), "ACCEPTED");
             }else if(rejected!=null){
                 updateClaim.updateClaim(Integer.parseInt(rejected), "REJECTED");
             }
             
+            //update session claimlist after value change
             session.setAttribute("claimlist", updateClaim.getAllClaims());
+            //set the tab view upon return
             session.setAttribute("home", false);
             session.setAttribute("users", false);
             session.setAttribute("claims", true);

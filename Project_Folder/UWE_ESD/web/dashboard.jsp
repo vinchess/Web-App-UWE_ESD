@@ -90,7 +90,8 @@
                             <span class="glyphicon glyphicon-pencil"></span> 
                         </div>
                         <div class="col-md-2 ">
-                            CLAIM<%if(!user.isUserValid().equals("APPROVED"))out.println(" (suspended)");%>
+                            CLAIM <%if(user.isUserValid().equals("APPLIED"))out.println(" (not approved)");
+                            else if(user.isUserValid().equals("SUSPENDED"))out.println(" (suspended)");%>
                         </div>
                     </button>
                     <button type="button" class="btn btn-success btn-block" 

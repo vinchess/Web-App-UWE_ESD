@@ -2,7 +2,7 @@ package servlets;
 
 import database.MemberDAO;
 import user.User;
-import java.sql.*;
+import java.sql.SQLException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

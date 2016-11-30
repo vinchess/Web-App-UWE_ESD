@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,13 +34,16 @@ public class HandleStatusServlet extends HttpServlet {
             String approve = request.getParameter("approve");
             MemberDAO member = new MemberDAO();
             
+            //change user status based on given conditions
             if(suspend!=null){
                 member.updateStatus(suspend, "SUSPENDED");
             }else if(approve!=null){
                 member.updateStatus(approve, "APPROVED");
             }
             
+            //update session userList
             session.setAttribute("userlist", member.getAllRecords());
+            //set the tab view upon return
             session.setAttribute("home", false);
             session.setAttribute("users", true);
             session.setAttribute("claims", false);

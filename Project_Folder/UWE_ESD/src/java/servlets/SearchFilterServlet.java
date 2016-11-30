@@ -38,6 +38,7 @@ public class SearchFilterServlet extends HttpServlet {
             //search for user based on ID and set to searchuser attribute
             session.setAttribute("searchuser",(User)user.getSingleById(userid));
             
+            //set the tab view upon return
             session.setAttribute("home", false);
             session.setAttribute("users", false);
             session.setAttribute("claims", false);

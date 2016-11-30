@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlets;
 
 import java.io.IOException;
@@ -39,11 +34,13 @@ public class AdminFilterServlet extends HttpServlet {
             String suspended = request.getParameter("suspended");
             String username = request.getParameter("userid");
             
+            //set search filter options
             session.setAttribute("applied", applied);
             session.setAttribute("approved", approved);
             session.setAttribute("suspended", suspended);
             session.setAttribute("memid", username);
             
+            //set the tab view upon return
             session.setAttribute("home", false);
             session.setAttribute("users", true);
             session.setAttribute("claims", false);
